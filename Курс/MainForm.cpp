@@ -11,6 +11,10 @@ int main(array<String^>^ arg) {
 	Курс::MainForm form;
 	Application::Run(% form);
 }
+
+void MakeStringInTable() {
+
+}
 /*private void button1_MouseDown(object sender, MouseEventArgs e)
         {
             draggedPiece = sender as Control;
