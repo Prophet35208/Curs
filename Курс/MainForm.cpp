@@ -12,8 +12,8 @@ int main(array<String^>^ arg) {
 	Application::Run(% form);
 }
 
-void MakeStringInTable() {
-
+void Курс::MainForm::MakeStringInTable() {
+    
 }
 /*private void button1_MouseDown(object sender, MouseEventArgs e)
         {
