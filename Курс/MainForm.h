@@ -16,14 +16,18 @@ namespace Курс {
 	{
 	private:
 		//
+		void MakeStringInTable();
 		int creating_base = 0;
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		Point startDraggingPoint;
+	private: System::Windows::Forms::Button^ button_set_image_to_object;
+	private: System::Windows::Forms::DataGridView^ main_table;
+
 	private: System::Windows::Forms::PictureBox^ main_element;
 
 		   //
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
 	public:
 		MainForm(void)
 		{
@@ -63,33 +67,23 @@ namespace Курс {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->main_element = (gcnew System::Windows::Forms::PictureBox());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
+			this->main_table = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_element))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button_put_main_element
 			// 
-			this->button_put_main_element->Location = System::Drawing::Point(1290, 23);
+			this->button_put_main_element->Location = System::Drawing::Point(950, 12);
 			this->button_put_main_element->Name = L"button_put_main_element";
 			this->button_put_main_element->Size = System::Drawing::Size(97, 57);
 			this->button_put_main_element->TabIndex = 0;
-			this->button_put_main_element->Text = L"button_put_main_element";
+			this->button_put_main_element->Text = L"Создать главную";
 			this->button_put_main_element->UseVisualStyleBackColor = true;
 			this->button_put_main_element->Click += gcnew System::EventHandler(this, &MainForm::button_put_main_element_Click);
-			// 
-			// pictureBox1
-			// 
-			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(1114, 12);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(130, 108);
-			this->pictureBox1->TabIndex = 1;
-			this->pictureBox1->TabStop = false;
 			// 
 			// main_element
 			// 
@@ -99,21 +93,39 @@ namespace Курс {
 			this->main_element->TabIndex = 2;
 			this->main_element->TabStop = false;
 			// 
+			// button_set_image_to_object
+			// 
+			this->button_set_image_to_object->Location = System::Drawing::Point(950, 75);
+			this->button_set_image_to_object->Name = L"button_set_image_to_object";
+			this->button_set_image_to_object->Size = System::Drawing::Size(97, 57);
+			this->button_set_image_to_object->TabIndex = 3;
+			this->button_set_image_to_object->Text = L"Установить изображение";
+			this->button_set_image_to_object->UseVisualStyleBackColor = true;
+			// 
+			// main_table
+			// 
+			this->main_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->main_table->Location = System::Drawing::Point(1053, 12);
+			this->main_table->Name = L"main_table";
+			this->main_table->Size = System::Drawing::Size(346, 621);
+			this->main_table->TabIndex = 4;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1411, 645);
+			this->Controls->Add(this->main_table);
+			this->Controls->Add(this->button_set_image_to_object);
 			this->Controls->Add(this->main_element);
-			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button_put_main_element);
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseDown);
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_element))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
 			this->ResumeLayout(false);
 
 		}
