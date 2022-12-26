@@ -22,9 +22,19 @@ namespace Êóğñ {
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		Point startDraggingPoint;
-	private: System::Windows::Forms::PictureBox^ main_element_cr;
+	private: System::Windows::Forms::PictureBox^ main_element;
 		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
+
+	private: System::Windows::Forms::ContextMenuStrip^ contextMenuStrip_delete_main_element;
+
+
+
+	private: System::Windows::Forms::ToolStripMenuItem^ óäàëèòüToolStripMenuItem;
+
+
+
+
 	private: System::Windows::Forms::DataGridView^ main_table;
 
 
@@ -54,6 +64,7 @@ namespace Êóğñ {
 			}
 		}
 	private: System::Windows::Forms::Button^ button_put_main_element;
+	private: System::ComponentModel::IContainer^ components;
 	protected:
 
 	protected:
@@ -62,7 +73,7 @@ namespace Êóğñ {
 		/// <summary>
 		/// Îáÿçàòåëüíàÿ ïåğåìåííàÿ êîíñòğóêòîğà.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -71,10 +82,14 @@ namespace Êóğñ {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
+			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->óäàëèòüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
+			this->contextMenuStrip_delete_main_element->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button_put_main_element
@@ -104,6 +119,19 @@ namespace Êóğñ {
 			this->main_table->Size = System::Drawing::Size(346, 621);
 			this->main_table->TabIndex = 4;
 			// 
+			// contextMenuStrip_delete_main_element
+			// 
+			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->óäàëèòüToolStripMenuItem });
+			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
+			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(181, 48);
+			// 
+			// óäàëèòüToolStripMenuItem
+			// 
+			this->óäàëèòüToolStripMenuItem->Name = L"óäàëèòüToolStripMenuItem";
+			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->óäàëèòüToolStripMenuItem->Text = L"Óäàëèòü";
+			this->óäàëèòüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::óäàëèòüToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -118,18 +146,13 @@ namespace Êóğñ {
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
+			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 	private: System::Void button_put_main_element_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (creating_base == 0) {
 			creating_base = 1;
-		}
-		else
-		{
-			creating_base = 0;
-		}
 	}
 	private: System::Void MainForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		mouse_down = 1;
@@ -163,33 +186,30 @@ namespace Êóğñ {
 				for (int j = 0; j < image->Height; j++)
 					image->SetPixel(i, j, Color::Black);
 			//  Ñîçäàíèå ìàêåòà
-			if (main_element_cr == nullptr)
-				this->main_element_cr = (gcnew System::Windows::Forms::PictureBox());
-			this->main_element_cr->Location = Control::PointToClient(rectProposedSize.Location);
-			this->main_element_cr->Name = L"pictureBox1";
-			this->main_element_cr->Size = rectProposedSize.Size;
-			this->main_element_cr->TabIndex = 1;
-			this->main_element_cr->TabStop = false;
-			this->main_element_cr->Image = image;
-			this->Controls->Add(this->main_element_cr);
+			if (main_element == nullptr)
+				this->main_element = (gcnew System::Windows::Forms::PictureBox());
+			this->main_element->Location = Control::PointToClient(rectProposedSize.Location);
+			this->main_element->Name = L"pictureBox1";
+			this->main_element->Size = rectProposedSize.Size;
+			this->main_element->TabIndex = 1;
+			this->main_element->TabStop = false;
+			this->main_element->Image = image;
+			this->Controls->Add(this->main_element);
+			this->main_element->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 			// Ïåğåäà÷à ìàêåòà 
 
 			//
 			rectProposedSize.Width = 0;
 			rectProposedSize.Height = 0;
+
+			button_put_main_element->Enabled = 0;
+
+			creating_base = 0;
 		}
 	}
-private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-	button_121414 = (gcnew System::Windows::Forms::Button());
-	this->SuspendLayout();
-	button_121414->Location = System::Drawing::Point(448, 227);
-	button_121414->Name = L"button_24242";
-	button_121414->Size = System::Drawing::Size(159, 22);
-	button_121414->TabIndex = 5;
-	button_121414->Text = L"11515125151251515125";
-	button_121414->UseVisualStyleBackColor = true;
-	this->Controls->Add(this->button_121414);
-	this->ResumeLayout(false);
+
+private: System::Void óäàëèòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	delete main_element;
 }
 };
 }
