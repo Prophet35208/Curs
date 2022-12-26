@@ -22,11 +22,13 @@ namespace Курс {
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		Point startDraggingPoint;
+	private: System::Windows::Forms::PictureBox^ main_element_cr;
+		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
 	private: System::Windows::Forms::DataGridView^ main_table;
 	private: System::Windows::Forms::Button^ button1;
 
-	private: System::Windows::Forms::PictureBox^ main_element;
+
 
 		   //
 
@@ -70,11 +72,9 @@ namespace Курс {
 		void InitializeComponent(void)
 		{
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
-			this->main_element = (gcnew System::Windows::Forms::PictureBox());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_element))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -87,14 +87,6 @@ namespace Курс {
 			this->button_put_main_element->Text = L"Создать главную";
 			this->button_put_main_element->UseVisualStyleBackColor = true;
 			this->button_put_main_element->Click += gcnew System::EventHandler(this, &MainForm::button_put_main_element_Click);
-			// 
-			// main_element
-			// 
-			this->main_element->Location = System::Drawing::Point(45, 45);
-			this->main_element->Name = L"main_element";
-			this->main_element->Size = System::Drawing::Size(33, 24);
-			this->main_element->TabIndex = 2;
-			this->main_element->TabStop = false;
 			// 
 			// button_set_image_to_object
 			// 
@@ -131,14 +123,12 @@ namespace Курс {
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->main_table);
 			this->Controls->Add(this->button_set_image_to_object);
-			this->Controls->Add(this->main_element);
 			this->Controls->Add(this->button_put_main_element);
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseDown);
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_element))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
 			this->ResumeLayout(false);
 
@@ -175,32 +165,35 @@ namespace Курс {
 	}
 	private: System::Void MainForm_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		mouse_down = 0;
+		// Проверка положительная ли ширина прямоугольника
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
 
-			if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
-			{
-				// erase rect
-				ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
-			}
+			// erase rect
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
 
 			// Создание главного элемента в прямоугольнике
 			Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
 			for (int i = 0; i < image->Width; i++)
 				for (int j = 0; j < image->Height; j++)
 					image->SetPixel(i, j, Color::Black);
-
-			this->main_element->Location = Control::PointToClient(rectProposedSize.Location);
-			this->main_element->Name = L"pictureBox1";
-			this->main_element->Size = rectProposedSize.Size;
-			this->main_element->TabIndex = 1;
-			this->main_element->TabStop = false;
-			this->main_element->Image = image;
-
-
+			//  Создание макета
+			if (main_element_cr == nullptr)
+				this->main_element_cr = (gcnew System::Windows::Forms::PictureBox());
+			this->main_element_cr->Location = Control::PointToClient(rectProposedSize.Location);
+			this->main_element_cr->Name = L"pictureBox1";
+			this->main_element_cr->Size = rectProposedSize.Size;
+			this->main_element_cr->TabIndex = 1;
+			this->main_element_cr->TabStop = false;
+			this->main_element_cr->Image = image;
+			this->Controls->Add(this->main_element_cr);
+			//
 			rectProposedSize.Width = 0;
 			rectProposedSize.Height = 0;
+		}
 	}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	button_121414 = (gcnew System::Windows::Forms::Button());
+	this->SuspendLayout();
 	button_121414->Location = System::Drawing::Point(448, 227);
 	button_121414->Name = L"button_24242";
 	button_121414->Size = System::Drawing::Size(159, 22);
@@ -208,6 +201,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	button_121414->Text = L"11515125151251515125";
 	button_121414->UseVisualStyleBackColor = true;
 	this->Controls->Add(this->button_121414);
+	this->ResumeLayout(false);
 }
 };
 }
