@@ -31,6 +31,15 @@ namespace Êóðñ {
 
 
 	private: System::Windows::Forms::ToolStripMenuItem^ óäàëèòüToolStripMenuItem;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column_name;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ up;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ down;
+
+
+
+
+
+
 
 
 
@@ -88,13 +97,16 @@ namespace Êóðñ {
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
 			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->óäàëèòüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->Column_name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->up = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->down = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->contextMenuStrip_delete_main_element->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button_put_main_element
 			// 
-			this->button_put_main_element->Location = System::Drawing::Point(950, 12);
+			this->button_put_main_element->Location = System::Drawing::Point(851, 12);
 			this->button_put_main_element->Name = L"button_put_main_element";
 			this->button_put_main_element->Size = System::Drawing::Size(97, 57);
 			this->button_put_main_element->TabIndex = 0;
@@ -104,7 +116,7 @@ namespace Êóðñ {
 			// 
 			// button_set_image_to_object
 			// 
-			this->button_set_image_to_object->Location = System::Drawing::Point(950, 75);
+			this->button_set_image_to_object->Location = System::Drawing::Point(851, 75);
 			this->button_set_image_to_object->Name = L"button_set_image_to_object";
 			this->button_set_image_to_object->Size = System::Drawing::Size(97, 57);
 			this->button_set_image_to_object->TabIndex = 3;
@@ -114,23 +126,49 @@ namespace Êóðñ {
 			// main_table
 			// 
 			this->main_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->main_table->Location = System::Drawing::Point(1053, 12);
+			this->main_table->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
+				this->Column_name,
+					this->up, this->down
+			});
+			this->main_table->Location = System::Drawing::Point(954, 12);
 			this->main_table->Name = L"main_table";
-			this->main_table->Size = System::Drawing::Size(346, 621);
+			this->main_table->Size = System::Drawing::Size(445, 555);
 			this->main_table->TabIndex = 4;
 			// 
 			// contextMenuStrip_delete_main_element
 			// 
 			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->óäàëèòüToolStripMenuItem });
 			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(181, 48);
+			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
 			// 
 			// óäàëèòüToolStripMenuItem
 			// 
 			this->óäàëèòüToolStripMenuItem->Name = L"óäàëèòüToolStripMenuItem";
-			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(118, 22);
 			this->óäàëèòüToolStripMenuItem->Text = L"Óäàëèòü";
 			this->óäàëèòüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::óäàëèòüToolStripMenuItem_Click);
+			// 
+			// Column_name
+			// 
+			this->Column_name->HeaderText = L"Íàçâàíèå ñëîÿ";
+			this->Column_name->MaxInputLength = 30;
+			this->Column_name->MinimumWidth = 70;
+			this->Column_name->Name = L"Column_name";
+			this->Column_name->Width = 200;
+			// 
+			// up
+			// 
+			this->up->HeaderText = L"Âûøå";
+			this->up->Name = L"up";
+			this->up->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->up->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// down
+			// 
+			this->down->HeaderText = L"Íèæå";
+			this->down->Name = L"down";
+			this->down->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->down->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
 			// 
 			// MainForm
 			// 
@@ -196,8 +234,7 @@ namespace Êóðñ {
 			this->main_element->Image = image;
 			this->Controls->Add(this->main_element);
 			this->main_element->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
-			// Ïåðåäà÷à ìàêåòà 
-
+			// Ïåðåäà÷à ìàêåòà â òàáëèöó
 			//
 			rectProposedSize.Width = 0;
 			rectProposedSize.Height = 0;
@@ -208,8 +245,10 @@ namespace Êóðñ {
 		}
 	}
 
+// Óäàëåíèå ìàêåòà
 private: System::Void óäàëèòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	delete main_element;
+	button_put_main_element->Enabled = 1;
 }
 };
 }
