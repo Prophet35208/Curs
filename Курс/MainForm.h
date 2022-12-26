@@ -26,7 +26,7 @@ namespace Курс {
 		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
 	private: System::Windows::Forms::DataGridView^ main_table;
-	private: System::Windows::Forms::Button^ button1;
+
 
 
 
@@ -74,7 +74,6 @@ namespace Курс {
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -105,22 +104,11 @@ namespace Курс {
 			this->main_table->Size = System::Drawing::Size(346, 621);
 			this->main_table->TabIndex = 4;
 			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(931, 202);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 5;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1411, 645);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->main_table);
 			this->Controls->Add(this->button_set_image_to_object);
 			this->Controls->Add(this->button_put_main_element);
@@ -137,12 +125,10 @@ namespace Курс {
 	private: System::Void button_put_main_element_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (creating_base == 0) {
 			creating_base = 1;
-			this->Cursor = Cursors::SizeNWSE;
 		}
 		else
 		{
 			creating_base = 0;
-			this->Cursor = Cursors::Default;
 		}
 	}
 	private: System::Void MainForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
@@ -186,6 +172,8 @@ namespace Курс {
 			this->main_element_cr->TabStop = false;
 			this->main_element_cr->Image = image;
 			this->Controls->Add(this->main_element_cr);
+			// Передача макета 
+
 			//
 			rectProposedSize.Width = 0;
 			rectProposedSize.Height = 0;
