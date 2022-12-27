@@ -16,39 +16,31 @@ namespace Êóðñ {
 	{
 	private:
 		//
+			// Íåîáõîäèìûå ïåðåìåííûå äëÿ êîððåêòíîãî ðåäêàòèðîâàíèÿ ðàçìåðîâ èçîáðàæåíèé (ïåðåòÿãèâàíèåì ãðàíèö)
+		
+		System::Drawing::Size^ startSize; 
+		Rectangle rectProposedSize_1=Rectangle::Empty;
+		int resizingMargin = 5;
+		bool resizing_picture_box;	
+		System::Windows::Forms::PictureBox^ dragged_picture_box;
+		Point startDraggingPoint_1;
+			//
 		System::Windows::Forms::Button^ button_121414;
 		void MakeStringInTable();
 		int creating_base = 0;
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		Point startDraggingPoint;
-	private: System::Windows::Forms::PictureBox^ main_element;
+		System::Windows::Forms::PictureBox^ main_element;
 		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
-
 	private: System::Windows::Forms::ContextMenuStrip^ contextMenuStrip_delete_main_element;
-
-
-
 	private: System::Windows::Forms::ToolStripMenuItem^ óäàëèòüToolStripMenuItem;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column_name;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ up;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ down;
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::DataGridView^ main_table;
-
-
-
-
 		   //
 
 	public:
@@ -95,18 +87,20 @@ namespace Êóðñ {
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
-			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-			this->óäàëèòüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->Column_name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->up = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			this->down = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->óäàëèòüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->contextMenuStrip_delete_main_element->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button_put_main_element
 			// 
-			this->button_put_main_element->Location = System::Drawing::Point(851, 12);
+			this->button_put_main_element->Location = System::Drawing::Point(702, 25);
 			this->button_put_main_element->Name = L"button_put_main_element";
 			this->button_put_main_element->Size = System::Drawing::Size(97, 57);
 			this->button_put_main_element->TabIndex = 0;
@@ -116,7 +110,7 @@ namespace Êóðñ {
 			// 
 			// button_set_image_to_object
 			// 
-			this->button_set_image_to_object->Location = System::Drawing::Point(851, 75);
+			this->button_set_image_to_object->Location = System::Drawing::Point(702, 88);
 			this->button_set_image_to_object->Name = L"button_set_image_to_object";
 			this->button_set_image_to_object->Size = System::Drawing::Size(97, 57);
 			this->button_set_image_to_object->TabIndex = 3;
@@ -130,23 +124,10 @@ namespace Êóðñ {
 				this->Column_name,
 					this->up, this->down
 			});
-			this->main_table->Location = System::Drawing::Point(954, 12);
+			this->main_table->Location = System::Drawing::Point(805, 12);
 			this->main_table->Name = L"main_table";
 			this->main_table->Size = System::Drawing::Size(445, 555);
 			this->main_table->TabIndex = 4;
-			// 
-			// contextMenuStrip_delete_main_element
-			// 
-			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->óäàëèòüToolStripMenuItem });
-			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
-			// 
-			// óäàëèòüToolStripMenuItem
-			// 
-			this->óäàëèòüToolStripMenuItem->Name = L"óäàëèòüToolStripMenuItem";
-			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(118, 22);
-			this->óäàëèòüToolStripMenuItem->Text = L"Óäàëèòü";
-			this->óäàëèòüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::óäàëèòüToolStripMenuItem_Click);
 			// 
 			// Column_name
 			// 
@@ -170,11 +151,38 @@ namespace Êóðñ {
 			this->down->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->down->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
 			// 
+			// contextMenuStrip_delete_main_element
+			// 
+			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->óäàëèòüToolStripMenuItem });
+			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
+			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
+			// 
+			// óäàëèòüToolStripMenuItem
+			// 
+			this->óäàëèòüToolStripMenuItem->Name = L"óäàëèòüToolStripMenuItem";
+			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(118, 22);
+			this->óäàëèòüToolStripMenuItem->Text = L"Óäàëèòü";
+			this->óäàëèòüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::óäàëèòüToolStripMenuItem_Click);
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::SystemColors::HighlightText;
+			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pictureBox1->Location = System::Drawing::Point(320, 176);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(151, 136);
+			this->pictureBox1->TabIndex = 5;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseDown);
+			this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseMove);
+			this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseUp);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1411, 645);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->main_table);
 			this->Controls->Add(this->button_set_image_to_object);
 			this->Controls->Add(this->button_put_main_element);
@@ -185,6 +193,7 @@ namespace Êóðñ {
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
 			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -249,6 +258,93 @@ namespace Êóðñ {
 private: System::Void óäàëèòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	delete main_element;
 	button_put_main_element->Enabled = 1;
+}
+private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	dragged_picture_box = (PictureBox^)sender;
+	// Ëåâûé âåðõíèé óãîë
+	if ((e->X >= 0 && e->X <= resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("");
+	// Âåðõíÿÿ ÷àñòü
+	if ((e->X > resizingMargin && e->X < dragged_picture_box->Width - resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("Âåðõíÿÿ ÷àñòü");
+	// Ïðàâûé âåðõíèé óãîë
+	if ((e->X >= dragged_picture_box->Width - resizingMargin && e->X <= dragged_picture_box->Width) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("Ïðàâûé âåðõíèé óãîë");
+	// Ïðàâàÿ ÷àñòü
+	if ((e->X >= dragged_picture_box->Width - resizingMargin && e->X <= dragged_picture_box->Width) &&
+		(e->Y> resizingMargin && e->Y< dragged_picture_box->Height-resizingMargin))
+		MessageBox::Show("Ïðàâàÿ ÷àñòü");
+	// Ïðàâûé íèæíèé óãîë
+	if ((e->X>=dragged_picture_box->Width - resizingMargin && e->X<= e->X <= dragged_picture_box->Width) &&
+		(e->Y>= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Ïðàâûé íèæíûé óãîë");
+	// Íèæíÿÿ ÷àñòü
+	if((e->X>=resizingMargin && e->X< dragged_picture_box->Width - resizingMargin) &&
+		(e->Y<= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Íèæíÿÿ ÷àñòü");
+	// Íèæíèé ëåâûé óãîë
+	if ((e->X>=0&&e->X<= resizingMargin)&&
+		(e->Y>= dragged_picture_box->Height - resizingMargin&&e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Íèæèé ëåâûé óãîë");
+	// Ëåâàÿ ÷àñòü
+	if ((e->X>=0&&e->X<= resizingMargin)&&
+		(e->Y> resizingMargin&&e->Y< dragged_picture_box->Height - resizingMargin))
+		MessageBox::Show("Ëåâàÿ ÷àñòü");
+	//
+	
+	
+}
+private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+	if (dragged_picture_box != nullptr)
+	{
+		if (resizing_picture_box)
+		{
+			// erase rect
+			if (rectProposedSize_1.Width > 0 && rectProposedSize_1.Height > 0)
+				ControlPaint::DrawReversibleFrame(rectProposedSize_1, this->ForeColor, FrameStyle::Dashed);
+			// calculate rect new size
+			/*
+			rectProposedSize.Width = Control::PointToScreen(e->Location).X- rectProposedSize.X;
+			rectProposedSize.Height = Control::PointToScreen(e->Location).Y- rectProposedSize.Y;
+			*/
+			rectProposedSize_1.Width = e->X;
+			rectProposedSize_1.Height = e->Y;
+			// draw rect
+			if (rectProposedSize_1.Width > 0 && rectProposedSize_1.Height > 0)
+				ControlPaint::DrawReversibleFrame(rectProposedSize_1, this->ForeColor, FrameStyle::Dashed);
+		}
+		else
+		{
+			Point^ pt;
+			if (dragged_picture_box == sender) // Âîçìîæíûé ñáîé
+				pt = gcnew Point(e->X, e->Y);
+			else;
+			 //pt = dragged_picture_box.PointToClient((sender).PointToScreen(new Point(e.X, e.Y)));
+
+			dragged_picture_box->Left += pt->X - this->startDraggingPoint_1.X;
+			dragged_picture_box->Top += pt->Y - this->startDraggingPoint_1.Y;
+		}
+	}
+}
+private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	if (resizing_picture_box)
+	{
+		if (rectProposedSize_1.Width > 0 && rectProposedSize_1.Height > 0)
+		{
+			// erase rect
+			ControlPaint::DrawReversibleFrame(rectProposedSize_1, this->ForeColor, FrameStyle::Dashed);
+		}
+		// set size 
+		this->dragged_picture_box->Size = rectProposedSize_1.Size;
+	}
+
+	this->dragged_picture_box = nullptr;
+	this->startDraggingPoint_1 = Point::Empty;
+	this->Cursor = Cursors::Default;
 }
 };
 }
