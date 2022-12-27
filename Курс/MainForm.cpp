@@ -15,6 +15,39 @@ int main(array<String^>^ arg) {
 void Курс::MainForm::MakeStringInTable() {
     
 }
+/*// Левый верхний угол
+	if ((e->X >= 0 && e->X <= resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("");
+	// Верхняя часть
+	if ((e->X > resizingMargin && e->X < dragged_picture_box->Width - resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("Верхняя часть");
+	// Правый верхний угол
+	if ((e->X >= dragged_picture_box->Width - resizingMargin && e->X <= dragged_picture_box->Width) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+		MessageBox::Show("Правый верхний угол");
+	// Правая часть
+	if ((e->X >= dragged_picture_box->Width - resizingMargin && e->X <= dragged_picture_box->Width) &&
+		(e->Y> resizingMargin && e->Y< dragged_picture_box->Height-resizingMargin))
+		MessageBox::Show("Правая часть");
+	// Правый нижний угол
+	if ((e->X>=dragged_picture_box->Width - resizingMargin && e->X<= e->X <= dragged_picture_box->Width) &&
+		(e->Y>= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Правый нижный угол");
+	// Нижняя часть
+	if((e->X>=resizingMargin && e->X< dragged_picture_box->Width - resizingMargin) &&
+		(e->Y>= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Нижняя часть");
+	// Нижний левый угол
+	if ((e->X>=0&&e->X<= resizingMargin)&&
+		(e->Y>= dragged_picture_box->Height - resizingMargin&&e->Y<= dragged_picture_box->Height))
+		MessageBox::Show("Нижний левый угол");
+	// Левая часть
+	if ((e->X>=0&&e->X<= resizingMargin)&&
+		(e->Y> resizingMargin&&e->Y< dragged_picture_box->Height - resizingMargin))
+		MessageBox::Show("Левая часть");
+	//*/
 /*private void button1_MouseDown(object sender, MouseEventArgs e)
         {
             draggedPiece = sender as Control;

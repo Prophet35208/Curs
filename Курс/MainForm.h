@@ -20,7 +20,7 @@ namespace Курс {
 		
 		System::Drawing::Size^ startSize; 
 		Rectangle rectProposedSize_1=Rectangle::Empty;
-		int resizingMargin = 5;
+		int resizingMargin = 15;
 		bool resizing_picture_box;	
 		System::Windows::Forms::PictureBox^ dragged_picture_box;
 		Point startDraggingPoint_1;
@@ -263,8 +263,20 @@ private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Wind
 	dragged_picture_box = (PictureBox^)sender;
 	// Левый верхний угол
 	if ((e->X >= 0 && e->X <= resizingMargin) &&
-		(e->Y >= 0 && e->Y <= resizingMargin))
-		MessageBox::Show("");
+		(e->Y >= 0 && e->Y <= resizingMargin)) 
+	{
+		this->pictureBox1->Cursor = Cursors::SizeNWSE;
+		
+		resizing_picture_box = true;
+
+		rectProposedSize_1.X = this->PointToScreen(dragged_picture_box->Location).X;
+		rectProposedSize_1.Y = this->PointToScreen(dragged_picture_box->Location).Y;
+		rectProposedSize_1.Width = e->X;
+		rectProposedSize_1.Height = e->Y;
+		// draw rect
+		ControlPaint::DrawReversibleFrame(rectProposedSize_1, this->ForeColor, FrameStyle::Dashed);
+	}
+		
 	// Верхняя часть
 	if ((e->X > resizingMargin && e->X < dragged_picture_box->Width - resizingMargin) &&
 		(e->Y >= 0 && e->Y <= resizingMargin))
@@ -283,22 +295,83 @@ private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Wind
 		MessageBox::Show("Правый нижный угол");
 	// Нижняя часть
 	if((e->X>=resizingMargin && e->X< dragged_picture_box->Width - resizingMargin) &&
-		(e->Y<= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
+		(e->Y>= dragged_picture_box->Height - resizingMargin && e->Y<= dragged_picture_box->Height))
 		MessageBox::Show("Нижняя часть");
 	// Нижний левый угол
 	if ((e->X>=0&&e->X<= resizingMargin)&&
 		(e->Y>= dragged_picture_box->Height - resizingMargin&&e->Y<= dragged_picture_box->Height))
-		MessageBox::Show("Нижий левый угол");
+		MessageBox::Show("Нижний левый угол");
 	// Левая часть
 	if ((e->X>=0&&e->X<= resizingMargin)&&
 		(e->Y> resizingMargin&&e->Y< dragged_picture_box->Height - resizingMargin))
 		MessageBox::Show("Левая часть");
 	//
-	
-	
+	if ((e->X <= resizingMargin) || (e->X >= dragged_picture_box->Width - resizingMargin) ||
+		(e->Y <= resizingMargin) || (e->Y >= dragged_picture_box->Height - resizingMargin))
+	{
+		resizing_picture_box = true;
+
+		// indicate resizing
+		this->Cursor = Cursors::SizeNWSE;
+		// starting size
+		this->startSize = gcnew System::Drawing::Size(e->X, e->Y);
+		// get the location of the picture box
+		Point pt = PointToScreen(dragged_picture_box->Location);
+		rectProposedSize_1.X = this->PointToScreen(dragged_picture_box->Location).X;
+		rectProposedSize_1.Y= this->PointToScreen(dragged_picture_box->Location).Y;
+		rectProposedSize_1.Width = e->X;
+		rectProposedSize_1.Height = e->Y;
+		// draw rect
+		ControlPaint::DrawReversibleFrame(rectProposedSize_1, this->ForeColor, FrameStyle::Dashed);
+	}
+	else
+	{
+		resizing_picture_box = false;
+		// indicate moving
+		this->Cursor = Cursors::SizeAll;
+	}
+
+	// start point location
+	this->startDraggingPoint_1 = e->Location;
 }
 private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
+	if (resizing_picture_box!=true) {
+		// Левый верхний угол
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			this->pictureBox1->Cursor = Cursors::SizeNWSE;
+		// Верхняя часть
+		if ((e->X > resizingMargin && e->X < this->pictureBox1->Width - resizingMargin) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			this->pictureBox1->Cursor = Cursors::SizeNS;
+		// Правый верхний угол
+		if ((e->X >= this->pictureBox1->Width - resizingMargin && e->X <= this->pictureBox1->Width) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			this->pictureBox1->Cursor = Cursors::SizeNESW;
+		// Правая часть
+		if ((e->X >= this->pictureBox1->Width - resizingMargin && e->X <= this->pictureBox1->Width) &&
+			(e->Y > resizingMargin && e->Y < this->pictureBox1->Height - resizingMargin))
+			this->pictureBox1->Cursor = Cursors::SizeWE;
+		// Правый нижний угол
+		if ((e->X >= this->pictureBox1->Width - resizingMargin && e->X <= e->X <= this->pictureBox1->Width) &&
+			(e->Y >= this->pictureBox1->Height - resizingMargin && e->Y <= this->pictureBox1->Height))
+			this->pictureBox1->Cursor = Cursors::SizeNWSE;
+		// Нижняя часть
+		if ((e->X >= resizingMargin && e->X < this->pictureBox1->Width - resizingMargin) &&
+			(e->Y >= this->pictureBox1->Height - resizingMargin && e->Y <= this->pictureBox1->Height))
+			this->pictureBox1->Cursor = Cursors::SizeNS;
+		// Нижний левый угол
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y >= this->pictureBox1->Height - resizingMargin && e->Y <= this->pictureBox1->Height))
+			this->pictureBox1->Cursor = Cursors::SizeNESW;
+		// Левая часть
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y > resizingMargin && e->Y < this->pictureBox1->Height - resizingMargin))
+			this->pictureBox1->Cursor = Cursors::SizeWE;
+		if ((e->X > resizingMargin && e->X < this->pictureBox1->Width - resizingMargin) &&
+			(e->Y > resizingMargin && e->Y < this->pictureBox1->Height - resizingMargin))
+			this->pictureBox1->Cursor = Cursors::Default;
+	}
 	if (dragged_picture_box != nullptr)
 	{
 		if (resizing_picture_box)
