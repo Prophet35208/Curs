@@ -223,9 +223,6 @@ namespace Курс {
 			this->Controls->Add(this->pictureBox1);
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
-			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseDown);
-			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseMove);
-			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
 			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->EndInit();
@@ -236,57 +233,6 @@ namespace Курс {
 #pragma endregion
 	private: System::Void button_put_main_element_Click(System::Object^ sender, System::EventArgs^ e) {
 			creating_base = 1;
-	}
-	private: System::Void MainForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		mouse_down = 1;
-		rectProposedSize.X = Control::PointToScreen(e->Location).X;
-		rectProposedSize.Y = Control::PointToScreen(e->Location).Y;
-
-	}
-	private: System::Void MainForm_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		if (mouse_down&& creating_base) {
-			if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
-				ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
-			// calculate rect new size
-			rectProposedSize.Width = Control::PointToScreen(e->Location).X- rectProposedSize.X;
-			rectProposedSize.Height = Control::PointToScreen(e->Location).Y- rectProposedSize.Y;
-			// draw rect
-			if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
-				ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
-		}
-	}
-	private: System::Void MainForm_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		mouse_down = 0;
-		// Проверка положительная ли ширина прямоугольника
-		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
-
-			// erase rect
-			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
-
-			// Создание главного элемента в прямоугольнике
-			Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
-			for (int i = 0; i < image->Width; i++)
-				for (int j = 0; j < image->Height; j++)
-					image->SetPixel(i, j, Color::Black);
-			//  Создание макета
-			picture_list->Add(gcnew Windows::Forms::PictureBox);
-			this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
-			this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
-			this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
-			this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
-			this->picture_list[picture_list->Count - 1]->TabIndex = 1;
-			this->picture_list[picture_list->Count - 1]->TabStop = false;
-			this->picture_list[picture_list->Count - 1]->Image = image;
-			this->Controls->Add(this->picture_list[picture_list->Count - 1]);
-			this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
-			// Передача макета в таблицу
-			//
-			rectProposedSize.Width = 0;
-			rectProposedSize.Height = 0;
-
-
-			creating_base = 0;
-		}
 	}
 
 // Удаление макета
@@ -450,6 +396,8 @@ private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Window
 		for (int i = 0; i < image->Width; i++)
 			for (int j = 0; j < image->Height; j++)
 				image->SetPixel(i, j, Color::Black);
+
+
 		//  Создание макета
 		picture_list->Add(gcnew Windows::Forms::PictureBox);
 		this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
