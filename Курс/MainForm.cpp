@@ -15,6 +15,44 @@ int main(array<String^>^ arg) {
 void Курс::MainForm::MakeStringInTable() {
     
 }
+/*// Блок для изменения иконки мыши на границах picturebox 
+		// Левый верхний угол
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
+		// Верхняя часть
+		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeNS;
+		// Правый верхний угол
+		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeNESW;
+		// Правая часть
+		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
+			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeWE;
+		// Правый нижний угол
+		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
+			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
+			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
+		// Нижняя часть
+		if ((e->X >= resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
+			pictureBox_main_object->Cursor = Cursors::SizeNS;
+		// Нижний левый угол
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
+			pictureBox_main_object->Cursor = Cursors::SizeNESW;
+		// Левая часть
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeWE;
+		// Центр
+		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::Default;
+		//*/
 /*// Левый верхний угол
 	if ((e->X >= 0 && e->X <= resizingMargin) &&
 		(e->Y >= 0 && e->Y <= resizingMargin))
