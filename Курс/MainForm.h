@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Курс {
-
+	using namespace System::Collections::Generic;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -34,6 +34,8 @@ namespace Курс {
 		bool resizing_picture_box;	
 		Point startDraggingPoint_1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
+
 		   //
 		System::Windows::Forms::Button^ button_121414;
 		void MakeStringInTable();
@@ -41,7 +43,12 @@ namespace Курс {
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		Point startDraggingPoint;
-		System::Windows::Forms::PictureBox^ main_element;
+		// Коллекция изображений без текста 
+		List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
+		// Коллекция изображений с текстом 
+		List<System::Windows::Forms::PictureBox^>^ picture_and_words_list = gcnew List<System::Windows::Forms::PictureBox^>();
+		//
+	private: System::Windows::Forms::PictureBox^ main_element;
 		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
 	private: System::Windows::Forms::ContextMenuStrip^ contextMenuStrip_delete_main_element;
@@ -184,7 +191,7 @@ namespace Курс {
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(534, 279);
+			this->pictureBox_main_object->Location = System::Drawing::Point(409, 238);
 			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
 			this->pictureBox_main_object->Name = L"pictureBox_main_object";
 			this->pictureBox_main_object->Size = System::Drawing::Size(98, 96);
@@ -197,7 +204,7 @@ namespace Курс {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(481, 279);
+			this->pictureBox1->Location = System::Drawing::Point(76, 25);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(103, 96);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -262,22 +269,21 @@ namespace Курс {
 				for (int j = 0; j < image->Height; j++)
 					image->SetPixel(i, j, Color::Black);
 			//  Создание макета
-			if (main_element == nullptr)
-				this->main_element = (gcnew System::Windows::Forms::PictureBox());
-			this->main_element->Location = Control::PointToClient(rectProposedSize.Location);
-			this->main_element->Name = L"pictureBox1";
-			this->main_element->Size = rectProposedSize.Size;
-			this->main_element->TabIndex = 1;
-			this->main_element->TabStop = false;
-			this->main_element->Image = image;
-			this->Controls->Add(this->main_element);
-			this->main_element->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+			picture_list->Add(gcnew Windows::Forms::PictureBox);
+			this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
+			this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
+			this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
+			this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
+			this->picture_list[picture_list->Count - 1]->TabIndex = 1;
+			this->picture_list[picture_list->Count - 1]->TabStop = false;
+			this->picture_list[picture_list->Count - 1]->Image = image;
+			this->Controls->Add(this->picture_list[picture_list->Count - 1]);
+			this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 			// Передача макета в таблицу
 			//
 			rectProposedSize.Width = 0;
 			rectProposedSize.Height = 0;
 
-			button_put_main_element->Enabled = 0;
 
 			creating_base = 0;
 		}
@@ -289,6 +295,11 @@ private: System::Void удалитьToolStripMenuItem_Click(System::Object^ sender, Sys
 	button_put_main_element->Enabled = 1;
 }
 private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	
+	mouse_down = 1;
+	rectProposedSize.X = this->pictureBox_main_object->PointToScreen(e->Location).X;
+	rectProposedSize.Y = this->pictureBox_main_object->PointToScreen(e->Location).Y;
+
 	// Левый верхний угол
 	if ((e->X >= 0 && e->X <= resizingMargin) &&
 		(e->Y >= 0 && e->Y <= resizingMargin)) 
@@ -352,40 +363,29 @@ private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Wind
 	starting_y = this->PointToScreen(e->Location).Y;
 }
 private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	
+	if (mouse_down && creating_base) {
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+		// calculate rect new size
+		rectProposedSize.Width = this->pictureBox_main_object->PointToScreen(e->Location).X - rectProposedSize.X;
+		rectProposedSize.Height = this->pictureBox_main_object->PointToScreen(e->Location).Y - rectProposedSize.Y;
+		// draw rect
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+	}
+
 	if (resizing_picture_box!=true) {
 		// Блок для изменения иконки мыши на границах picturebox 
 		// Левый верхний угол
 		if ((e->X >= 0 && e->X <= resizingMargin) &&
 			(e->Y >= 0 && e->Y <= resizingMargin))
 			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
-		// Верхняя часть
-		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
-			(e->Y >= 0 && e->Y <= resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::SizeNS;
-		// Правый верхний угол
-		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
-			(e->Y >= 0 && e->Y <= resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::SizeNESW;
-		// Правая часть
-		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
-			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::SizeWE;
+		
 		// Правый нижний угол
 		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
 			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
 			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
-		// Нижняя часть
-		if ((e->X >= resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
-			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
-			pictureBox_main_object->Cursor = Cursors::SizeNS;
-		// Нижний левый угол
-		if ((e->X >= 0 && e->X <= resizingMargin) &&
-			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
-			pictureBox_main_object->Cursor = Cursors::SizeNESW;
-		// Левая часть
-		if ((e->X >= 0 && e->X <= resizingMargin) &&
-			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::SizeWE;
 		// Центр
 		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
 			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
@@ -433,9 +433,47 @@ private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Window
 		pictureBox_main_object->Width += pictureBox_main_object->Left;
 		pictureBox_main_object->Left = 0;
 	}
+
 	resizing_picture_box = 0;
 	this->startDraggingPoint_1 = Point::Empty;
 	this->Cursor = Cursors::Default;
+
+	mouse_down = 0;
+	// Проверка положительная ли ширина прямоугольника
+	if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
+
+		// erase rect
+		ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+
+		// Создание главного элемента в прямоугольнике
+		Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
+		for (int i = 0; i < image->Width; i++)
+			for (int j = 0; j < image->Height; j++)
+				image->SetPixel(i, j, Color::Black);
+		//  Создание макета
+		picture_list->Add(gcnew Windows::Forms::PictureBox);
+		this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
+		this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
+		this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
+		this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
+		this->picture_list[picture_list->Count - 1]->TabIndex = 1;
+		this->picture_list[picture_list->Count - 1]->TabStop = false;
+		this->picture_list[picture_list->Count - 1]->Image = image;
+		this->Controls->Add(this->picture_list[picture_list->Count - 1]);
+		this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+		this->picture_list[picture_list->Count - 1]->BringToFront();
+		// Передача макета в таблицу
+		//
+		rectProposedSize.Width = 0;
+		rectProposedSize.Height = 0;
+
+
+
+		creating_base = 0;
+	}
+}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	delete pictureBox_main_object;
 }
 };
 }
