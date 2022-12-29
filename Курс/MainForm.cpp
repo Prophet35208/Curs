@@ -12,6 +12,9 @@ int main(array<String^>^ arg) {
 	Курс::MainForm form;
 	Application::Run(% form);
 }
+/* Достпу к datagridview
+* dataGridView.Rows[0].Cells[2].Value = recipe;
+*/
 /*Стик к нижней и правой частям
 	// Стик к правой части
 	if (abs(e->Location.X - pictureBox_main_object->Width) < sticking_rad) {

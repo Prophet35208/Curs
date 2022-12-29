@@ -79,6 +79,8 @@ namespace Курс {
 			first_bottom = pictureBox_main_object->Bottom;
 			first_rigth_bottom_point = Point(pictureBox_main_object->Location.X + pictureBox_main_object->Width,
 				pictureBox_main_object->Location.Y + pictureBox_main_object->Height);
+
+			main_table->Rows->Add("Макет");
 		}
 
 	protected:
@@ -126,7 +128,7 @@ namespace Курс {
 			// 
 			// button_put_main_element
 			// 
-			this->button_put_main_element->Location = System::Drawing::Point(702, 25);
+			this->button_put_main_element->Location = System::Drawing::Point(677, 12);
 			this->button_put_main_element->Name = L"button_put_main_element";
 			this->button_put_main_element->Size = System::Drawing::Size(97, 57);
 			this->button_put_main_element->TabIndex = 0;
@@ -136,7 +138,7 @@ namespace Курс {
 			// 
 			// button_set_image_to_object
 			// 
-			this->button_set_image_to_object->Location = System::Drawing::Point(702, 88);
+			this->button_set_image_to_object->Location = System::Drawing::Point(677, 88);
 			this->button_set_image_to_object->Name = L"button_set_image_to_object";
 			this->button_set_image_to_object->Size = System::Drawing::Size(97, 57);
 			this->button_set_image_to_object->TabIndex = 3;
@@ -145,12 +147,13 @@ namespace Курс {
 			// 
 			// main_table
 			// 
+			this->main_table->AllowUserToAddRows = false;
 			this->main_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->main_table->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
 				this->Column_name,
 					this->up, this->down
 			});
-			this->main_table->Location = System::Drawing::Point(805, 12);
+			this->main_table->Location = System::Drawing::Point(780, 12);
 			this->main_table->Name = L"main_table";
 			this->main_table->Size = System::Drawing::Size(445, 555);
 			this->main_table->TabIndex = 4;
@@ -341,11 +344,31 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 		this->picture_list[picture_list->Count - 1]->BringToFront();
 
 
-		this->picture_list[picture_list->Count - 1]->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
-		this->picture_list[picture_list->Count - 1]->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
-		this->picture_list[picture_list->Count - 1]->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
+		// this->picture_list[picture_list->Count - 1]->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+		// this->picture_list[picture_list->Count - 1]->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+		// this->picture_list[picture_list->Count - 1]->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
 		// Передача макета в таблицу
-		
+		int f = 0;
+		Int64 i=0;
+		int j = 0;
+		for (i = 1; i < 10000; i++) {
+			f = 0;
+			for (j = 1; j < main_table->RowCount; j++) {
+				String^ st1 = gcnew String(main_table->Rows[j]->Cells[0]->Value->ToString());
+				String^ st2 = gcnew String("Новое изображение " + i.ToString());
+				if (main_table->Rows[j]->Cells[0]->Value->ToString() == ("Новое изображение " + i.ToString())) {
+					f = 1;
+					break;
+				}
+			}
+			if (f);
+			else
+			{
+				main_table->Rows->Add("Новое изображение " + i.ToString());
+				break;
+			}
+
+		}
 		//
 		rectProposedSize.Width = 0;
 		rectProposedSize.Height = 0;
