@@ -4,6 +4,7 @@ using namespace System;
 using namespace System::Windows::Forms;
 
 [STAThread]
+
 int main(array<String^>^ arg) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
@@ -11,10 +12,209 @@ int main(array<String^>^ arg) {
 	Курс::MainForm form;
 	Application::Run(% form);
 }
+/*Стик к нижней и правой частям
+	// Стик к правой части
+	if (abs(e->Location.X - pictureBox_main_object->Width) < sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(pictureBox_main_object->Width, e->Location.Y);
+		place_to_stick = pictureBox_main_object->PointToScreen(Point(pictureBox_main_object->Width, e->Location.Y));
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
 
-void Курс::MainForm::MakeStringInTable() {
-    
+		// Стик к нижней части
+	if (abs(e->Location.Y - pictureBox_main_object->Height) < sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(e->Location.X, pictureBox_main_object->Height);
+		place_to_stick = pictureBox_main_object->PointToScreen(Point(e->Location.X, pictureBox_main_object->Height));
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+*/
+/*
+private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+	mouse_down = 1;
+	rectProposedSize.X = this->pictureBox_main_object->PointToScreen(e->Location).X;
+	rectProposedSize.Y = this->pictureBox_main_object->PointToScreen(e->Location).Y;
+
+	// Левый верхний угол
+	if ((e->X >= 0 && e->X <= resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin))
+	{
+		this->pictureBox_main_object->Cursor = Cursors::SizeNWSE;
+		resizing_picture_box = true;
+		resizing_mod = 1;
+		// Привязывает курсор к границам доступной области
+		this->Cursor->Clip = Rectangle(this->PointToScreen(Point(50, 50)), System::Drawing::Size(first_left -50, first_top -50));
+
+	}
+
+	// Верхняя часть
+	if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+		(e->Y >= 0 && e->Y <= resizingMargin)) {
+		resizing_picture_box = true;
+		resizing_mod = 2;
+	}
+
+
+	// Правый верхний угол
+	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
+		(e->Y >= 0 && e->Y <= resizingMargin)) {
+		resizing_picture_box = true;
+		resizing_mod = 3;
+	}
+	// Правая часть
+	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
+		(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin)) {
+		resizing_picture_box = true;
+		resizing_mod = 4;
+	}
+	// Правый нижний угол
+	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
+		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
+		resizing_picture_box = true;
+		resizing_mod = 5;
+		this->Cursor->Clip = Rectangle(this->PointToScreen(first_rigth_bottom_point), System::Drawing::Size(first_right - 50, first_bottom - 50));
+	}
+	// Нижняя часть
+	if ((e->X >= resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
+		resizing_picture_box = true;
+		resizing_mod = 6;
+	}
+	// Нижний левый угол
+	if ((e->X >= 0 && e->X <= resizingMargin) &&
+		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
+		resizing_picture_box = true;
+		resizing_mod = 7;
+	}
+	// Левая часть
+	if ((e->X >= 0 && e->X <= resizingMargin) &&
+		(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin)) {
+		resizing_picture_box = true;
+		resizing_mod = 8;
+	}
+	//
+
+	starting_x = this->PointToScreen(e->Location).X;
+	starting_y = this->PointToScreen(e->Location).Y;
 }
+private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+	if (mouse_down && creating_base) {
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+		// calculate rect new size
+		rectProposedSize.Width = this->pictureBox_main_object->PointToScreen(e->Location).X - rectProposedSize.X;
+		rectProposedSize.Height = this->pictureBox_main_object->PointToScreen(e->Location).Y - rectProposedSize.Y;
+		// draw rect
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+	}
+
+	if (resizing_picture_box!=true) {
+		// Блок для изменения иконки мыши на границах picturebox
+		// Левый верхний угол
+		if ((e->X >= 0 && e->X <= resizingMargin) &&
+			(e->Y >= 0 && e->Y <= resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
+
+		// Правый нижний угол
+		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
+			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
+			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
+		// Центр
+		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
+			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
+			pictureBox_main_object->Cursor = Cursors::Default;
+		//
+	}
+	if (resizing_picture_box)
+	{
+		int delta_x=0;
+		int delta_y=0;
+		switch (resizing_mod)
+		{
+		case 1:
+			 delta_x = this->PointToScreen(e->Location).X - starting_x;
+			 delta_y = this->PointToScreen(e->Location).Y - starting_y;
+			pictureBox_main_object->Top += delta_y;
+			pictureBox_main_object->Left += delta_x;
+			pictureBox_main_object->Height -= delta_y;
+			pictureBox_main_object->Width -= delta_x;
+			break;
+		case 5:
+			delta_x = this->PointToScreen(e->Location).X - starting_x;
+			delta_y = this->PointToScreen(e->Location).Y - starting_y;
+			pictureBox_main_object->Height =e->Y;
+			pictureBox_main_object->Width = e->X;
+			break;
+		}
+	}
+}
+private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	this->Cursor->Clip=Rectangle(Point(0, 0), System::Drawing::Size(10000, 10000));
+	if (pictureBox_main_object->Height < 30) {
+		pictureBox_main_object->Location = starting_location;
+		pictureBox_main_object->Height = 30;
+	}
+	if (pictureBox_main_object->Width < 30) {
+		pictureBox_main_object->Location = starting_location;
+		pictureBox_main_object->Width = 30;
+	}
+	if (pictureBox_main_object->Top < 0) {
+		pictureBox_main_object->Height += pictureBox_main_object->Top;
+		pictureBox_main_object->Top = 0;
+	}
+	if (pictureBox_main_object->Left < 0) {
+		pictureBox_main_object->Width += pictureBox_main_object->Left;
+		pictureBox_main_object->Left = 0;
+	}
+
+	resizing_picture_box = 0;
+	this->startDraggingPoint_1 = Point::Empty;
+	this->Cursor = Cursors::Default;
+
+	mouse_down = 0;
+	// Проверка положительная ли ширина прямоугольника
+	if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
+
+		// erase rect
+		ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+
+		// Создание главного элемента в прямоугольнике
+		Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
+		for (int i = 0; i < image->Width; i++)
+			for (int j = 0; j < image->Height; j++)
+				image->SetPixel(i, j, Color::Black);
+
+
+		//  Создание макета
+		picture_list->Add(gcnew Windows::Forms::PictureBox);
+		this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
+		this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
+		this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
+		this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
+		this->picture_list[picture_list->Count - 1]->TabIndex = 1;
+		this->picture_list[picture_list->Count - 1]->TabStop = false;
+		this->picture_list[picture_list->Count - 1]->Image = image;
+		this->Controls->Add(this->picture_list[picture_list->Count - 1]);
+		this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+		this->picture_list[picture_list->Count - 1]->BringToFront();
+		// Передача макета в таблицу
+		//
+		rectProposedSize.Width = 0;
+		rectProposedSize.Height = 0;
+
+
+
+		creating_base = 0;
+	}
+}
+*/
 /*Рисование на форме по кнопке
     private: System::Void MainForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
         mouse_down = 1;

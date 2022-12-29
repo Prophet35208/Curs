@@ -1,5 +1,5 @@
 #pragma once
-
+#include <math.h>
 namespace Курс {
 	using namespace System::Collections::Generic;
 	using namespace System;
@@ -17,6 +17,10 @@ namespace Курс {
 	private:
 		//
 			// Необходимые переменные для корректного редкатирования размеров изображений (перетягиванием границ)
+		// Радиус прилипания к краю макета
+		int sticking_rad = 5;
+		// Индикатор прилипания
+		bool f_stick = false;
 		// Начальные значения picture_box_main_form
 		int first_top;
 		int first_left;
@@ -38,7 +42,6 @@ namespace Курс {
 
 		   //
 		System::Windows::Forms::Button^ button_121414;
-		void MakeStringInTable();
 		int creating_base = 0;
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
@@ -191,20 +194,20 @@ namespace Курс {
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(409, 238);
+			this->pictureBox_main_object->Location = System::Drawing::Point(270, 88);
 			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
 			this->pictureBox_main_object->Name = L"pictureBox_main_object";
-			this->pictureBox_main_object->Size = System::Drawing::Size(98, 96);
+			this->pictureBox_main_object->Size = System::Drawing::Size(318, 364);
 			this->pictureBox_main_object->TabIndex = 5;
 			this->pictureBox_main_object->TabStop = false;
-			this->pictureBox_main_object->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseDown);
-			this->pictureBox_main_object->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseMove);
-			this->pictureBox_main_object->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseUp);
+			this->pictureBox_main_object->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+			this->pictureBox_main_object->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+			this->pictureBox_main_object->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
 			// 
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(76, 25);
+			this->pictureBox1->Location = System::Drawing::Point(22, -3);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(103, 96);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -237,78 +240,66 @@ namespace Курс {
 
 // Удаление макета
 private: System::Void удалитьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	delete main_element;
-	button_put_main_element->Enabled = 1;
+	delete contextMenuStrip_delete_main_element->SourceControl;
+
 }
-private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	
+private: System::Void pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	f_stick=false;
+	Point place_to_stick_pb_coorinates;
+	Point place_to_stick;
+	// Стик к левой части
+	if (abs(e->Location.X) <= sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(0, e->Location.Y);
+		place_to_stick = pictureBox_main_object->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+	// Стик к верхней части
+	if (abs(e->Location.Y) < sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(e->Location.X, 0);
+		place_to_stick = pictureBox_main_object->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+	// Стик к левому верхнему углу
+	if ((abs(e->Location.X) <= sticking_rad) && (abs(e->Location.Y) < sticking_rad)) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(0, 0);
+		place_to_stick = pictureBox_main_object->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
 	mouse_down = 1;
-	rectProposedSize.X = this->pictureBox_main_object->PointToScreen(e->Location).X;
-	rectProposedSize.Y = this->pictureBox_main_object->PointToScreen(e->Location).Y;
-
-	// Левый верхний угол
-	if ((e->X >= 0 && e->X <= resizingMargin) &&
-		(e->Y >= 0 && e->Y <= resizingMargin)) 
+	if (f_stick) 
 	{
-		this->pictureBox_main_object->Cursor = Cursors::SizeNWSE;
-		resizing_picture_box = true;
-		resizing_mod = 1;
-		// Привязывает курсор к границам доступной области
-		this->Cursor->Clip = Rectangle(this->PointToScreen(Point(50, 50)), System::Drawing::Size(first_left -50, first_top -50));
+		rectProposedSize.X = place_to_stick.X;
+		rectProposedSize.Y = place_to_stick.Y;
+	}
+	else
+	{
 
+		rectProposedSize.X = this->pictureBox_main_object->PointToScreen(e->Location).X;
+		rectProposedSize.Y = this->pictureBox_main_object->PointToScreen(e->Location).Y;
 	}
-		
-	// Верхняя часть
-	if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
-		(e->Y >= 0 && e->Y <= resizingMargin)) {
-		resizing_picture_box = true;
-		resizing_mod = 2;
-	}
-		
+	if (creating_base)
+		if(f_stick)
+		{
+			Rectangle rect = Rectangle(place_to_stick, System::Drawing::Size(pictureBox_main_object->Width - place_to_stick_pb_coorinates.X, pictureBox_main_object->Height - place_to_stick_pb_coorinates.Y));
+			this->pictureBox_main_object->Cursor->Clip = rect;
+		}
+		else
+		{
+			Rectangle rect = Rectangle(this->pictureBox_main_object->PointToScreen(e->Location), System::Drawing::Size(pictureBox_main_object->Width - e->Location.X, pictureBox_main_object->Height - e->Location.Y));
+			this->pictureBox_main_object->Cursor->Clip = rect;
+		}
 
-	// Правый верхний угол
-	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
-		(e->Y >= 0 && e->Y <= resizingMargin)) {
-		resizing_picture_box = true;
-		resizing_mod = 3;
-	}
-	// Правая часть
-	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= pictureBox_main_object->Width) &&
-		(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin)) {
-		resizing_picture_box = true;
-		resizing_mod = 4;
-	}
-	// Правый нижний угол
-	if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
-		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
-		resizing_picture_box = true;
-		resizing_mod = 5;
-		this->Cursor->Clip = Rectangle(this->PointToScreen(first_rigth_bottom_point), System::Drawing::Size(first_right - 50, first_bottom - 50));
-	}
-	// Нижняя часть
-	if ((e->X >= resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
-		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
-		resizing_picture_box = true;
-		resizing_mod = 6;
-	}
-	// Нижний левый угол
-	if ((e->X >= 0 && e->X <= resizingMargin) &&
-		(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height)) {
-		resizing_picture_box = true;
-		resizing_mod = 7;
-	}
-	// Левая часть
-	if ((e->X >= 0 && e->X <= resizingMargin) &&
-		(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin)) {
-		resizing_picture_box = true;
-		resizing_mod = 8;
-	}
-	//
-
-	starting_x = this->PointToScreen(e->Location).X;
-	starting_y = this->PointToScreen(e->Location).Y;
 }
-private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+private: System::Void pictureBox_main_object_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 	
 	if (mouse_down && creating_base) {
 		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
@@ -320,70 +311,8 @@ private: System::Void pictureBox1_MouseMove(System::Object^ sender, System::Wind
 		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
 			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
 	}
-
-	if (resizing_picture_box!=true) {
-		// Блок для изменения иконки мыши на границах picturebox 
-		// Левый верхний угол
-		if ((e->X >= 0 && e->X <= resizingMargin) &&
-			(e->Y >= 0 && e->Y <= resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
-		
-		// Правый нижний угол
-		if ((e->X >= pictureBox_main_object->Width - resizingMargin && e->X <= e->X <= pictureBox_main_object->Width) &&
-			(e->Y >= pictureBox_main_object->Height - resizingMargin && e->Y <= pictureBox_main_object->Height))
-			pictureBox_main_object->Cursor = Cursors::SizeNWSE;
-		// Центр
-		if ((e->X > resizingMargin && e->X < pictureBox_main_object->Width - resizingMargin) &&
-			(e->Y > resizingMargin && e->Y < pictureBox_main_object->Height - resizingMargin))
-			pictureBox_main_object->Cursor = Cursors::Default;
-		//
-	}
-	if (resizing_picture_box)
-	{
-		int delta_x=0;
-		int delta_y=0;
-		switch (resizing_mod)
-		{
-		case 1:
-			 delta_x = this->PointToScreen(e->Location).X - starting_x;
-			 delta_y = this->PointToScreen(e->Location).Y - starting_y;
-			pictureBox_main_object->Top += delta_y;
-			pictureBox_main_object->Left += delta_x;
-			pictureBox_main_object->Height -= delta_y;
-			pictureBox_main_object->Width -= delta_x;
-			break;
-		case 5:
-			delta_x = this->PointToScreen(e->Location).X - starting_x;
-			delta_y = this->PointToScreen(e->Location).Y - starting_y;
-			pictureBox_main_object->Height =e->Y;
-			pictureBox_main_object->Width = e->X;
-			break;
-		}
-	}
 }
-private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	this->Cursor->Clip=Rectangle(Point(0, 0), System::Drawing::Size(10000, 10000));
-	if (pictureBox_main_object->Height < 30) {
-		pictureBox_main_object->Location = starting_location;
-		pictureBox_main_object->Height = 30;
-	}
-	if (pictureBox_main_object->Width < 30) {
-		pictureBox_main_object->Location = starting_location;
-		pictureBox_main_object->Width = 30;
-	}
-	if (pictureBox_main_object->Top < 0) {
-		pictureBox_main_object->Height += pictureBox_main_object->Top;
-		pictureBox_main_object->Top = 0;
-	}
-	if (pictureBox_main_object->Left < 0) {
-		pictureBox_main_object->Width += pictureBox_main_object->Left;
-		pictureBox_main_object->Left = 0;
-	}
-
-	resizing_picture_box = 0;
-	this->startDraggingPoint_1 = Point::Empty;
-	this->Cursor = Cursors::Default;
-
+private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 	mouse_down = 0;
 	// Проверка положительная ли ширина прямоугольника
 	if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
@@ -400,7 +329,7 @@ private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Window
 
 		//  Создание макета
 		picture_list->Add(gcnew Windows::Forms::PictureBox);
-		this->picture_list[picture_list->Count-1] = (gcnew System::Windows::Forms::PictureBox());
+		this->picture_list[picture_list->Count - 1] = (gcnew System::Windows::Forms::PictureBox());
 		this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
 		this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
 		this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
@@ -410,14 +339,20 @@ private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Window
 		this->Controls->Add(this->picture_list[picture_list->Count - 1]);
 		this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 		this->picture_list[picture_list->Count - 1]->BringToFront();
+
+
+		this->picture_list[picture_list->Count - 1]->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+		this->picture_list[picture_list->Count - 1]->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+		this->picture_list[picture_list->Count - 1]->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
 		// Передача макета в таблицу
+		
 		//
 		rectProposedSize.Width = 0;
 		rectProposedSize.Height = 0;
 
-
-
 		creating_base = 0;
+
+		this->pictureBox_main_object->Cursor->Clip = Rectangle(Point(0, 0), System::Drawing::Size(10000, 10000));
 	}
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
