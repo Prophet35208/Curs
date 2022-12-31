@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include "SettingsForm.h"
 namespace Курс {
 	using namespace System::Collections::Generic;
 	using namespace System;
@@ -167,6 +168,7 @@ namespace Курс {
 			this->main_table->Name = L"main_table";
 			this->main_table->Size = System::Drawing::Size(544, 555);
 			this->main_table->TabIndex = 4;
+			this->main_table->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MainForm::main_table_CellContentClick);
 			// 
 			// contextMenuStrip_delete_main_element
 			// 
@@ -408,6 +410,13 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	delete pictureBox_main_object;
+}
+private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	if (e->ColumnIndex == 1) {
+		SettingsForm^ sf = gcnew SettingsForm();
+		sf->ShowDialog();
+	}
+
 }
 };
 }

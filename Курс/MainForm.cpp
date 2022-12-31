@@ -12,6 +12,34 @@ int main(array<String^>^ arg) {
 	Курс::MainForm form;
 	Application::Run(% form);
 }
+/* Переменные для ратягивания
+		int first_top;
+		int first_left;
+		int first_right;
+		int first_bottom;
+		int starting_Width;
+		Point first_rigth_bottom_point;
+		
+		starting_location = pictureBox_main_object->Location;
+			first_top = this->PointToScreen(pictureBox_main_object->Location).Y - this->PointToScreen(Point(0, 0)).Y;
+			first_left = pictureBox_main_object->Location.X-Point(0,0).X;
+			starting_Width = pictureBox_main_object->Size.Width;
+			first_right = pictureBox_main_object->Right;
+			first_bottom = pictureBox_main_object->Bottom;
+			first_rigth_bottom_point = Point(pictureBox_main_object->Location.X + pictureBox_main_object->Width,
+				pictureBox_main_object->Location.Y + pictureBox_main_object->Height);
+
+				// Начальные значения picture_box_main_form
+		//
+		int resizing_mod=0;
+		System::Drawing::Size^ startSize;
+		int starting_x = 0;
+		int starting_y = 0;
+		Point starting_location;
+		int resizingMargin = 5;
+		bool resizing_picture_box;
+		Point startDraggingPoint_1;
+*/
 /* Достпу к datagridview
 * dataGridView.Rows[0].Cells[2].Value = recipe;
 */
