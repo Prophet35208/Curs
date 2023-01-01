@@ -14,6 +14,8 @@ namespace Курс {
 	/// </summary>
 	public ref class SettingsForm : public System::Windows::Forms::Form
 	{
+	private:
+		PictureBox^ cuurent_picture_box;
 	public:
 		SettingsForm(void)
 		{

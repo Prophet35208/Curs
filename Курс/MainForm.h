@@ -22,32 +22,13 @@ namespace Курс {
 		int sticking_rad = 5;
 		// Индикатор прилипания
 		bool f_stick = false;
-		// Начальные значения picture_box_main_form
-		int first_top;
-		int first_left;
-		int first_right;
-		int first_bottom;
-		int starting_Width;
-		Point first_rigth_bottom_point;
-		//
-		int resizing_mod=0;
-		System::Drawing::Size^ startSize; 
-		int starting_x = 0;
-		int starting_y = 0;
-		Point starting_location;
-		int resizingMargin = 5;
-		bool resizing_picture_box;	
-		Point startDraggingPoint_1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: PictureBox^ current_picture_box;
-
-
 		   //
 		System::Windows::Forms::Button^ button_121414;
-		int creating_base = 0;
+		int creating_p_b = 0;
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
-		Point startDraggingPoint;
 		// Коллекция изображений без текста 
 		List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
 		// Коллекция изображений с текстом 
@@ -81,15 +62,6 @@ namespace Курс {
 			//
 			//TODO: добавьте код конструктора
 			//
-			starting_location = pictureBox_main_object->Location;
-			first_top = this->PointToScreen(pictureBox_main_object->Location).Y - this->PointToScreen(Point(0, 0)).Y;
-			first_left = pictureBox_main_object->Location.X-Point(0,0).X;
-			starting_Width = pictureBox_main_object->Size.Width;
-			first_right = pictureBox_main_object->Right;
-			first_bottom = pictureBox_main_object->Bottom;
-			first_rigth_bottom_point = Point(pictureBox_main_object->Location.X + pictureBox_main_object->Width,
-				pictureBox_main_object->Location.Y + pictureBox_main_object->Height);
-
 			main_table->Rows->Add("Макет");
 		}
 
@@ -257,7 +229,7 @@ namespace Курс {
 		}
 #pragma endregion
 	private: System::Void button_put_main_element_Click(System::Object^ sender, System::EventArgs^ e) {
-			creating_base = 1;
+		creating_p_b = 1;
 	}
 
 // Удаление макета
@@ -318,7 +290,7 @@ private: System::Void pictureBox_main_object_MouseDown(System::Object^ sender, S
 		rectProposedSize.X = current_picture_box->PointToScreen(e->Location).X;
 		rectProposedSize.Y = current_picture_box->PointToScreen(e->Location).Y;
 	}
-	if (creating_base)
+	if (creating_p_b)
 		if(f_stick)
 		{
 			Rectangle rect = Rectangle(place_to_stick, System::Drawing::Size(pictureBox_main_object->Width - place_to_stick_pb_coorinates.X, pictureBox_main_object->Height - place_to_stick_pb_coorinates.Y));
@@ -333,7 +305,7 @@ private: System::Void pictureBox_main_object_MouseDown(System::Object^ sender, S
 }
 private: System::Void pictureBox_main_object_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 	
-	if (mouse_down && creating_base) {
+	if (mouse_down && creating_p_b) {
 		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
 			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
 		// calculate rect new size
@@ -402,7 +374,7 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 		rectProposedSize.Width = 0;
 		rectProposedSize.Height = 0;
 
-		creating_base = 0;
+		creating_p_b = 0;
 
 	}
 	this->pictureBox_main_object->Cursor->Clip = Rectangle(Point(0, 0), System::Drawing::Size(10000, 10000));

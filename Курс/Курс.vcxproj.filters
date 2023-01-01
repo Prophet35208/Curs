@@ -24,12 +24,27 @@
     <ClCompile Include="SettingsForm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="TableLayerPicture.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="SettingsForm.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ITableLayer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TableLayerPicture.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
