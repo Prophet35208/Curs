@@ -3,8 +3,10 @@
 using namespace System::Windows::Forms;
 ref class Layer
 {
+private:
 	PictureBox^ pb;
-	ITableLayer* a;
-	Layer(PictureBox^ pb);
+	ITableLayer* ILayer;
+public:
+	Layer(PictureBox^ pb, int num_in_table);
 };
 

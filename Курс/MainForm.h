@@ -1,6 +1,7 @@
 #pragma once
 #include <math.h>
 #include "SettingsForm.h"
+#include "Layer.h"
 namespace Курс {
 	using namespace System::Collections::Generic;
 	using namespace System;
@@ -30,9 +31,9 @@ namespace Курс {
 		int mouse_down = 0;
 		Rectangle rectProposedSize = Rectangle::Empty;
 		// Коллекция изображений без текста 
-		List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
-		// Коллекция изображений с текстом 
-		List<System::Windows::Forms::PictureBox^>^ picture_and_words_list = gcnew List<System::Windows::Forms::PictureBox^>();
+		// List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
+		// Коллекция слоёв
+		List<Layer^>^ layer_list = gcnew List<Layer^>();
 		//
 	private: System::Windows::Forms::PictureBox^ main_element;
 		//
@@ -331,24 +332,31 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 				image->SetPixel(i, j, Color::Black);
 
 
-		//  Создание макета
-		picture_list->Add(gcnew Windows::Forms::PictureBox);
-		this->picture_list[picture_list->Count - 1] = (gcnew System::Windows::Forms::PictureBox());
-		this->picture_list[picture_list->Count - 1]->Location = Control::PointToClient(rectProposedSize.Location);
-		this->picture_list[picture_list->Count - 1]->Name = L"pictureBox1";
-		this->picture_list[picture_list->Count - 1]->Size = rectProposedSize.Size;
-		this->picture_list[picture_list->Count - 1]->TabIndex = 1;
-		this->picture_list[picture_list->Count - 1]->TabStop = false;
-		this->picture_list[picture_list->Count - 1]->Image = image;
-		this->Controls->Add(this->picture_list[picture_list->Count - 1]);
-		this->picture_list[picture_list->Count - 1]->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
-		this->picture_list[picture_list->Count - 1]->BringToFront();
+		//  Создание экземпляра слоя и приведение его характеристик
+		PictureBox^ pb=gcnew PictureBox();
+
+		pb = (gcnew System::Windows::Forms::PictureBox());
+		pb->Location = Control::PointToClient(rectProposedSize.Location);
+		pb->Name = L"pictureBox1";
+		pb->Size = rectProposedSize.Size;
+		pb->TabIndex = 1;
+		pb->TabStop = false;
+		pb->Image = image;
+		Controls->Add(pb);
+		pb->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+		pb->BringToFront();
 
 
-		 this->picture_list[picture_list->Count - 1]->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
-		 this->picture_list[picture_list->Count - 1]->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
-		 this->picture_list[picture_list->Count - 1]->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
+		 pb->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+		 pb->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+		 pb->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
+
+		 layer_list->Add(% Layer(pb, layer_list->Count + 2));
+
+
 		// Передача макета в таблицу
+
+
 		int f = 0;
 		Int64 i=0;
 		int j = 0;
