@@ -1,4 +1,4 @@
-#include "MainForm.h"
+#include "SettingsForm.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -11,6 +11,17 @@ int main(cli::array<String^>^ arg) {
 
 	 урс::MainForm form;
 	Application::Run(% form);
+}
+System::Void  урс::MainForm::main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
+{
+	if (e->ColumnIndex == 1) {
+		SettingsForm^ sf = gcnew SettingsForm();
+		sf->current_picture_box = layer_list[e->RowIndex - 1]->GetPictureBox();
+		sf->m_f = this;
+
+
+		sf->ShowDialog();
+	}
 }
 /* ѕеременные дл€ рат€гивани€
 		int first_top;
@@ -464,3 +475,4 @@ private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Window
             this.startDraggingPoint = Point.Empty;
             this.Cursor = Cursors.Default;
         }*/
+

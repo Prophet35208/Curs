@@ -1,5 +1,5 @@
 #pragma once
-
+#include "MainForm.h"
 namespace Курс {
 
 	using namespace System;
@@ -14,8 +14,9 @@ namespace Курс {
 	/// </summary>
 	public ref class SettingsForm : public System::Windows::Forms::Form
 	{
-	private:
-		PictureBox^ cuurent_picture_box;
+	public:
+		PictureBox^ current_picture_box;
+		MainForm^ m_f;
 	public:
 		SettingsForm(void)
 		{
@@ -37,6 +38,8 @@ namespace Курс {
 			}
 		}
 	private: System::Windows::Forms::Button^ button_change_picture;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialogImage;
+
 	protected:
 
 	private:
@@ -53,6 +56,7 @@ namespace Курс {
 		void InitializeComponent(void)
 		{
 			this->button_change_picture = (gcnew System::Windows::Forms::Button());
+			this->openFileDialogImage = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->SuspendLayout();
 			// 
 			// button_change_picture
@@ -63,6 +67,12 @@ namespace Курс {
 			this->button_change_picture->TabIndex = 0;
 			this->button_change_picture->Text = L"Сменить картинку";
 			this->button_change_picture->UseVisualStyleBackColor = true;
+			this->button_change_picture->Click += gcnew System::EventHandler(this, &SettingsForm::button_change_picture_Click);
+			// 
+			// openFileDialogImage
+			// 
+			this->openFileDialogImage->FileName = L"Выбрать изображение";
+			this->openFileDialogImage->Filter = L"JPG | *.jpg";
 			// 
 			// SettingsForm
 			// 
@@ -76,5 +86,9 @@ namespace Курс {
 
 		}
 #pragma endregion
+	private: System::Void button_change_picture_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (openFileDialogImage->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+			current_picture_box->Image = Image::FromFile(openFileDialogImage->FileName);
+	}
 	};
 }

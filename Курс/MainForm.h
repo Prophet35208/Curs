@@ -1,6 +1,5 @@
 #pragma once
 #include <math.h>
-#include "SettingsForm.h"
 #include "Layer.h"
 namespace Курс {
 	using namespace System::Collections::Generic;
@@ -16,6 +15,8 @@ namespace Курс {
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
+	public:
+		PictureBox^ settings_form_picture_box;
 	private:
 		//
 			// Необходимые переменные для корректного редкатирования размеров изображений (перетягиванием границ)
@@ -391,12 +392,6 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	delete pictureBox_main_object;
 }
-private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
-	if (e->ColumnIndex == 1) {
-		SettingsForm^ sf = gcnew SettingsForm();
-		sf->ShowDialog();
-	}
-
-}
+private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
 };
 }

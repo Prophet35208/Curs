@@ -8,5 +8,6 @@ private:
 	ITableLayer* ILayer;
 public:
 	Layer(PictureBox^ pb, int num_in_table);
+	PictureBox^ GetPictureBox();
 };
 
