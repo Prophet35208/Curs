@@ -14,13 +14,54 @@ int main(cli::array<String^>^ arg) {
 }
 System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
 {
-	if (e->ColumnIndex == 1) {
-		SettingsForm^ sf = gcnew SettingsForm();
-		sf->current_picture_box = layer_list[e->RowIndex - 1]->GetPictureBox();
-		sf->m_f = this;
+	if (e->RowIndex != 0) {
+		if (e->ColumnIndex == 1) {
+			SettingsForm^ sf = gcnew SettingsForm();
+			sf->current_picture_box = layer_list[e->RowIndex - 1]->GetPictureBox();
+			sf->m_f = this;
 
 
-		sf->ShowDialog();
+			sf->ShowDialog();
+		}
+		if (e->ColumnIndex == 2) {
+			if (e->RowIndex > 1) {
+				// Изменение ва таблице
+				DataGridViewRow^ buf = main_table->Rows[e->RowIndex];
+				main_table->Rows->Remove(buf);
+				main_table->Rows->Insert(e->RowIndex - 1, buf);
+				main_table->ClearSelection();
+				main_table->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Selected = true;
+				// Изменение в списке
+				Layer^ bufl;
+				bufl = layer_list[e->RowIndex-1];
+				layer_list->RemoveAt(e->RowIndex-1);
+				layer_list->Insert(e->RowIndex-2, bufl);
+				RefreshTable();
+
+			}
+		}
+		if (e->ColumnIndex == 3) {
+			if (e->RowIndex < layer_list->Count) {
+				// Изменение ва таблице
+				DataGridViewRow^ buf = main_table->Rows[e->RowIndex];
+				main_table->Rows->Remove(buf);
+				main_table->Rows->Insert(e->RowIndex + 1, buf);
+
+				main_table->ClearSelection();
+				main_table->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Selected = true;
+				// Изменение в списке
+				Layer^ bufl;
+				bufl = layer_list[e->RowIndex - 1];
+				layer_list->RemoveAt(e->RowIndex - 1);
+				layer_list->Insert(e->RowIndex, bufl);
+				RefreshTable();
+			}
+		}
+		if (e->ColumnIndex == 4) {
+			delete layer_list[e->RowIndex - 1]->GetPictureBox();
+			layer_list->Remove(layer_list[e->RowIndex - 1]);
+			main_table->Rows->RemoveAt(e->RowIndex);
+		}
 	}
 }
 /* Переменные для ратягивания

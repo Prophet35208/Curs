@@ -2,6 +2,7 @@
 #include <math.h>
 #include "Layer.h"
 namespace Курс {
+
 	using namespace System::Collections::Generic;
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -18,14 +19,20 @@ namespace Курс {
 	public:
 		PictureBox^ settings_form_picture_box;
 	private:
-		//
-			// Необходимые переменные для корректного редкатирования размеров изображений (перетягиванием границ)
+		// Функция обновления порядка слоёв по индексу
+		void RefreshTable() {
+			for (int i = layer_list->Count-1; i >=0; i--)
+			{
+				layer_list[i]->GetPictureBox()->BringToFront();
+			}
+		}
+		// Необходимые переменные для корректного редкатирования размеров изображений (перетягиванием границ)
 		// Радиус прилипания к краю макета
 		int sticking_rad = 5;
 		// Индикатор прилипания
 		bool f_stick = false;
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
-	private: PictureBox^ current_picture_box;
+		private: System::Windows::Forms::PictureBox^ pictureBox1;
+		private: PictureBox^ current_picture_box;
 		   //
 		System::Windows::Forms::Button^ button_121414;
 		int creating_p_b = 0;
@@ -35,9 +42,9 @@ namespace Курс {
 		// List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
 		// Коллекция слоёв
 		List<Layer^>^ layer_list = gcnew List<Layer^>();
-		//
+
+
 	private: System::Windows::Forms::PictureBox^ main_element;
-		//
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
 	private: System::Windows::Forms::ContextMenuStrip^ contextMenuStrip_delete_main_element;
 	private: System::Windows::Forms::ToolStripMenuItem^ удалитьToolStripMenuItem;
@@ -49,6 +56,16 @@ namespace Курс {
 	private: System::Windows::Forms::DataGridViewButtonColumn^ button_settings;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ up;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ down;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ delete_line;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -97,14 +114,15 @@ namespace Курс {
 			this->button_put_main_element = (gcnew System::Windows::Forms::Button());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
 			this->main_table = (gcnew System::Windows::Forms::DataGridView());
-			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-			this->удалитьToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->pictureBox_main_object = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->Column_name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->button_settings = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			this->up = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			this->down = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->delete_line = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->удалитьToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->pictureBox_main_object = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->contextMenuStrip_delete_main_element->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->BeginInit();
@@ -113,7 +131,7 @@ namespace Курс {
 			// 
 			// button_put_main_element
 			// 
-			this->button_put_main_element->Location = System::Drawing::Point(578, 42);
+			this->button_put_main_element->Location = System::Drawing::Point(553, 25);
 			this->button_put_main_element->Name = L"button_put_main_element";
 			this->button_put_main_element->Size = System::Drawing::Size(97, 57);
 			this->button_put_main_element->TabIndex = 0;
@@ -123,7 +141,7 @@ namespace Курс {
 			// 
 			// button_set_image_to_object
 			// 
-			this->button_set_image_to_object->Location = System::Drawing::Point(578, 105);
+			this->button_set_image_to_object->Location = System::Drawing::Point(553, 88);
 			this->button_set_image_to_object->Name = L"button_set_image_to_object";
 			this->button_set_image_to_object->Size = System::Drawing::Size(97, 57);
 			this->button_set_image_to_object->TabIndex = 3;
@@ -134,52 +152,15 @@ namespace Курс {
 			// 
 			this->main_table->AllowUserToAddRows = false;
 			this->main_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->main_table->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(4) {
+			this->main_table->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
 				this->Column_name,
-					this->button_settings, this->up, this->down
+					this->button_settings, this->up, this->down, this->delete_line
 			});
-			this->main_table->Location = System::Drawing::Point(681, 12);
+			this->main_table->Location = System::Drawing::Point(656, 12);
 			this->main_table->Name = L"main_table";
-			this->main_table->Size = System::Drawing::Size(544, 555);
+			this->main_table->Size = System::Drawing::Size(646, 555);
 			this->main_table->TabIndex = 4;
 			this->main_table->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MainForm::main_table_CellContentClick);
-			// 
-			// contextMenuStrip_delete_main_element
-			// 
-			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->удалитьToolStripMenuItem });
-			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
-			// 
-			// удалитьToolStripMenuItem
-			// 
-			this->удалитьToolStripMenuItem->Name = L"удалитьToolStripMenuItem";
-			this->удалитьToolStripMenuItem->Size = System::Drawing::Size(118, 22);
-			this->удалитьToolStripMenuItem->Text = L"Удалить";
-			this->удалитьToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::удалитьToolStripMenuItem_Click);
-			// 
-			// pictureBox_main_object
-			// 
-			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
-			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(255, 144);
-			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
-			this->pictureBox_main_object->Name = L"pictureBox_main_object";
-			this->pictureBox_main_object->Size = System::Drawing::Size(238, 267);
-			this->pictureBox_main_object->TabIndex = 5;
-			this->pictureBox_main_object->TabStop = false;
-			this->pictureBox_main_object->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
-			this->pictureBox_main_object->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
-			this->pictureBox_main_object->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
-			// 
-			// pictureBox1
-			// 
-			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(83, 114);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(103, 96);
-			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			this->pictureBox1->TabIndex = 6;
-			this->pictureBox1->TabStop = false;
 			// 
 			// Column_name
 			// 
@@ -209,6 +190,51 @@ namespace Курс {
 			this->down->Name = L"down";
 			this->down->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->down->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// delete_line
+			// 
+			this->delete_line->HeaderText = L"Удалить";
+			this->delete_line->Name = L"delete_line";
+			this->delete_line->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->delete_line->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// contextMenuStrip_delete_main_element
+			// 
+			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->удалитьToolStripMenuItem });
+			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
+			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
+			// 
+			// удалитьToolStripMenuItem
+			// 
+			this->удалитьToolStripMenuItem->Name = L"удалитьToolStripMenuItem";
+			this->удалитьToolStripMenuItem->Size = System::Drawing::Size(118, 22);
+			this->удалитьToolStripMenuItem->Text = L"Удалить";
+			this->удалитьToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::удалитьToolStripMenuItem_Click);
+			// 
+			// pictureBox_main_object
+			// 
+			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
+			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pictureBox_main_object->Location = System::Drawing::Point(292, 25);
+			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
+			this->pictureBox_main_object->Name = L"pictureBox_main_object";
+			this->pictureBox_main_object->Size = System::Drawing::Size(238, 267);
+			this->pictureBox_main_object->TabIndex = 5;
+			this->pictureBox_main_object->TabStop = false;
+			this->pictureBox_main_object->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+			this->pictureBox_main_object->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+			this->pictureBox_main_object->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(99, 333);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(313, 221);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox1->TabIndex = 6;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &MainForm::pictureBox1_Click);
 			// 
 			// MainForm
 			// 
@@ -343,6 +369,7 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 		pb->TabIndex = 1;
 		pb->TabStop = false;
 		pb->Image = image;
+		pb->SizeMode= System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		Controls->Add(pb);
 		pb->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 		pb->BringToFront();
@@ -352,7 +379,7 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 		 pb->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
 		 pb->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
 
-		 layer_list->Add(% Layer(pb, layer_list->Count + 2));
+		 layer_list->Insert(0,(% Layer(pb, layer_list->Count + 2)));
 
 
 		// Передача макета в таблицу
@@ -374,7 +401,7 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 			if (f);
 			else
 			{
-				main_table->Rows->Add("Новое изображение " + i.ToString());
+				main_table->Rows->Insert(1,"Новое изображение " + i.ToString());
 				break;
 			}
 
@@ -393,5 +420,14 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	delete pictureBox_main_object;
 }
 private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+	Graphics^ g = pictureBox1->CreateGraphics();
+	Pen^ bluePen = gcnew Pen(Color::Blue, 1.0f);
+	System::Drawing::Font^ fn = gcnew System::Drawing::Font(FontFamily::GenericSansSerif, 12.0F, FontStyle::Bold);
+	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
+	Point a(0, 0);
+
+	g->DrawString("afafawfawfawfaffafaf", fn, drawBrush, a);
+}
 };
 }

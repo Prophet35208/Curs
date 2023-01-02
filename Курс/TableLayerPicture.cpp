@@ -18,7 +18,11 @@ TableLayerPicture::~TableLayerPicture() {
 
 void TableLayerPicture::Delete() { delete this; }
 
-void TableLayerPicture::Activate(bool activate) {/* ... */ }
+int TableLayerPicture::GetNumInTable()
+{
+    return number_in_table;
+}
+
 
 ITableLayer* ITableLayer::CreatePicture( int number_in_table)
 {

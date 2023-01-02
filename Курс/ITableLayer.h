@@ -10,7 +10,7 @@ public:
     virtual void Delete() = 0;  // удаляет объект
 
     ITableLayer& operator=(const ITableLayer&) = delete; // запрет присваивания
-    virtual void Activate(bool activate) = 0;
+    virtual int GetNumInTable() = 0;
     // Функции-фабрики
     static ITableLayer* CreatePicture(int number_in_table);
 };

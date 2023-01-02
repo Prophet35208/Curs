@@ -9,6 +9,7 @@ private:
     static int num_all_objects_and_childs;
     int number_in_table;
 
+
 private:
     TableLayerPicture( int number_in_table);
     TableLayerPicture(const TableLayerPicture& obj);
@@ -18,7 +19,7 @@ protected:
 
 public:
     void Delete() override;
-    void Activate(bool activate) override;
+    int GetNumInTable() override;
 
     friend ITableLayer* ITableLayer::CreatePicture( int number_in_table);
 };
