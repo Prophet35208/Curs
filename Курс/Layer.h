@@ -1,5 +1,5 @@
 #pragma once
-#include "TableLayerPicture.h"
+#include "TableLayerPictureWithText.h"
 using namespace System::Windows::Forms;
 ref class Layer
 {

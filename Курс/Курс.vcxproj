@@ -126,6 +126,7 @@
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="SettingsForm.cpp" />
     <ClCompile Include="SomeFunctions.cpp" />
+    <ClCompile Include="TableLayerPictureWithText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ITableLayer.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="SettingsForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="TableLayerPictureWithText.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">

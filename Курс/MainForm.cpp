@@ -6,6 +6,8 @@ using namespace System::Windows::Forms;
 [STAThread]
 
 int main(cli::array<String^>^ arg) {
+	vector<string>* f;
+	ITableLayer* a=ITableLayer::CreatePictureWithText(1,f);
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 

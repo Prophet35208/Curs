@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>  
 using namespace std;
 class ITableLayer
 {
@@ -13,5 +14,6 @@ public:
     virtual int GetNumInTable() = 0;
     // Функции-фабрики
     static ITableLayer* CreatePicture(int number_in_table);
+    static ITableLayer* CreatePictureWithText(int number_in_table,vector<string>* ptr);
 };
 
