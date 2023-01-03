@@ -14,6 +14,8 @@ protected:
 public:
     void Delete() override;
     int GetNumInTable() override;
+    void GetUp();
+    void GetDown();
 
     friend ITableLayer* ITableLayer::CreatePicture(int number_in_table);
 };

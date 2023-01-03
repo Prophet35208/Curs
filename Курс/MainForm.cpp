@@ -27,7 +27,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 		}
 		if (e->ColumnIndex == 2) {
 			if (e->RowIndex > 1) {
-				// Изменение ва таблице
+				// Изменение в таблице
 				DataGridViewRow^ buf = main_table->Rows[e->RowIndex];
 				main_table->Rows->Remove(buf);
 				main_table->Rows->Insert(e->RowIndex - 1, buf);
@@ -36,6 +36,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 				// Изменение в списке
 				Layer^ bufl;
 				bufl = layer_list[e->RowIndex-1];
+				bufl->GetUp();
 				layer_list->RemoveAt(e->RowIndex-1);
 				layer_list->Insert(e->RowIndex-2, bufl);
 				RefreshTable();
@@ -44,7 +45,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 		}
 		if (e->ColumnIndex == 3) {
 			if (e->RowIndex < layer_list->Count) {
-				// Изменение ва таблице
+				// Изменение в таблице
 				DataGridViewRow^ buf = main_table->Rows[e->RowIndex];
 				main_table->Rows->Remove(buf);
 				main_table->Rows->Insert(e->RowIndex + 1, buf);
@@ -54,6 +55,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 				// Изменение в списке
 				Layer^ bufl;
 				bufl = layer_list[e->RowIndex - 1];
+				bufl->GetDown();
 				layer_list->RemoveAt(e->RowIndex - 1);
 				layer_list->Insert(e->RowIndex, bufl);
 				RefreshTable();

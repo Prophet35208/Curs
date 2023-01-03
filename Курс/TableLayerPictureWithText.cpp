@@ -9,6 +9,15 @@ int TableLayerPictureWithText::GetNumInTable()
 	return number_in_table;
 }
 
+void TableLayerPictureWithText::GetUp()
+{
+	this->number_in_table++;
+}
+
+void TableLayerPictureWithText::GetDown()
+{
+	this->number_in_table--;
+}
 
 void TableLayerPictureWithText::Delete() { delete this; }
 

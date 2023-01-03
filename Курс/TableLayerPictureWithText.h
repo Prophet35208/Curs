@@ -8,13 +8,14 @@ private:
     TableLayerPictureWithText(int number_in_table, vector<string>* str_list) :TableLayerPicture(number_in_table) {
         this->str_list = str_list;
     }
-
 protected:
     ~TableLayerPictureWithText();
 
 public:
     void Delete() override;
     int GetNumInTable() override;
+    void GetUp();
+    void GetDown();
     friend ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table, vector<string>* ptr);
 };
 

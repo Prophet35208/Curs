@@ -9,4 +9,14 @@ PictureBox^ Layer::GetPictureBox()
 	return pb;
 }
 
+void Layer::GetUp()
+{
+	ILayer->GetUp();
+}
+
+void Layer::GetDown()
+{
+	ILayer->GetDown();
+}
+
 

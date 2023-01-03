@@ -9,5 +9,7 @@ private:
 public:
 	Layer(PictureBox^ pb, int num_in_table);
 	PictureBox^ GetPictureBox();
+	void GetUp();
+	void GetDown();
 };
 
