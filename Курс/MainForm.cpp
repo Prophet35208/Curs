@@ -2,6 +2,7 @@
 
 using namespace System;
 using namespace System::Windows::Forms;
+using namespace Курс;
 
 [STAThread]
 
@@ -14,16 +15,196 @@ int main(cli::array<String^>^ arg) {
 	Курс::MainForm form;
 	Application::Run(% form);
 }
+void OpenSettingsForm(int mod, Layer^ layer);
+System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	create_image = 1;
+	create_image_with_text = 0;
+}
+System::Void Курс::MainForm::удалитьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	delete contextMenuStrip_delete_main_element->SourceControl;
+
+}
+System::Void Курс::MainForm::pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	// Point a, b, c,d;
+	// a = (e->Location); // Точка ставится от начала экрана (правый верхний угол)
+	// b = this->PointToScreen(e->Location); // Точка ставится на экране как если бы отсчёт координат был от главной формы
+	// c= this->pictureBox_main_object->PointToScreen(e->Location); // Точка ставится там, где был клик (начало координат от угла picture box)
+	// d = this->PointToClient(e->Location); // Предположительно принимает абсолютные экранные координаты и преобразует в координаты члена, который этот метод вызвал
+	// this->Cursor->Clip = Rectangle(d, System::Drawing::Size(1, 1));
+	// System::Threading::Thread::Sleep(10000);
+	current_picture_box = (PictureBox^)sender;
+
+
+	f_stick = false;
+	Point place_to_stick_pb_coorinates;
+	Point place_to_stick;
+	// Прилипание к левой части
+	if (abs(e->Location.X) <= sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(0, e->Location.Y);
+		place_to_stick = current_picture_box->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+	// Прилипание к верхней части
+	if (abs(e->Location.Y) < sticking_rad) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(e->Location.X, 0);
+		place_to_stick = current_picture_box->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+	// Прилипание к левому верхнему углу
+	if ((abs(e->Location.X) <= sticking_rad) && (abs(e->Location.Y) < sticking_rad)) {
+		Rectangle OldRect = Cursor->Clip;
+		place_to_stick_pb_coorinates = Point(0, 0);
+		place_to_stick = current_picture_box->PointToScreen(place_to_stick_pb_coorinates);
+		Cursor->Clip = Rectangle(place_to_stick, System::Drawing::Size(1, 1));
+		Cursor->Clip = OldRect;
+		f_stick = true;
+	}
+	mouse_down = 1;
+	if (f_stick)
+	{
+		rectProposedSize.X = place_to_stick.X;
+		rectProposedSize.Y = place_to_stick.Y;
+	}
+	else
+	{
+
+		rectProposedSize.X = current_picture_box->PointToScreen(e->Location).X;
+		rectProposedSize.Y = current_picture_box->PointToScreen(e->Location).Y;
+	}
+	if (create_image || create_image_with_text)
+		if (f_stick)
+		{
+			Rectangle rect = Rectangle(place_to_stick, System::Drawing::Size(pictureBox_main_object->Width - place_to_stick_pb_coorinates.X, pictureBox_main_object->Height - place_to_stick_pb_coorinates.Y));
+			pictureBox_main_object->Cursor->Clip = rect;
+		}
+		else
+		{
+			Rectangle rect = Rectangle(pictureBox_main_object->PointToScreen(e->Location), System::Drawing::Size(pictureBox_main_object->Width - e->Location.X, pictureBox_main_object->Height - e->Location.Y));
+			pictureBox_main_object->Cursor->Clip = rect;
+		}
+
+}
+System::Void Курс::MainForm::pictureBox_main_object_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+
+	if (mouse_down && create_image || mouse_down && create_image_with_text) {
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+		// calculate rect new size
+		rectProposedSize.Width = current_picture_box->PointToScreen(e->Location).X - rectProposedSize.X;
+		rectProposedSize.Height = current_picture_box->PointToScreen(e->Location).Y - rectProposedSize.Y;
+		// draw rect
+		if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0)
+			ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+	}
+}
+System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	this->pictureBox_main_object->Cursor->Clip = Rectangle(Point(0, 0), System::Drawing::Size(10000, 10000));
+	mouse_down = 0;
+	// Проверка положительная ли ширина прямоугольника
+	if (rectProposedSize.Width > 0 && rectProposedSize.Height > 0) {
+
+		// erase rect
+		ControlPaint::DrawReversibleFrame(rectProposedSize, this->ForeColor, FrameStyle::Dashed);
+
+		// Создание  элемента в прямоугольнике
+		Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
+		for (int i = 0; i < image->Width; i++)
+			for (int j = 0; j < image->Height; j++)
+				image->SetPixel(i, j, Color::Black);
+
+
+		//  Создание экземпляра слоя и приведение его характеристик. Создаётся либо изображение с текстом, либо без него. В начале изображение чёрное
+		PictureBox^ pb = gcnew PictureBox();
+
+		pb = (gcnew System::Windows::Forms::PictureBox());
+		pb->Location = Control::PointToClient(rectProposedSize.Location);
+		pb->Name = L"pictureBox1";
+		pb->Size = rectProposedSize.Size;
+		pb->TabIndex = 1;
+		pb->TabStop = false;
+		pb->Image = image;
+		pb->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		Controls->Add(pb);
+		pb->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+		pb->BringToFront();
+
+
+		pb->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseDown);
+		pb->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseMove);
+		pb->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_main_object_MouseUp);
+		// Запуск окна с возможностью отредактировать элемент
+		if (create_image) {
+			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2)));
+			OpenSettingsForm(1,layer_list[0]);
+		}
+		if (create_image_with_text) {
+			//
+			vector<string>* empty_vector = new vector<string>;
+			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2, empty_vector)));
+			OpenSettingsForm(2,layer_list[0]);
+		}
+
+
+
+
+
+		// Передача слоя в таблицу
+
+
+		int f = 0;
+		Int64 i = 0;
+		int j = 0;
+		for (i = 1; i < 10000; i++) {
+			f = 0;
+			for (j = 1; j < main_table->RowCount; j++) {
+				String^ st1 = gcnew String(main_table->Rows[j]->Cells[0]->Value->ToString());
+				String^ st2 = gcnew String("Новый слой " + i.ToString());
+				if (main_table->Rows[j]->Cells[0]->Value->ToString() == ("Новый слой " + i.ToString())) {
+					f = 1;
+					break;
+				}
+			}
+			if (f);
+			else
+			{
+				main_table->Rows->Insert(1, "Новый слой " + i.ToString());
+				break;
+			}
+
+		}
+		//
+		rectProposedSize.Width = 0;
+		rectProposedSize.Height = 0;
+
+		create_image = 0;
+		create_image_with_text = 0;
+
+	}
+	current_picture_box = nullptr;
+}
+System::Void Курс::MainForm::button1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	delete pictureBox_main_object;
+}
 System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
 {
 	if (e->RowIndex != 0) {
 		if (e->ColumnIndex == 1) {
-			SettingsForm^ sf = gcnew SettingsForm();
-			sf->current_picture_box = layer_list[e->RowIndex - 1]->GetPictureBox();
-			sf->m_f = this;
-
-
-			sf->ShowDialog();
+			if(layer_list[e->RowIndex - 1]->HaveText())
+				OpenSettingsForm(1,layer_list[e->RowIndex - 1]);
+			else
+				OpenSettingsForm(2,layer_list[e->RowIndex - 1]);
 		}
 		if (e->ColumnIndex == 2) {
 			if (e->RowIndex > 1) {
@@ -67,6 +248,35 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 			main_table->Rows->RemoveAt(e->RowIndex);
 		}
 	}
+}
+System::Void Курс::MainForm::pictureBox1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	Graphics^ g = pictureBox1->CreateGraphics();
+	StringFormat sf;
+	sf.LineAlignment = StringAlignment::Center;
+	sf.Alignment = StringAlignment::Center;
+	Pen^ bluePen = gcnew Pen(Color::Blue, 1.0f);
+	System::Drawing::Font^ fn = gcnew System::Drawing::Font(FontFamily::GenericSansSerif, 12.0F, FontStyle::Bold);
+
+	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
+	Point a(100, 100);
+	Rectangle^ rec = gcnew Rectangle();
+	g->DrawString("afafawfawfawfaffafaf", fn, drawBrush, a, % sf);
+	this->pictureBox1->Cursor->Clip = Rectangle(this->pictureBox1->PointToScreen(Point(100, 100)), System::Drawing::Size(1, 1));
+}
+System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	create_image_with_text = 1;
+	create_image = 0;
+
+}
+void OpenSettingsForm(int mod ,Layer^ layer) {
+	SettingsForm^ sf = gcnew SettingsForm();
+	sf->current_picture_box = layer->GetPictureBox();
+	sf->mod = mod;
+	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
+	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
+	sf->ShowDialog();
 }
 /* Переменные для ратягивания
 		int first_top;

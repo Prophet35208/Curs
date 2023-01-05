@@ -16,6 +16,7 @@ public:
     int GetNumInTable() override;
     void GetUp();
     void GetDown();
+    int HaveText();
     friend ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table, vector<string>* ptr);
 };
 

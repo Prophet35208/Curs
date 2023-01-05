@@ -19,6 +19,11 @@ void TableLayerPictureWithText::GetDown()
 	this->number_in_table--;
 }
 
+int TableLayerPictureWithText::HaveText()
+{
+	return 1;
+}
+
 void TableLayerPictureWithText::Delete() { delete this; }
 
 ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table,vector<string>* ptr)

@@ -26,6 +26,11 @@ void TableLayerPicture::GetDown()
     this->number_in_table--;
 }
 
+int TableLayerPicture::HaveText()
+{
+    return 0;
+}
+
 
 ITableLayer* ITableLayer::CreatePicture( int number_in_table)
 {

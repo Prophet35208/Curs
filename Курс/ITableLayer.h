@@ -14,6 +14,7 @@ public:
     virtual void Delete() = 0;  // удаляет объект
     virtual void GetUp() = 0;
     virtual void GetDown() = 0;
+    virtual int HaveText() = 0;
 
     // Функции-фабрики
     static ITableLayer* CreatePicture(int number_in_table);
