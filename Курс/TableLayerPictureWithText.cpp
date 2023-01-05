@@ -9,6 +9,11 @@ int TableLayerPictureWithText::GetNumInTable()
 	return number_in_table;
 }
 
+vector<string>* TableLayerPictureWithText::GetStringList()
+{
+	return this->str_list;
+}
+
 void TableLayerPictureWithText::GetUp()
 {
 	this->number_in_table++;

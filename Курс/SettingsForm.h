@@ -1,5 +1,6 @@
 #pragma once
 #include "MainForm.h"
+#include "CreateStringList.h"
 namespace Курс {
 
 	using namespace System;
@@ -16,14 +17,13 @@ namespace Курс {
 	{
 	public: PictureBox^ current_picture_box;
 	public: int mod;
-	public: MainForm^ m_f;
-
+	public: vector<string>* string_list;
 
 	public: System::Windows::Forms::PictureBox^ pictureBox_main;
 	private: System::Windows::Forms::Button^ button_confirm;
-	private: System::Windows::Forms::RichTextBox^ richTextBox1;
+
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialogText;
-	private: System::Windows::Forms::Button^ button1;
+
 	private: System::Windows::Forms::Button^ button_attach_text;
 	public:
 		SettingsForm(void)
@@ -70,8 +70,6 @@ namespace Курс {
 			this->button_attach_text = (gcnew System::Windows::Forms::Button());
 			this->button_confirm = (gcnew System::Windows::Forms::Button());
 			this->openFileDialogText = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -92,7 +90,7 @@ namespace Курс {
 			// 
 			// pictureBox_main
 			// 
-			this->pictureBox_main->Location = System::Drawing::Point(253, 161);
+			this->pictureBox_main->Location = System::Drawing::Point(248, 149);
 			this->pictureBox_main->Name = L"pictureBox_main";
 			this->pictureBox_main->Size = System::Drawing::Size(137, 83);
 			this->pictureBox_main->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -105,7 +103,7 @@ namespace Курс {
 			this->button_attach_text->Name = L"button_attach_text";
 			this->button_attach_text->Size = System::Drawing::Size(144, 53);
 			this->button_attach_text->TabIndex = 2;
-			this->button_attach_text->Text = L"Указать файл с текстом";
+			this->button_attach_text->Text = L"Задать текст и его параметры";
 			this->button_attach_text->UseVisualStyleBackColor = true;
 			this->button_attach_text->Click += gcnew System::EventHandler(this, &SettingsForm::button_attach_text_Click);
 			// 
@@ -125,32 +123,11 @@ namespace Курс {
 			this->openFileDialogText->FileName = L"Выбрать файл с текстом";
 			this->openFileDialogText->Filter = L"Текстовый файл| *.docx";
 			// 
-			// richTextBox1
-			// 
-			this->richTextBox1->Location = System::Drawing::Point(444, 111);
-			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(151, 172);
-			this->richTextBox1->TabIndex = 4;
-			this->richTextBox1->Text = L"";
-			this->richTextBox1->Visible = false;
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(101, 152);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 5;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &SettingsForm::button1_Click);
-			// 
 			// SettingsForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(635, 315);
-			this->Controls->Add(this->button1);
-			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->button_confirm);
 			this->Controls->Add(this->button_attach_text);
 			this->Controls->Add(this->pictureBox_main);
@@ -190,7 +167,7 @@ namespace Курс {
 			min_height = 200 + pictureBox_main->Height;
 		this->MinimumSize = System::Drawing::Size(min_width, min_height);
 
-		if (mod == 2) {
+		if (mod == 1) {
 			button_attach_text->Visible = 0;
 		}
 	}
@@ -199,13 +176,12 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 	this->Close();
 }
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		richTextBox1->Text = File::ReadAllText(openFileDialogText->FileName);
-		int a;
-	}
-}
-private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-	int a;
+	CreateStringList^ csl = gcnew CreateStringList();
+	csl->string_list = string_list;
+	csl->ShowDialog();
+	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+	//	int a;
+	// }
 }
 };
 }

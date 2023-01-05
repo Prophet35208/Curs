@@ -5,6 +5,8 @@
 c_str - перевод string в const char
 	string a("fafa");
 	String^ st = gcnew String(a.c_str());
+
+	ToCharArray - перевод от String^ к string (через char*)
 */
 namespace Курс {
 

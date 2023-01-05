@@ -17,6 +17,7 @@ public:
     void GetUp();
     void GetDown();
     int HaveText();
+    vector<string>* GetStringList() override;
     friend ITableLayer* ITableLayer::CreatePicture(int number_in_table);
 };
 

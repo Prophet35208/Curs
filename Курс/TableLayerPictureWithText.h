@@ -14,6 +14,7 @@ protected:
 public:
     void Delete() override;
     int GetNumInTable() override;
+    vector<string>* GetStringList() override;
     void GetUp();
     void GetDown();
     int HaveText();

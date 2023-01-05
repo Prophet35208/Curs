@@ -21,6 +21,12 @@ PictureBox^ Layer::GetPictureBox()
 	return pb;
 }
 
+vector<string>* Layer::GetStringList()
+{
+	return this->ILayer->GetStringList();
+
+}
+
 void Layer::GetUp()
 {
 	ILayer->GetUp();

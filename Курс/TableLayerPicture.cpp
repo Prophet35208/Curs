@@ -31,6 +31,12 @@ int TableLayerPicture::HaveText()
     return 0;
 }
 
+vector<string>* TableLayerPicture::GetStringList()
+{
+    throw "DontHaveStringList";
+}
+
+
 
 ITableLayer* ITableLayer::CreatePicture( int number_in_table)
 {

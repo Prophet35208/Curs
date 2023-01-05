@@ -129,6 +129,9 @@
     <ClCompile Include="TableLayerPictureWithText.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CreateStringList.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="ITableLayer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="TableLayerPicture.h" />
@@ -141,6 +144,9 @@
     <ClInclude Include="TableLayerPictureWithText.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateStringList.resx">
+      <DependentUpon>CreateStringList.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>

@@ -1,11 +1,11 @@
+#include <vector>
+#include <string>
 #include "SettingsForm.h"
-
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace  урс;
 
 [STAThread]
-
 int main(cli::array<String^>^ arg) {
 	vector<string>* f;
 	ITableLayer* a=ITableLayer::CreatePictureWithText(1,f);
@@ -276,6 +276,8 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->mod = mod;
 	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
+	if (mod == 2)
+		sf->string_list = layer->GetStringList();
 	sf->ShowDialog();
 }
 /* ѕеременные дл€ рат€гивани€

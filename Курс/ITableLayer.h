@@ -15,6 +15,7 @@ public:
     virtual void GetUp() = 0;
     virtual void GetDown() = 0;
     virtual int HaveText() = 0;
+    virtual vector<string>* GetStringList() = 0;
 
     // Функции-фабрики
     static ITableLayer* CreatePicture(int number_in_table);
