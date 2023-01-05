@@ -23,6 +23,7 @@ namespace Курс {
 	private: System::Windows::Forms::Button^ button_confirm;
 	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialogText;
+	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ button_attach_text;
 	public:
 		SettingsForm(void)
@@ -70,6 +71,7 @@ namespace Курс {
 			this->button_confirm = (gcnew System::Windows::Forms::Button());
 			this->openFileDialogText = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -132,11 +134,22 @@ namespace Курс {
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->Visible = false;
 			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(101, 152);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"button1";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &SettingsForm::button1_Click);
+			// 
 			// SettingsForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(635, 315);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->button_confirm);
 			this->Controls->Add(this->button_attach_text);
@@ -190,6 +203,9 @@ private: System::Void button_attach_text_Click(System::Object^ sender, System::E
 		richTextBox1->Text = File::ReadAllText(openFileDialogText->FileName);
 		int a;
 	}
+}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	int a;
 }
 };
 }
