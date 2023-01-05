@@ -3,10 +3,10 @@
 class TableLayerPictureWithText : public TableLayerPicture
 {
 private:
-    vector<string>* str_list;
+    int num_strings;
 private:
-    TableLayerPictureWithText(int number_in_table, vector<string>* str_list) :TableLayerPicture(number_in_table) {
-        this->str_list = str_list;
+    TableLayerPictureWithText(int number_in_table) :TableLayerPicture(number_in_table) {
+        this->num_strings = 0;
     }
 protected:
     ~TableLayerPictureWithText();
@@ -14,10 +14,9 @@ protected:
 public:
     void Delete() override;
     int GetNumInTable() override;
-    vector<string>* GetStringList() override;
-    void GetUp();
-    void GetDown();
-    int HaveText();
-    friend ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table, vector<string>* ptr);
+    void GetUp() override;
+    void GetDown() override;
+    int HaveText() override;
+    friend ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table);
 };
 

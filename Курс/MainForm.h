@@ -227,7 +227,7 @@ namespace Курс {
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(96, 74);
+			this->pictureBox_main_object->Location = System::Drawing::Point(60, 34);
 			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
 			this->pictureBox_main_object->Name = L"pictureBox_main_object";
 			this->pictureBox_main_object->Size = System::Drawing::Size(524, 479);
@@ -240,9 +240,9 @@ namespace Курс {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(646, 235);
+			this->pictureBox1->Location = System::Drawing::Point(438, 105);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(74, 58);
+			this->pictureBox1->Size = System::Drawing::Size(161, 276);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;

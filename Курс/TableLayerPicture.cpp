@@ -31,10 +31,6 @@ int TableLayerPicture::HaveText()
     return 0;
 }
 
-vector<string>* TableLayerPicture::GetStringList()
-{
-    throw "DontHaveStringList";
-}
 
 
 

@@ -15,12 +15,6 @@ namespace Курс {
 	/// </summary>
 	public ref class CreateStringList : public System::Windows::Forms::Form
 	{
-	string String_to_string(String^ String) {
-			int lenght = String->Length;
-			string str("Один");
-			for (int i = 0; i < lenght; i++)
-			return str;
-		}
 	public: vector<string>* string_list;
 	public:
 		CreateStringList(void)
@@ -170,11 +164,9 @@ private: System::Void button_set_font_Click(System::Object^ sender, System::Even
 }
 private: System::Void fontDialog_Apply(System::Object^ sender, System::EventArgs^ e) {
 	richTextBox_all_strings->Font = fontDialog->Font;
-	int a;
 }
 private: System::Void button_check_Click(System::Object^ sender, System::EventArgs^ e) {
-	string str= String_to_string(richTextBox_all_strings->Text);
-	int a;
+	//
 }
 };
 }

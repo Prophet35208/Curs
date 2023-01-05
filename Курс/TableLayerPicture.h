@@ -14,10 +14,9 @@ protected:
 public:
     void Delete() override;
     int GetNumInTable() override;
-    void GetUp();
-    void GetDown();
-    int HaveText();
-    vector<string>* GetStringList() override;
+    void GetUp() override;
+    void GetDown() override;
+    int HaveText() override;
     friend ITableLayer* ITableLayer::CreatePicture(int number_in_table);
 };
 

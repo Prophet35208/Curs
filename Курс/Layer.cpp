@@ -4,10 +4,11 @@ Layer::Layer(PictureBox^ pb,int num_in_table) {
 	ILayer = ITableLayer::CreatePicture(num_in_table);
 }
 
-Layer::Layer(PictureBox^ pb, int num_in_table, vector<string>* v_ptr)
+Layer::Layer(PictureBox^ pb, int num_in_table,int num_strings)
 {
 	this->pb = pb;
-	ILayer = ITableLayer::CreatePictureWithText(num_in_table, v_ptr);
+	ILayer = ITableLayer::CreatePictureWithText(num_in_table);
+	this->str_list = gcnew List<String^>();
 
 }
 
@@ -21,11 +22,6 @@ PictureBox^ Layer::GetPictureBox()
 	return pb;
 }
 
-vector<string>* Layer::GetStringList()
-{
-	return this->ILayer->GetStringList();
-
-}
 
 void Layer::GetUp()
 {

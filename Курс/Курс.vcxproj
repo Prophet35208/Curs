@@ -122,11 +122,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="PictureBoxInstance.cpp" />
+    <ClCompile Include="PictureBoxInstanceWithText.cpp" />
     <ClCompile Include="TableLayerPicture.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="SettingsForm.cpp" />
     <ClCompile Include="SomeFunctions.cpp" />
     <ClCompile Include="TableLayerPictureWithText.cpp" />
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateStringList.h">
@@ -134,6 +137,8 @@
     </ClInclude>
     <ClInclude Include="ITableLayer.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="PictureBoxInstance.h" />
+    <ClInclude Include="PictureBoxInstanceWithText.h" />
     <ClInclude Include="TableLayerPicture.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
@@ -142,6 +147,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="TableLayerPictureWithText.h" />
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateStringList.resx">

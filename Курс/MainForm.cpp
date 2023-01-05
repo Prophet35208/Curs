@@ -7,8 +7,6 @@ using namespace Курс;
 
 [STAThread]
 int main(cli::array<String^>^ arg) {
-	vector<string>* f;
-	ITableLayer* a=ITableLayer::CreatePictureWithText(1,f);
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 
@@ -119,9 +117,10 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 
 		// Создание  элемента в прямоугольнике
 		Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
-		for (int i = 0; i < image->Width; i++)
+		/* for (int i = 0; i < image->Width; i++)
 			for (int j = 0; j < image->Height; j++)
 				image->SetPixel(i, j, Color::Black);
+		*/
 
 
 		//  Создание экземпляра слоя и приведение его характеристик. Создаётся либо изображение с текстом, либо без него. В начале изображение чёрное
@@ -150,8 +149,7 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 		}
 		if (create_image_with_text) {
 			//
-			vector<string>* empty_vector = new vector<string>;
-			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2, empty_vector)));
+			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2)));
 			OpenSettingsForm(2,layer_list[0]);
 		}
 
@@ -277,7 +275,7 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
 	if (mod == 2)
-		sf->string_list = layer->GetStringList();
+		// !!!
 	sf->ShowDialog();
 }
 /* Переменные для ратягивания

@@ -9,10 +9,6 @@ int TableLayerPictureWithText::GetNumInTable()
 	return number_in_table;
 }
 
-vector<string>* TableLayerPictureWithText::GetStringList()
-{
-	return this->str_list;
-}
 
 void TableLayerPictureWithText::GetUp()
 {
@@ -31,7 +27,7 @@ int TableLayerPictureWithText::HaveText()
 
 void TableLayerPictureWithText::Delete() { delete this; }
 
-ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table,vector<string>* ptr)
+ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table)
 {
-	return static_cast<ITableLayer*>(new TableLayerPictureWithText(number_in_table,ptr));
+	return static_cast<ITableLayer*>(new TableLayerPictureWithText(number_in_table));
 }
