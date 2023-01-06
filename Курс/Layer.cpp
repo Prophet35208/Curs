@@ -1,10 +1,10 @@
 #include "Layer.h"
-Layer::Layer(PictureBox^ pb,int num_in_table) {
+Layer::Layer(PictureBox^ pb,int num_in_table) :PictureBoxInstanceWithText(pb){
 	this->pb = pb;
 	ILayer = ITableLayer::CreatePicture(num_in_table);
 }
 
-Layer::Layer(PictureBox^ pb, int num_in_table,int num_strings)
+Layer::Layer(PictureBox^ pb, int num_in_table,int num_strings) :PictureBoxInstanceWithText(pb)
 {
 	this->pb = pb;
 	ILayer = ITableLayer::CreatePictureWithText(num_in_table);
@@ -17,12 +17,6 @@ int Layer::HaveText()
 	return ILayer->HaveText();
 }
 
-PictureBox^ Layer::GetPictureBox()
-{
-	return pb;
-}
-
-
 void Layer::GetUp()
 {
 	ILayer->GetUp();
@@ -31,11 +25,6 @@ void Layer::GetUp()
 void Layer::GetDown()
 {
 	ILayer->GetDown();
-}
-
-void Layer::SetPictureBox(PictureBox^ pb)
-{
-	this->pb = pb;
 }
 
 

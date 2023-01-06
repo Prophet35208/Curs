@@ -15,7 +15,7 @@ namespace Курс {
 	/// </summary>
 	public ref class CreateStringList : public System::Windows::Forms::Form
 	{
-	public: vector<string>* string_list;
+	public: List<Layer^>^ str_list = gcnew List<Layer^>();
 	public:
 		CreateStringList(void)
 		{
@@ -166,7 +166,14 @@ private: System::Void fontDialog_Apply(System::Object^ sender, System::EventArgs
 	richTextBox_all_strings->Font = fontDialog->Font;
 }
 private: System::Void button_check_Click(System::Object^ sender, System::EventArgs^ e) {
-	//
+	List<String^>^ str_list = gcnew List<String^>;
+	String^ str = gcnew String("");
+	str=richTextBox_all_strings->Text;
+	cli::array<String^>^ arr = str->Split('\n');
+	for (size_t i = 0; i < arr->Length; i++)
+	{
+		str_list->Add(arr[i]);
+	}
 }
 };
 }

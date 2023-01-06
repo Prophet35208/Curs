@@ -17,12 +17,15 @@ namespace Курс {
 	{
 	public: PictureBox^ current_picture_box;
 	public: int mod;
-	public: vector<string>* string_list;
+	public: List<Layer^>^ str_list = gcnew List<Layer^>();
 
 	public: System::Windows::Forms::PictureBox^ pictureBox_main;
 	private: System::Windows::Forms::Button^ button_confirm;
 
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialogText;
+	private: System::Windows::Forms::Button^ button_change_color;
+	private: System::Windows::Forms::CheckBox^ checkBox_background;
+	private: System::Windows::Forms::ColorDialog^ colorDialog;
 
 	private: System::Windows::Forms::Button^ button_attach_text;
 	public:
@@ -70,6 +73,9 @@ namespace Курс {
 			this->button_attach_text = (gcnew System::Windows::Forms::Button());
 			this->button_confirm = (gcnew System::Windows::Forms::Button());
 			this->openFileDialogText = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->button_change_color = (gcnew System::Windows::Forms::Button());
+			this->checkBox_background = (gcnew System::Windows::Forms::CheckBox());
+			this->colorDialog = (gcnew System::Windows::Forms::ColorDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -77,9 +83,9 @@ namespace Курс {
 			// 
 			this->button_change_picture->Location = System::Drawing::Point(12, 12);
 			this->button_change_picture->Name = L"button_change_picture";
-			this->button_change_picture->Size = System::Drawing::Size(124, 53);
+			this->button_change_picture->Size = System::Drawing::Size(113, 39);
 			this->button_change_picture->TabIndex = 0;
-			this->button_change_picture->Text = L"Сменить картинку";
+			this->button_change_picture->Text = L"Сменить картинку (выбрать png)";
 			this->button_change_picture->UseVisualStyleBackColor = true;
 			this->button_change_picture->Click += gcnew System::EventHandler(this, &SettingsForm::button_change_picture_Click);
 			// 
@@ -99,9 +105,9 @@ namespace Курс {
 			// 
 			// button_attach_text
 			// 
-			this->button_attach_text->Location = System::Drawing::Point(142, 12);
+			this->button_attach_text->Location = System::Drawing::Point(224, 12);
 			this->button_attach_text->Name = L"button_attach_text";
-			this->button_attach_text->Size = System::Drawing::Size(144, 53);
+			this->button_attach_text->Size = System::Drawing::Size(144, 39);
 			this->button_attach_text->TabIndex = 2;
 			this->button_attach_text->Text = L"Задать текст и его параметры";
 			this->button_attach_text->UseVisualStyleBackColor = true;
@@ -110,9 +116,9 @@ namespace Курс {
 			// button_confirm
 			// 
 			this->button_confirm->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button_confirm->Location = System::Drawing::Point(479, 12);
+			this->button_confirm->Location = System::Drawing::Point(661, 12);
 			this->button_confirm->Name = L"button_confirm";
-			this->button_confirm->Size = System::Drawing::Size(144, 53);
+			this->button_confirm->Size = System::Drawing::Size(144, 39);
 			this->button_confirm->TabIndex = 3;
 			this->button_confirm->Text = L"Принять";
 			this->button_confirm->UseVisualStyleBackColor = true;
@@ -123,11 +129,34 @@ namespace Курс {
 			this->openFileDialogText->FileName = L"Выбрать файл с текстом";
 			this->openFileDialogText->Filter = L"Текстовый файл| *.docx";
 			// 
+			// button_change_color
+			// 
+			this->button_change_color->Location = System::Drawing::Point(131, 12);
+			this->button_change_color->Name = L"button_change_color";
+			this->button_change_color->Size = System::Drawing::Size(87, 39);
+			this->button_change_color->TabIndex = 4;
+			this->button_change_color->Text = L"Залить фон";
+			this->button_change_color->UseVisualStyleBackColor = true;
+			this->button_change_color->Click += gcnew System::EventHandler(this, &SettingsForm::button_change_color_Click);
+			// 
+			// checkBox_background
+			// 
+			this->checkBox_background->AutoSize = true;
+			this->checkBox_background->Location = System::Drawing::Point(12, 57);
+			this->checkBox_background->Name = L"checkBox_background";
+			this->checkBox_background->Size = System::Drawing::Size(514, 17);
+			this->checkBox_background->TabIndex = 5;
+			this->checkBox_background->Text = L"Не учитывать фон в конечном изображении (в макете фон всё ещё будет показывать гр"
+				L"аницы)";
+			this->checkBox_background->UseVisualStyleBackColor = true;
+			// 
 			// SettingsForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(635, 315);
+			this->ClientSize = System::Drawing::Size(817, 308);
+			this->Controls->Add(this->checkBox_background);
+			this->Controls->Add(this->button_change_color);
 			this->Controls->Add(this->button_confirm);
 			this->Controls->Add(this->button_attach_text);
 			this->Controls->Add(this->pictureBox_main);
@@ -139,6 +168,7 @@ namespace Курс {
 			this->Resize += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Resize);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -177,11 +207,20 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 }
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreateStringList^ csl = gcnew CreateStringList();
-	csl->string_list = string_list;
+	csl->str_list = str_list;
 	csl->ShowDialog();
 	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 	//	int a;
 	// }
+}
+private: System::Void button_change_color_Click(System::Object^ sender, System::EventArgs^ e) {
+	colorDialog->Color = Color::White;
+	colorDialog->ShowDialog();
+	Bitmap^ image = gcnew Bitmap(current_picture_box->Width, current_picture_box->Height);
+	for (int i = 0; i < image->Width; i++)
+		for (int j = 0; j < image->Height; j++)
+			image->SetPixel(i, j, colorDialog->Color);
+	pictureBox_main->Image = image;
 }
 };
 }

@@ -24,6 +24,7 @@ namespace Курс {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
+		int f = 0;
 		PictureBox^ settings_form_picture_box;
 	private:
 		// Функция обновления порядка слоёв по индексу
@@ -65,6 +66,12 @@ namespace Курс {
 	private: System::Windows::Forms::DataGridViewButtonColumn^ up;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ down;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ delete_line;
+
+
+
+
+
+
 
 
 
@@ -227,7 +234,7 @@ namespace Курс {
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(60, 34);
+			this->pictureBox_main_object->Location = System::Drawing::Point(100, 74);
 			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
 			this->pictureBox_main_object->Name = L"pictureBox_main_object";
 			this->pictureBox_main_object->Size = System::Drawing::Size(524, 479);
@@ -239,10 +246,11 @@ namespace Курс {
 			// 
 			// pictureBox1
 			// 
+			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(438, 105);
+			this->pictureBox1->Location = System::Drawing::Point(516, 12);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(161, 276);
+			this->pictureBox1->Size = System::Drawing::Size(60, 29);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
@@ -284,5 +292,6 @@ private: System::Void main_table_CellContentClick(System::Object^ sender, System
 
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void pictureBox4_Click_1(System::Object^ sender, System::EventArgs^ e);
 };
 }

@@ -14,6 +14,7 @@ int main(cli::array<String^>^ arg) {
 	Application::Run(% form);
 }
 void OpenSettingsForm(int mod, Layer^ layer);
+void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
@@ -117,10 +118,10 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 
 		// Создание  элемента в прямоугольнике
 		Bitmap^ image = gcnew Bitmap(rectProposedSize.Width, rectProposedSize.Height);
-		/* for (int i = 0; i < image->Width; i++)
+		for (int i = 0; i < image->Width; i++)
 			for (int j = 0; j < image->Height; j++)
 				image->SetPixel(i, j, Color::Black);
-		*/
+		
 
 
 		//  Создание экземпляра слоя и приведение его характеристик. Создаётся либо изображение с текстом, либо без него. В начале изображение чёрное
@@ -145,15 +146,13 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 		// Запуск окна с возможностью отредактировать элемент
 		if (create_image) {
 			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2)));
-			OpenSettingsForm(1,layer_list[0]);
+			OpenSettingsForm(1, layer_list[0]);
 		}
 		if (create_image_with_text) {
 			//
 			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2)));
-			OpenSettingsForm(2,layer_list[0]);
+			OpenSettingsForm(2, layer_list[0]);
 		}
-
-
 
 
 
@@ -260,7 +259,7 @@ System::Void Курс::MainForm::pictureBox1_Click(System::Object^ sender, System::E
 	Point a(100, 100);
 	Rectangle^ rec = gcnew Rectangle();
 	g->DrawString("afafawfawfawfaffafaf", fn, drawBrush, a, % sf);
-	this->pictureBox1->Cursor->Clip = Rectangle(this->pictureBox1->PointToScreen(Point(100, 100)), System::Drawing::Size(1, 1));
+	this->pictureBox1->Cursor->Clip = Rectangle(this->pictureBox1->PointToScreen(Point(100, 100)), System::Drawing::Size(1, 1)); 
 }
 System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e)
 {
@@ -268,15 +267,32 @@ System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ se
 	create_image = 0;
 
 }
+System::Void Курс::MainForm::pictureBox4_Click_1(System::Object^ sender, System::EventArgs^ e)
+{
+	
+}
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	SettingsForm^ sf = gcnew SettingsForm();
 	sf->current_picture_box = layer->GetPictureBox();
 	sf->mod = mod;
 	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
-	if (mod == 2)
-		// !!!
 	sf->ShowDialog();
+}
+// Позволяет сделать изображения верхнего Pb таким, чтобы он сливался с нижним Pb
+void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb) {
+	PictureBox^ pb_cur = upper_pb;
+	Point p;
+	Bitmap^ image = gcnew Bitmap(pb_cur->Width, pb_cur->Height);
+	float stretch_X = down_pb->Image->Width / (float)down_pb->Width;
+	float stretch_Y = down_pb->Image->Height / (float)down_pb->Height;
+	for (int i = 0; i < pb_cur->Width; i++)
+		for (int j = 0; j < pb_cur->Height; j++) {
+			p = Point(i, j);
+			Color c = ((Bitmap^)down_pb->Image)->GetPixel((down_pb->PointToClient(upper_pb->PointToScreen(p))).X * stretch_X, down_pb->PointToClient(upper_pb->PointToScreen(p)).Y * stretch_Y);
+			image->SetPixel(i, j, c);
+		}
+	pb_cur->Image = image;
 }
 /* Переменные для ратягивания
 		int first_top;
