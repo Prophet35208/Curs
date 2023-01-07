@@ -16,11 +16,6 @@ public:
 	void GetUp();
 	void GetDown();
 	// ќбновл€ет чередование слоЄв согласно их пор€дку в списке (список слоЄв объ€влен в гланой форме)
- 	static void RefreshLayers(List<Layer^>^ layer_list) {
-		for (int i = layer_list->Count - 1; i >= 0; i--)
-		{
-			layer_list[i]->GetPictureBox()->BringToFront();
-		}
-	}
+	static void RefreshLayers(List<Layer^>^ layer_list);
 };
 

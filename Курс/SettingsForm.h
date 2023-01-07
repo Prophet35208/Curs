@@ -10,6 +10,7 @@ namespace Курс {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO;
+	using namespace System::Drawing;
 	/// <summary>
 	/// Сводка для SettingsForm
 	/// </summary>
@@ -17,7 +18,8 @@ namespace Курс {
 	{
 	public: PictureBox^ current_picture_box;
 	public: int mod;
-	public: List<Layer^>^ str_list = gcnew List<Layer^>();
+	public: System::Drawing::Font^ cur_font;
+	public: List<String^>^ str_list = gcnew List<String^>();
 
 	public: System::Windows::Forms::PictureBox^ pictureBox_main;
 	private: System::Windows::Forms::Button^ button_confirm;
@@ -207,7 +209,8 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 }
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreateStringList^ csl = gcnew CreateStringList();
-	csl->str_list = str_list;
+	csl->str_list_current = str_list;
+	csl->font_current = cur_font;
 	csl->ShowDialog();
 	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 	//	int a;

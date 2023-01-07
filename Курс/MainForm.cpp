@@ -277,6 +277,8 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->mod = mod;
 	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
+	sf->cur_font = layer->GetFont();
+	sf->str_list = layer->GetStringList();
 	sf->ShowDialog();
 }
 // Позволяет сделать изображения верхнего Pb таким, чтобы он сливался с нижним Pb

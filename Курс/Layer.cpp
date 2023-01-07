@@ -27,4 +27,12 @@ void Layer::GetDown()
 	ILayer->GetDown();
 }
 
+void Layer::RefreshLayers(List<Layer^>^ layer_list)
+{
+	for (int i = layer_list->Count - 1; i >= 0; i--)
+	{
+		layer_list[i]->GetPictureBox()->BringToFront();
+	}
+}
+
 

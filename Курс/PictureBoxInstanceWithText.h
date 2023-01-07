@@ -31,5 +31,7 @@ protected:
 public:
 	void SetFont(Font^ font);
 	Font^ GetFont();
+	void SetStringList(List<String^>^str_list);
+	List<String^>^ GetStringList();
 };
 
