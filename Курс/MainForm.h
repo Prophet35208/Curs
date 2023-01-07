@@ -27,6 +27,9 @@ namespace Курс {
 	public:
 		int f = 0;
 	private: System::Windows::Forms::Button^ button_finish;
+	private: System::Windows::Forms::PictureBox^ pictureBox2;
+	private: System::Windows::Forms::PictureBox^ pictureBox3;
+	private: System::Windows::Forms::Button^ button1;
 	public:
 	public:
 		PictureBox^ settings_form_picture_box;
@@ -159,10 +162,15 @@ namespace Курс {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->button_recreate_main = (gcnew System::Windows::Forms::Button());
 			this->button_finish = (gcnew System::Windows::Forms::Button());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
 			this->contextMenuStrip_delete_main_element->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button_create_picture
@@ -268,9 +276,9 @@ namespace Курс {
 			// 
 			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(670, 26);
+			this->pictureBox1->Location = System::Drawing::Point(310, 104);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(60, 29);
+			this->pictureBox1->Size = System::Drawing::Size(124, 36);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
@@ -296,11 +304,45 @@ namespace Курс {
 			this->button_finish->UseVisualStyleBackColor = true;
 			this->button_finish->Click += gcnew System::EventHandler(this, &MainForm::button_finish_Click);
 			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
+			this->pictureBox2->Location = System::Drawing::Point(969, 229);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(231, 147);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox2->TabIndex = 9;
+			this->pictureBox2->TabStop = false;
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
+			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
+			this->pictureBox3->Location = System::Drawing::Point(999, 248);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(176, 116);
+			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox3->TabIndex = 10;
+			this->pictureBox3->TabStop = false;
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(641, 32);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->TabIndex = 11;
+			this->button1->Text = L"button1";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click_1);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1399, 661);
+			this->Controls->Add(this->button1);
+			this->Controls->Add(this->pictureBox3);
+			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->button_finish);
 			this->Controls->Add(this->button_recreate_main);
 			this->Controls->Add(this->pictureBox_main_object);
@@ -317,6 +359,8 @@ namespace Курс {
 			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -337,11 +381,11 @@ private: System::Void main_table_CellContentClick(System::Object^ sender, System
 
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void pictureBox4_Click_1(System::Object^ sender, System::EventArgs^ e);
 private: System::Void MainForm_Resize(System::Object^ sender, System::EventArgs^ e);
 private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
 private: System::Void button_recreate_main_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 private: System::Void button_finish_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e);
 };
 }

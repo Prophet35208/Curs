@@ -209,8 +209,8 @@ namespace Курс {
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	current_picture_box->Image = pictureBox_main->Image;
 	current_str_list = locale_str_list;
-	if(checkBox_background->Checked==1)
-
+	if (checkBox_background->Checked == 1)
+		*background_check = 0;
 	this->Close();
 }
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {

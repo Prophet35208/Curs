@@ -16,6 +16,7 @@ int main(cli::array<String^>^ arg) {
 }
 void OpenSettingsForm(int mod, Layer^ layer);
 void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb);
+void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
@@ -268,10 +269,6 @@ System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ se
 	create_image = 0;
 
 }
-System::Void Курс::MainForm::pictureBox4_Click_1(System::Object^ sender, System::EventArgs^ e)
-{
-	
-}
 System::Void Курс::MainForm::MainForm_Resize(System::Object^ sender, System::EventArgs^ e)
 {
 	pictureBox_main_object->Left = (ClientSize.Width-main_table->Width) / 2 - pictureBox_main_object->Width / 2;
@@ -311,6 +308,8 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 { // Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
 	List<PictureBox^>^ pb_ist = gcnew List<PictureBox^>();
 	int max_str = 0;
+	Point Start_point(pictureBox_main_object->Location);
+	System::Drawing::Size start_size (pictureBox_main_object->Height, pictureBox_main_object->Width);
 	for (size_t i = 0; i < layer_list->Count; i++)
 	{
 		if (layer_list[i]->HaveText()) {
@@ -328,12 +327,19 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 			Graphics^ g = pb->CreateGraphics();
 			pb->Size = pictureBox_main_object->Size;
 			for (size_t j = 0; j < layer_list->Count; j++) {
+				if(layer_list[j]->HaveText())
+					if (*layer_list[j]->GetTextHaveBackground()) {
 
+					}
 			}
 		}
 
 		Finish^ f = gcnew Finish();
 	}
+}
+System::Void Курс::MainForm::button1_Click_1(System::Object^ sender, System::EventArgs^ e)
+{
+	DrawOnePbOnTopOfAnother(pictureBox2, pictureBox3);
 }
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	SettingsForm^ sf = gcnew SettingsForm();
@@ -343,10 +349,11 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
 	sf->cur_font = layer->GetFont();
 	sf->current_str_list = layer->GetStringList();
+	sf->background_check = layer->GetTextHaveBackground();
 	sf->ShowDialog();
 }
 // Позволяет сделать изображения верхнего Pb таким, чтобы он сливался с нижним Pb
-void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb) {
+void DrawOnePbFropDownAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 	PictureBox^ pb_cur = upper_pb;
 	Point p;
 	Bitmap^ image = gcnew Bitmap(pb_cur->Width, pb_cur->Height);
@@ -359,6 +366,39 @@ void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb) {
 			image->SetPixel(i, j, c);
 		}
 	pb_cur->Image = image;
+}
+// Доделать
+void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
+	// Создание Bitmap-ов, соразмерных picturebox-ам
+	Bitmap^ upper_bm = gcnew Bitmap(upper_pb->Width, upper_pb->Height);
+	Bitmap^ down_bm=gcnew Bitmap(down_pb->Width, down_pb->Height);
+	Point p;
+	// Определение степени сжатия картинки
+	float stretch_X_upper = upper_pb->Image->Width / (float)upper_pb->Width;
+	float stretch_Y_upper = upper_pb->Image->Height / (float)upper_pb->Height;
+	float stretch_X_down = down_pb->Image->Width / (float)down_pb->Width;
+	float stretch_Y_down = down_pb->Image->Height / (float)down_pb->Height;
+	// Заполнение сжатых Bitmap-ов сжатыми изображениями
+	for (int i = 0; i < upper_pb->Width; i++)
+		for (int j = 0; j < upper_pb->Height; j++) {
+			p = Point(i, j);
+			Color c = ((Bitmap^)upper_pb->Image)->GetPixel(p.X , p.Y);
+			upper_bm->SetPixel(i, j, c);
+		}
+	for (int i = 0; i < down_pb->Width; i++)
+		for (int j = 0; j < down_pb->Height; j++) {
+			p = Point(i, j);
+			Color c = ((Bitmap^)down_pb->Image)->GetPixel(p.X, p.Y);
+			upper_bm->SetPixel(i, j, c);
+		}
+	// Рисование одного Bitmap-а поверх другого (верхний повер нижнего)
+	Point start(upper_pb->PointToClient(((PictureBox^)(upper_pb->Container))->PointToScreen((upper_pb->Location))));
+		for (int i = 0; i <= upper_bm->Width; i++)
+			for (int j = 0; j <= upper_bm->Height; j++) {
+				down_bm->SetPixel(i + start.X, j + start.Y, upper_bm->GetPixel(i, j));
+			}
+	// Конечная установка изображения
+		down_pb->Image = down_bm;
 }
 /* Переменные для ратягивания
 		int first_top;
