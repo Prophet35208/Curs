@@ -27,6 +27,16 @@ void Layer::GetDown()
 	ILayer->GetDown();
 }
 
+bool Layer::GetTextHaveBackground()
+{
+	return text_have_background;
+}
+
+void Layer::SetTextHaveBackground(bool b)
+{
+	this->text_have_background = b;
+}
+
 void Layer::RefreshLayers(List<Layer^>^ layer_list)
 {
 	for (int i = layer_list->Count - 1; i >= 0; i--)

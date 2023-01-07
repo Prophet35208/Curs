@@ -17,9 +17,12 @@ namespace Курс {
 	public ref class SettingsForm : public System::Windows::Forms::Form
 	{
 	public: PictureBox^ current_picture_box;
+	public: List<String^>^ current_str_list;
+	public: List<String^>^ locale_str_list = gcnew List<String^>();
 	public: int mod;
 	public: System::Drawing::Font^ cur_font;
-	public: List<String^>^ str_list = gcnew List<String^>();
+	public: System::Drawing::Font^ locale_font;
+	public: bool* background_check;
 
 	public: System::Windows::Forms::PictureBox^ pictureBox_main;
 	private: System::Windows::Forms::Button^ button_confirm;
@@ -205,11 +208,14 @@ namespace Курс {
 	}
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	current_picture_box->Image = pictureBox_main->Image;
+	current_str_list = locale_str_list;
+	if(checkBox_background->Checked==1)
+
 	this->Close();
 }
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreateStringList^ csl = gcnew CreateStringList();
-	csl->str_list_current = str_list;
+	csl->str_list_current = locale_str_list;
 	csl->font_current = cur_font;
 	csl->ShowDialog();
 	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {

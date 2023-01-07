@@ -9,12 +9,15 @@ ref class Layer : public PictureBoxInstanceWithText
 {
 private:
 	ITableLayer* ILayer;
+	bool text_have_background = false;
 public:
 	Layer(PictureBox^ pb, int num_in_table);
 	Layer(PictureBox^ pb, int num_in_table,int num_strings);
 	int HaveText();
 	void GetUp();
 	void GetDown();
+	bool GetTextHaveBackground();
+	void SetTextHaveBackground(bool b);
 	// ќбновл€ет чередование слоЄв согласно их пор€дку в списке (список слоЄв объ€влен в гланой форме)
 	static void RefreshLayers(List<Layer^>^ layer_list);
 };

@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include "SettingsForm.h"
+#include "Finish.h"
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace Курс;
@@ -271,6 +272,69 @@ System::Void Курс::MainForm::pictureBox4_Click_1(System::Object^ sender, System:
 {
 	
 }
+System::Void Курс::MainForm::MainForm_Resize(System::Object^ sender, System::EventArgs^ e)
+{
+	pictureBox_main_object->Left = (ClientSize.Width-main_table->Width) / 2 - pictureBox_main_object->Width / 2;
+	pictureBox_main_object->Top = ClientSize.Height / 2 - pictureBox_main_object->Height / 2;
+	main_table->Size.Height = this->Height - 56;
+
+}
+System::Void Курс::MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e)
+{
+	pictureBox_main_object->Left = (ClientSize.Width - main_table->Width) / 2 - pictureBox_main_object->Width / 2;
+	pictureBox_main_object->Top = ClientSize.Height / 2 - pictureBox_main_object->Height / 2;
+	this->MinimumSize = System::Drawing::Size(200 + pictureBox_main_object->Width+main_table->Width, 200 + pictureBox_main_object->Height);
+}
+System::Void Курс::MainForm::button_recreate_main_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	layer_list->Clear();
+	main_table->Rows->Clear();
+	main_table->Rows->Add("Макет");
+	SetMaket^ sm = gcnew SetMaket();
+	sm->height = height;
+	sm->width = width;
+	sm->ShowDialog();
+	if (*height != 0 && *width != 0) {
+		pictureBox_main_object->Height = *height;
+		pictureBox_main_object->Width = *width;
+	}
+	this->Validate();
+
+}
+System::Void Курс::MainForm::MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+{
+	pictureBox_main_object->Left = (ClientSize.Width - main_table->Width) / 2 - pictureBox_main_object->Width / 2;
+	pictureBox_main_object->Top = ClientSize.Height / 2 - pictureBox_main_object->Height / 2;
+	this->MinimumSize = System::Drawing::Size(200 + pictureBox_main_object->Width + main_table->Width, 200 + pictureBox_main_object->Height);
+}
+System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System::EventArgs^ e)
+{ // Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
+	List<PictureBox^>^ pb_ist = gcnew List<PictureBox^>();
+	int max_str = 0;
+	for (size_t i = 0; i < layer_list->Count; i++)
+	{
+		if (layer_list[i]->HaveText()) {
+			if (max_str == 0)
+				max_str = layer_list[i]->GetStringList()->Count;
+			if (layer_list[i]->GetStringList()->Count < max_str)
+				max_str = layer_list[i]->GetStringList()->Count;
+
+		}
+	}
+	if (max_str != 0) {
+		for (size_t i = 0; i < max_str; i++)
+		{
+			PictureBox^ pb = gcnew PictureBox();
+			Graphics^ g = pb->CreateGraphics();
+			pb->Size = pictureBox_main_object->Size;
+			for (size_t j = 0; j < layer_list->Count; j++) {
+
+			}
+		}
+
+		Finish^ f = gcnew Finish();
+	}
+}
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	SettingsForm^ sf = gcnew SettingsForm();
 	sf->current_picture_box = layer->GetPictureBox();
@@ -278,7 +342,7 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->pictureBox_main->Image = layer->GetPictureBox()->Image;
 	sf->pictureBox_main->Size = layer->GetPictureBox()->Size;
 	sf->cur_font = layer->GetFont();
-	sf->str_list = layer->GetStringList();
+	sf->current_str_list = layer->GetStringList();
 	sf->ShowDialog();
 }
 // Позволяет сделать изображения верхнего Pb таким, чтобы он сливался с нижним Pb
