@@ -114,6 +114,7 @@ namespace Курс {
 			// 
 			// button_save
 			// 
+			this->button_save->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->button_save->Location = System::Drawing::Point(539, 390);
 			this->button_save->Name = L"button_save";
 			this->button_save->Size = System::Drawing::Size(106, 54);
@@ -121,6 +122,10 @@ namespace Курс {
 			this->button_save->Text = L"Сохранить изображения в директорию";
 			this->button_save->UseVisualStyleBackColor = true;
 			this->button_save->Click += gcnew System::EventHandler(this, &Finish::button_save_Click);
+			// 
+			// saveFileDialog
+			// 
+			this->saveFileDialog->Filter = L"Images|*.png;*.bmp;*.jpg";
 			// 
 			// Finish
 			// 
@@ -192,8 +197,25 @@ private: System::Void button_right_Click(System::Object^ sender, System::EventAr
 	this->pictureBox_finish->Image = image_list[count - 1];
 }
 private: System::Void button_save_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (saveFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-		;
+	System::Drawing::Imaging::ImageFormat^ format = System::Drawing::Imaging::ImageFormat::Png;
+	if (saveFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		String^ ext = gcnew String(System::IO::Path::GetExtension(saveFileDialog->FileName));
+		if (ext == ".jpg") {
+			format = System::Drawing::Imaging::ImageFormat::Jpeg;
+		}
+		if (ext == ".bmp"){
+			format = System::Drawing::Imaging::ImageFormat::Bmp;
+		}
+		String^ str = gcnew String("");
+		for (Int64 i = 0; i < image_list->Count; i++)
+		{
+			str = saveFileDialog->FileName;
+			int b = str->LastIndexOf('.');
+			str=str->Insert(b, (i+1).ToString());
+			image_list[i]->Save(str, format);
+		}
+	}
+	this->Close();
 
 }
 };
