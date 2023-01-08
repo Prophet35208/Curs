@@ -17,7 +17,7 @@ int main(cli::array<String^>^ arg) {
 void OpenSettingsForm(int mod, Layer^ layer);
 void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb);
 void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb);
-void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text, Graphics^ g);
+void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
@@ -307,14 +307,10 @@ System::Void Курс::MainForm::MainForm_Paint(System::Object^ sender, System::Wind
 }
 System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System::EventArgs^ e)
 { // Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
-	List<PictureBox^>^ pb_list = gcnew List<PictureBox^>();
+	List<Image^>^ image_list = gcnew List<Image^>();
 	int max_str = 0;
 	// Копия макета
 	PictureBox^ maket_clone = gcnew PictureBox();
-	maket_clone->Image = pictureBox_main_object->Image;
-	maket_clone->Location = pictureBox_main_object->Location;
-	maket_clone->Size = pictureBox_main_object->Size;
-	maket_clone->Visible = 0;
 	Controls->Add(maket_clone);
 	for (size_t i = 0; i < layer_list->Count; i++)
 	{
@@ -329,52 +325,59 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 	if (max_str != 0) {
 		for (size_t i = 0; i < max_str; i++)
 		{
+			maket_clone->Image = pictureBox_main_object->Image;
+			maket_clone->Location = pictureBox_main_object->Location;
+			maket_clone->Size = pictureBox_main_object->Size;
+			maket_clone->Visible = 0;
+
 			PictureBox^ pb = gcnew PictureBox();
 			Graphics^ g = pb->CreateGraphics();
 			pb->Size = maket_clone->Size;
 			for (size_t j = 0; j < layer_list->Count; j++) {
-				if(layer_list[j]->HaveText())
+				if(layer_list[layer_list->Count - j - 1]->HaveText())
 					// Рисование текста с фоном
-					if (*(layer_list[j]->GetTextHaveBackground())) {
-						DrawOnePbOnTopOfAnother(maket_clone, layer_list[j]->GetPictureBox());
+					if (*(layer_list[layer_list->Count - j - 1]->GetTextHaveBackground())) {
+						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count-j-1]->GetPictureBox());
 						// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
-						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[j]->GetPictureBox()->PointToScreen(Point(0, 0))),layer_list[j]->GetPictureBox()->Size);
-						//DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
+						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))),layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
 					}
 					else
 						// Рисование текста без фона
 					{
-						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[j]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[j]->GetPictureBox()->Size);
-						//DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
+						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
 					}
 				else
 					// Рисование фона
 				{
-					DrawOnePbOnTopOfAnother(maket_clone, layer_list[j]->GetPictureBox());
+					DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
 				}
 			}
 			// Теперь добавление одного из готовых конечных изображений в конечный массив
-			pb_list->Add(maket_clone);
+			image_list->Add(maket_clone->Image);
 		}
 		Finish^ f = gcnew Finish();
-		f->pb_list = pb_list;
+		f->image_list = image_list;
 		f->ShowDialog();
 	}
 }
 System::Void Курс::MainForm::button1_Click_1(System::Object^ sender, System::EventArgs^ e)
 {
-	f = 1;
-	pictureBox2->Invalidate();
-
+	Drawing::Font^ f = gcnew Drawing::Font("Arial", 16);
+	DrawTextOnTheMiddleOfRectangleInPictureBox(pictureBox2, Rectangle((Point(0, 0)), pictureBox2->Size), f, "afafafawfafafwafaf");
 }
 
 System::Void Курс::MainForm::pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
+	/*
 	if (f == 1) {
 		Drawing::Font^ f = gcnew Drawing::Font("Arial", 16);
-		DrawOnePbOnTopOfAnother(pictureBox2, pictureBox3);
 		DrawTextOnTheMiddleOfRectangleInPictureBox(pictureBox2, Rectangle((Point(0, 0)), pictureBox2->Size), f, "afafafawfafafwafaf", e->Graphics);
+		this->f = 0;
+		b = gcnew Bitmap(((Bitmap^)pictureBox2->Image), pictureBox2->Width, pictureBox2->Height);
 	}
+	*/
 }
 
 void OpenSettingsForm(int mod ,Layer^ layer) {
@@ -423,13 +426,15 @@ void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 		down_pb->Image = down_bm;
 }
 // Рисует строку в picture box-e, по центру предложенного прямоугольника (Location прямоугольника предоставляется относительно угла picture box) с заданным font
-void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Font^ font, String^ text,Graphics^ g) {
+void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Font^ font, String^ text) {
+	Bitmap^ b = gcnew Bitmap(((Bitmap^)pb->Image), pb->Width, pb->Height);
+	Graphics^ g = Graphics::FromImage(b);
 	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
 	StringFormat ^sf=gcnew StringFormat();
 	sf->LineAlignment = StringAlignment::Center;
 	sf->Alignment = StringAlignment::Center;
 	g->DrawString(text, font, drawBrush, rect, sf);
-
+	pb->Image = b;
 }
 /* Переменные для ратягивания
 		int first_top;

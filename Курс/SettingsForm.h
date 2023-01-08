@@ -170,6 +170,7 @@ namespace Курс {
 			this->MinimumSize = System::Drawing::Size(650, 300);
 			this->Name = L"SettingsForm";
 			this->Text = L"Настройки";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &SettingsForm::SettingsForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Load);
 			this->Resize += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Resize);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->EndInit();
@@ -233,6 +234,9 @@ private: System::Void button_change_color_Click(System::Object^ sender, System::
 		for (int j = 0; j < image->Height; j++)
 			image->SetPixel(i, j, colorDialog->Color);
 	pictureBox_main->Image = image;
+}
+private: System::Void SettingsForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+
 }
 };
 }

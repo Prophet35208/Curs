@@ -15,7 +15,7 @@ namespace Курс {
 	/// </summary>
 	public ref class Finish : public System::Windows::Forms::Form
 	{
-	public: List<PictureBox^>^ pb_list;
+	public: List<Image^>^ image_list;
 	private: int count = 1;
 	public: 
 		Finish(void)
@@ -132,9 +132,9 @@ namespace Курс {
 		pictureBox_finish->Top = ClientSize.Height / 2 - pictureBox_finish->Height / 2;
 	}
 	private: System::Void Finish_Load(System::Object^ sender, System::EventArgs^ e) {
-		pictureBox_finish->Size = pb_list[0]->Size;
-		pictureBox_finish->Image = pb_list[0]->Image;
-		if (pb_list->Count == 1) {
+		pictureBox_finish->Size = image_list[0]->Size;
+		pictureBox_finish->Image = image_list[0];
+		if (image_list->Count == 1) {
 			button_right->Enabled = 0;
 			button_left->Enabled = 0;
 		}
@@ -155,24 +155,26 @@ namespace Курс {
 	}
 	private: System::Void button_left_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (count >1) {
-			pictureBox_finish->Image = pb_list[count-2]->Image;
+			pictureBox_finish->Image = image_list[count-2];
 			count--;
 		}
 		if (count == 1)
 			button_left->Enabled = 0;
-		if (count < pb_list->Count)
+		if (count < image_list->Count)
 			button_right->Enabled = 1;
+		this->pictureBox_finish->Image = image_list[count - 1];
 	}
 private: System::Void button_right_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (count < pb_list->Count) {
-		pictureBox_finish->Image = pb_list[count]->Image;
+	if (count < image_list->Count) {
+		pictureBox_finish->Image = image_list[count];
 		count++;
 	}
-	if (count == pb_list->Count)
-		button_left->Enabled = 0;
+	if (count == image_list->Count)
+		button_right->Enabled = 0;
 	if (count > 1) {
 		button_left->Enabled = 1;
 	}
+	this->pictureBox_finish->Image = image_list[count - 1];
 }
 };
 }
