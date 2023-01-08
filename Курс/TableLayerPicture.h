@@ -17,6 +17,8 @@ public:
     void GetUp() override;
     void GetDown() override;
     int HaveText() override;
+    int GetNumStrings() override;
+    void SetNumStrings(int num) override;
     friend ITableLayer* ITableLayer::CreatePicture(int number_in_table);
 };
 

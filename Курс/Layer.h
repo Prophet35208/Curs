@@ -9,7 +9,7 @@ ref class Layer : public PictureBoxInstanceWithText
 {
 private:
 	ITableLayer* ILayer;
-	bool* text_have_background = false;
+	bool* text_have_background = new bool(false);
 public:
 	Layer(PictureBox^ pb, int num_in_table);
 	Layer(PictureBox^ pb, int num_in_table,int num_strings);
@@ -18,6 +18,8 @@ public:
 	void GetDown();
 	bool* GetTextHaveBackground();
 	void SetTextHaveBackground(bool b);
+	int GetNumStr();
+	void SetNumStr(int num);
 	// ќбновл€ет чередование слоЄв согласно их пор€дку в списке (список слоЄв объ€влен в гланой форме)
 	static void RefreshLayers(List<Layer^>^ layer_list);
 };

@@ -16,6 +16,7 @@ namespace Курс {
 	/// </summary>
 	public ref class SettingsForm : public System::Windows::Forms::Form
 	{
+	public: int* num_str;
 	public: PictureBox^ current_picture_box;
 	public: List<String^>^ current_str_list;
 	public: List<String^>^ locale_str_list = gcnew List<String^>();
@@ -208,7 +209,8 @@ namespace Курс {
 	}
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	current_picture_box->Image = pictureBox_main->Image;
-	current_str_list = locale_str_list;
+	current_str_list->Clear();
+	current_str_list->AddRange(locale_str_list);
 	if (checkBox_background->Checked == 1)
 		*background_check = 0;
 	this->Close();
@@ -217,6 +219,7 @@ private: System::Void button_attach_text_Click(System::Object^ sender, System::E
 	CreateStringList^ csl = gcnew CreateStringList();
 	csl->str_list_current = locale_str_list;
 	csl->font_current = cur_font;
+	csl->num_str = num_str;
 	csl->ShowDialog();
 	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 	//	int a;

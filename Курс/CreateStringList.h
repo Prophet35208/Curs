@@ -15,6 +15,7 @@ namespace Курс {
 	/// </summary>
 	public ref class CreateStringList : public System::Windows::Forms::Form
 	{
+	public: int* num_str;
 	public: List<String^>^ str_list_current;
 	public: List<String^>^ str_list_local = gcnew List<String^>();
 	public: System::Drawing::Font^ font_current;
@@ -263,8 +264,11 @@ private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender
 }
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (richTextBox_all_strings->Font != nullptr && str_list_local->Count > 0) {
+		str_list_current->Clear();
+		str_list_current->AddRange(str_list_local);
 		str_list_current = str_list_local;
 		font_current = richTextBox_all_strings->Font;
+		*num_str = str_list_local->Count;
 		this->Close();
 	}
 	else

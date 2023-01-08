@@ -15,7 +15,9 @@ namespace Курс {
 	/// </summary>
 	public ref class Finish : public System::Windows::Forms::Form
 	{
-	public: List<Layer^>^ layer_list;
+	public: List<PictureBox^>^ pb_list;
+	private: int count = 1;
+	public: 
 		Finish(void)
 		{
 			InitializeComponent();
@@ -36,8 +38,11 @@ namespace Курс {
 			}
 		}
 	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::PictureBox^ pictureBox_finish;
+	private: System::Windows::Forms::Button^ button_left;	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ button_right;
 	protected:
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
 
 	private:
 		/// <summary>
@@ -53,8 +58,10 @@ namespace Курс {
 		void InitializeComponent(void)
 		{
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->pictureBox_finish = (gcnew System::Windows::Forms::PictureBox());
+			this->button_left = (gcnew System::Windows::Forms::Button());
+			this->button_right = (gcnew System::Windows::Forms::Button());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_finish))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -66,30 +73,106 @@ namespace Курс {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(145, 24);
 			this->label1->TabIndex = 0;
-			this->label1->Text = L"Предпросмтор";
+			this->label1->Text = L"Предпросмотр";
 			// 
-			// pictureBox1
+			// pictureBox_finish
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(281, 175);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(100, 50);
-			this->pictureBox1->TabIndex = 1;
-			this->pictureBox1->TabStop = false;
+			this->pictureBox_finish->Location = System::Drawing::Point(251, 185);
+			this->pictureBox_finish->Name = L"pictureBox_finish";
+			this->pictureBox_finish->Size = System::Drawing::Size(100, 50);
+			this->pictureBox_finish->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox_finish->TabIndex = 1;
+			this->pictureBox_finish->TabStop = false;
+			// 
+			// button_left
+			// 
+			this->button_left->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button_left->Location = System::Drawing::Point(165, 9);
+			this->button_left->Name = L"button_left";
+			this->button_left->Size = System::Drawing::Size(49, 36);
+			this->button_left->TabIndex = 2;
+			this->button_left->Text = L"<";
+			this->button_left->UseVisualStyleBackColor = true;
+			this->button_left->Click += gcnew System::EventHandler(this, &Finish::button_left_Click);
+			// 
+			// button_right
+			// 
+			this->button_right->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button_right->Location = System::Drawing::Point(371, 9);
+			this->button_right->Name = L"button_right";
+			this->button_right->Size = System::Drawing::Size(49, 36);
+			this->button_right->TabIndex = 3;
+			this->button_right->Text = L">";
+			this->button_right->UseVisualStyleBackColor = true;
+			this->button_right->Click += gcnew System::EventHandler(this, &Finish::button_right_Click);
 			// 
 			// Finish
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(657, 456);
-			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->button_right);
+			this->Controls->Add(this->button_left);
+			this->Controls->Add(this->pictureBox_finish);
 			this->Controls->Add(this->label1);
 			this->Name = L"Finish";
 			this->Text = L"Подготовка к сохранению";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			this->Load += gcnew System::EventHandler(this, &Finish::Finish_Load);
+			this->Resize += gcnew System::EventHandler(this, &Finish::Finish_Resize);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_finish))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-	};
+	private: System::Void Finish_Resize(System::Object^ sender, System::EventArgs^ e) {
+		pictureBox_finish->Left = ClientSize.Width / 2 - pictureBox_finish->Width / 2;
+		pictureBox_finish->Top = ClientSize.Height / 2 - pictureBox_finish->Height / 2;
+	}
+	private: System::Void Finish_Load(System::Object^ sender, System::EventArgs^ e) {
+		pictureBox_finish->Size = pb_list[0]->Size;
+		pictureBox_finish->Image = pb_list[0]->Image;
+		if (pb_list->Count == 1) {
+			button_right->Enabled = 0;
+			button_left->Enabled = 0;
+		}
+		pictureBox_finish->Left = ClientSize.Width / 2 - pictureBox_finish->Width / 2;
+		pictureBox_finish->Top = ClientSize.Height / 2 - pictureBox_finish->Height / 2;
+		this->MinimumSize = System::Drawing::Size(200 + pictureBox_finish->Width, 200 + pictureBox_finish->Height);
+		int min_width;
+		int min_height;
+		if (200 + pictureBox_finish->Width < 650)
+			min_width = 650;
+		else
+			min_width = 200 + pictureBox_finish->Width;
+		if (200 + pictureBox_finish->Height < 300)
+			min_height = 300;
+		else
+			min_height = 200 + pictureBox_finish->Height;
+		this->MinimumSize = System::Drawing::Size(min_width, min_height);
+	}
+	private: System::Void button_left_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (count >1) {
+			pictureBox_finish->Image = pb_list[count-2]->Image;
+			count--;
+		}
+		if (count == 1)
+			button_left->Enabled = 0;
+		if (count < pb_list->Count)
+			button_right->Enabled = 1;
+	}
+private: System::Void button_right_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (count < pb_list->Count) {
+		pictureBox_finish->Image = pb_list[count]->Image;
+		count++;
+	}
+	if (count == pb_list->Count)
+		button_left->Enabled = 0;
+	if (count > 1) {
+		button_left->Enabled = 1;
+	}
+}
+};
 }

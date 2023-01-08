@@ -31,6 +31,16 @@ int TableLayerPicture::HaveText()
     return 0;
 }
 
+int TableLayerPicture::GetNumStrings()
+{
+    return 0;
+}
+
+void TableLayerPicture::SetNumStrings(int num)
+{
+    throw "DontHaveTextCapacity";
+}
+
 
 
 

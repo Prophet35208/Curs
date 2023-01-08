@@ -25,6 +25,16 @@ int TableLayerPictureWithText::HaveText()
 	return 1;
 }
 
+int TableLayerPictureWithText::GetNumStrings()
+{
+	return num_strings;
+}
+
+void TableLayerPictureWithText::SetNumStrings(int num)
+{
+	this->num_strings = num;
+}
+
 void TableLayerPictureWithText::Delete() { delete this; }
 
 ITableLayer* ITableLayer::CreatePictureWithText(int number_in_table)

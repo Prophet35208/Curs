@@ -37,6 +37,17 @@ void Layer::SetTextHaveBackground(bool b)
 	*this->text_have_background = b;
 }
 
+int Layer::GetNumStr()
+{
+	return ILayer->GetNumStrings();
+}
+
+void Layer::SetNumStr(int num)
+{
+	if (ILayer->HaveText())
+		ILayer->SetNumStrings(num);
+}
+
 void Layer::RefreshLayers(List<Layer^>^ layer_list)
 {
 	for (int i = layer_list->Count - 1; i >= 0; i--)
