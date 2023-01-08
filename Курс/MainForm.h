@@ -307,9 +307,9 @@ namespace Курс {
 			// pictureBox2
 			// 
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(969, 229);
+			this->pictureBox2->Location = System::Drawing::Point(777, 61);
 			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(231, 147);
+			this->pictureBox2->Size = System::Drawing::Size(274, 217);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox2->TabIndex = 9;
 			this->pictureBox2->TabStop = false;
@@ -318,9 +318,9 @@ namespace Курс {
 			// 
 			this->pictureBox3->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(999, 248);
+			this->pictureBox3->Location = System::Drawing::Point(836, 133);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(176, 116);
+			this->pictureBox3->Size = System::Drawing::Size(253, 184);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox3->TabIndex = 10;
 			this->pictureBox3->TabStop = false;

@@ -367,35 +367,38 @@ void DrawOnePbFropDownAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 		}
 	pb_cur->Image = image;
 }
-// Доделать
+// Рисует одно изображение поверх другого. Если 
 void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 	// Создание Bitmap-ов, соразмерных picturebox-ам
 	Bitmap^ upper_bm = gcnew Bitmap(upper_pb->Width, upper_pb->Height);
 	Bitmap^ down_bm=gcnew Bitmap(down_pb->Width, down_pb->Height);
 	Point p;
 	// Определение степени сжатия картинки
-	float stretch_X_upper = upper_pb->Image->Width / (float)upper_pb->Width;
-	float stretch_Y_upper = upper_pb->Image->Height / (float)upper_pb->Height;
-	float stretch_X_down = down_pb->Image->Width / (float)down_pb->Width;
-	float stretch_Y_down = down_pb->Image->Height / (float)down_pb->Height;
+	
+	upper_bm = gcnew Bitmap(upper_pb->Image, upper_bm->Size);
+	down_bm = gcnew Bitmap(down_pb->Image, down_pb->Size);
+
+	/*
 	// Заполнение сжатых Bitmap-ов сжатыми изображениями
 	for (int i = 0; i < upper_pb->Width; i++)
 		for (int j = 0; j < upper_pb->Height; j++) {
 			p = Point(i, j);
-			Color c = ((Bitmap^)upper_pb->Image)->GetPixel(p.X , p.Y);
+			Color c = ((Bitmap^)upper_pb->Image)->GetPixel(p.X* stretch_X_upper, p.Y* stretch_Y_upper);
 			upper_bm->SetPixel(i, j, c);
 		}
 	for (int i = 0; i < down_pb->Width; i++)
 		for (int j = 0; j < down_pb->Height; j++) {
 			p = Point(i, j);
-			Color c = ((Bitmap^)down_pb->Image)->GetPixel(p.X, p.Y);
-			upper_bm->SetPixel(i, j, c);
+			Color c = ((Bitmap^)down_pb->Image)->GetPixel(p.X* stretch_X_down, p.Y* stretch_Y_down);
+			down_bm->SetPixel(i, j, c);
 		}
+	*/
 	// Рисование одного Bitmap-а поверх другого (верхний повер нижнего)
-	Point start(upper_pb->PointToClient(((PictureBox^)(upper_pb->Container))->PointToScreen((upper_pb->Location))));
-		for (int i = 0; i <= upper_bm->Width; i++)
-			for (int j = 0; j <= upper_bm->Height; j++) {
-				down_bm->SetPixel(i + start.X, j + start.Y, upper_bm->GetPixel(i, j));
+	Point start(down_pb->PointToClient(upper_pb->PointToScreen(Point(0,0))));
+		for (int i = 0; i < upper_bm->Width; i++)
+			for (int j = 0; j < upper_bm->Height; j++) {
+				if(i + start.X<down_bm->Width&& j + start.Y<down_bm->Height)
+					down_bm->SetPixel(i + start.X, j + start.Y, upper_bm->GetPixel(i, j));
 			}
 	// Конечная установка изображения
 		down_pb->Image = down_bm;
