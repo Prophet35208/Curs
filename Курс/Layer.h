@@ -9,7 +9,7 @@ ref class Layer : public PictureBoxInstanceWithText
 {
 private:
 	ITableLayer* ILayer;
-	bool* text_have_background = new bool(false);
+	bool* text_have_background = new bool(true);
 public:
 	Layer(PictureBox^ pb, int num_in_table);
 	Layer(PictureBox^ pb, int num_in_table,int num_strings);
