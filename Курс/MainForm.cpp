@@ -17,7 +17,7 @@ int main(cli::array<String^>^ arg) {
 void OpenSettingsForm(int mod, Layer^ layer);
 void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb);
 void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb);
-void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text);
+void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text, Graphics^ g);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
@@ -339,13 +339,13 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 						DrawOnePbOnTopOfAnother(maket_clone, layer_list[j]->GetPictureBox());
 						// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
 						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[j]->GetPictureBox()->PointToScreen(Point(0, 0))),layer_list[j]->GetPictureBox()->Size);
-						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
+						//DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
 					}
 					else
 						// Рисование текста без фона
 					{
 						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[j]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[j]->GetPictureBox()->Size);
-						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
+						//DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[j]->GetFont(), layer_list[j]->GetStringList()[i]);
 					}
 				else
 					// Рисование фона
@@ -363,8 +363,20 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 }
 System::Void Курс::MainForm::button1_Click_1(System::Object^ sender, System::EventArgs^ e)
 {
-	DrawOnePbOnTopOfAnother(pictureBox2, pictureBox3);
+	f = 1;
+	pictureBox2->Invalidate();
+
 }
+
+System::Void Курс::MainForm::pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+{
+	if (f == 1) {
+		Drawing::Font^ f = gcnew Drawing::Font("Arial", 16);
+		DrawOnePbOnTopOfAnother(pictureBox2, pictureBox3);
+		DrawTextOnTheMiddleOfRectangleInPictureBox(pictureBox2, Rectangle((Point(0, 0)), pictureBox2->Size), f, "afafafawfafafwafaf", e->Graphics);
+	}
+}
+
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	int num_str=0;
 	SettingsForm^ sf = gcnew SettingsForm();
@@ -400,7 +412,7 @@ void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 	Bitmap^ upper_bm = gcnew Bitmap(upper_pb->Image, upper_pb->Size);
 	Bitmap^ down_bm = gcnew Bitmap(down_pb->Image, down_pb->Size);
 
-	// Рисование одного Bitmap-а поверх другого (верхний повер нижнего). Рисование относительного их 
+	// Рисование одного Bitmap-а поверх другого (верхний поверх нижнего). Рисование относительного их 
 	Point start(down_pb->PointToClient(upper_pb->PointToScreen(Point(0,0))));
 		for (int i = 0; i < upper_bm->Width; i++)
 			for (int j = 0; j < upper_bm->Height; j++) {
@@ -411,9 +423,8 @@ void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
 		down_pb->Image = down_bm;
 }
 // Рисует строку в picture box-e, по центру предложенного прямоугольника (Location прямоугольника предоставляется относительно угла picture box) с заданным font
-void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Font^ font, String^ text) {
+void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Font^ font, String^ text,Graphics^ g) {
 	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
-	Graphics^ g = pb->CreateGraphics();
 	StringFormat ^sf=gcnew StringFormat();
 	sf->LineAlignment = StringAlignment::Center;
 	sf->Alignment = StringAlignment::Center;

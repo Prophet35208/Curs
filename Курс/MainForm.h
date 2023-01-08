@@ -262,7 +262,8 @@ namespace Курс {
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->pictureBox_main_object->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox_main_object->Location = System::Drawing::Point(91, 166);
+			this->pictureBox_main_object->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox_main_object.Image")));
+			this->pictureBox_main_object->Location = System::Drawing::Point(117, 167);
 			this->pictureBox_main_object->MinimumSize = System::Drawing::Size(30, 30);
 			this->pictureBox_main_object->Name = L"pictureBox_main_object";
 			this->pictureBox_main_object->Size = System::Drawing::Size(523, 404);
@@ -276,9 +277,9 @@ namespace Курс {
 			// 
 			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(310, 104);
+			this->pictureBox1->Location = System::Drawing::Point(525, 74);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(124, 36);
+			this->pictureBox1->Size = System::Drawing::Size(210, 97);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
@@ -307,18 +308,19 @@ namespace Курс {
 			// pictureBox2
 			// 
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(777, 61);
+			this->pictureBox2->Location = System::Drawing::Point(263, 210);
 			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(274, 217);
+			this->pictureBox2->Size = System::Drawing::Size(234, 168);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox2->TabIndex = 9;
 			this->pictureBox2->TabStop = false;
+			this->pictureBox2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::pictureBox2_Paint);
 			// 
 			// pictureBox3
 			// 
 			this->pictureBox3->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(836, 133);
+			this->pictureBox3->Location = System::Drawing::Point(666, 224);
 			this->pictureBox3->Name = L"pictureBox3";
 			this->pictureBox3->Size = System::Drawing::Size(253, 184);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -353,7 +355,6 @@ namespace Курс {
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
-			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::MainForm_Paint);
 			this->Resize += gcnew System::EventHandler(this, &MainForm::MainForm_Resize);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
 			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
@@ -387,5 +388,6 @@ private: System::Void button_recreate_main_Click(System::Object^ sender, System:
 private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 private: System::Void button_finish_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e);
+private: System::Void pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 };
 }
