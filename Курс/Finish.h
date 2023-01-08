@@ -18,7 +18,6 @@ namespace Курс {
 	public: List<Image^>^ image_list;
 	private: System::Windows::Forms::Button^ button_save;
 	private: System::Windows::Forms::SaveFileDialog^ saveFileDialog;
-	public:
 	private: int count = 1;
 	public: 
 		Finish(void)
