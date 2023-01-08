@@ -169,6 +169,7 @@ namespace Курс {
 			this->Controls->Add(this->button_change_picture);
 			this->MinimumSize = System::Drawing::Size(650, 300);
 			this->Name = L"SettingsForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Настройки";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &SettingsForm::SettingsForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Load);

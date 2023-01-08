@@ -243,7 +243,6 @@ private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender
 }*/
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	richTextBox_all_strings->Clear();
-	richTextBox_all_strings->Enabled = 1;
 }
 private: System::Void button_change_font_off_all_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (richTextBox_all_strings->Text->Length != 0) {
@@ -263,6 +262,19 @@ private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender
 	label_num_strings->Text = "Количество строк: ";
 }
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
+	str_list_local->Clear();
+	String^ str = gcnew String("");
+	str = richTextBox_all_strings->Text;
+	cli::array<String^>^ arr = str->Split('\n');
+	for (size_t i = 0; i < arr->Length; i++)
+	{
+		if (arr[i] != "")
+			str_list_local->Add(arr[i]);
+	}
+	Int64 a;
+	a = str_list_local->Count;
+	label_num_strings->Text = "Количество строк: " + a.ToString();
+
 	if (richTextBox_all_strings->Font != nullptr && str_list_local->Count > 0) {
 		str_list_current->Clear();
 		str_list_current->AddRange(str_list_local);

@@ -16,6 +16,9 @@ namespace Курс {
 	public ref class Finish : public System::Windows::Forms::Form
 	{
 	public: List<Image^>^ image_list;
+	private: System::Windows::Forms::Button^ button_save;
+	private: System::Windows::Forms::SaveFileDialog^ saveFileDialog;
+	public:
 	private: int count = 1;
 	public: 
 		Finish(void)
@@ -61,6 +64,8 @@ namespace Курс {
 			this->pictureBox_finish = (gcnew System::Windows::Forms::PictureBox());
 			this->button_left = (gcnew System::Windows::Forms::Button());
 			this->button_right = (gcnew System::Windows::Forms::Button());
+			this->button_save = (gcnew System::Windows::Forms::Button());
+			this->saveFileDialog = (gcnew System::Windows::Forms::SaveFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_finish))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -77,7 +82,7 @@ namespace Курс {
 			// 
 			// pictureBox_finish
 			// 
-			this->pictureBox_finish->Location = System::Drawing::Point(251, 185);
+			this->pictureBox_finish->Location = System::Drawing::Point(254, 185);
 			this->pictureBox_finish->Name = L"pictureBox_finish";
 			this->pictureBox_finish->Size = System::Drawing::Size(100, 50);
 			this->pictureBox_finish->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -108,11 +113,22 @@ namespace Курс {
 			this->button_right->UseVisualStyleBackColor = true;
 			this->button_right->Click += gcnew System::EventHandler(this, &Finish::button_right_Click);
 			// 
+			// button_save
+			// 
+			this->button_save->Location = System::Drawing::Point(539, 390);
+			this->button_save->Name = L"button_save";
+			this->button_save->Size = System::Drawing::Size(106, 54);
+			this->button_save->TabIndex = 4;
+			this->button_save->Text = L"Сохранить изображения в директорию";
+			this->button_save->UseVisualStyleBackColor = true;
+			this->button_save->Click += gcnew System::EventHandler(this, &Finish::button_save_Click);
+			// 
 			// Finish
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(657, 456);
+			this->Controls->Add(this->button_save);
 			this->Controls->Add(this->button_right);
 			this->Controls->Add(this->button_left);
 			this->Controls->Add(this->pictureBox_finish);
@@ -175,6 +191,11 @@ private: System::Void button_right_Click(System::Object^ sender, System::EventAr
 		button_left->Enabled = 1;
 	}
 	this->pictureBox_finish->Image = image_list[count - 1];
+}
+private: System::Void button_save_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (saveFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+		;
+
 }
 };
 }

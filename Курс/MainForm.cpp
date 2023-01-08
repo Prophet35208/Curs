@@ -155,6 +155,11 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 			//
 			layer_list->Insert(0, (% Layer(pb, layer_list->Count + 2,0)));
 			OpenSettingsForm(2, layer_list[0]);
+			if (layer_list[0]->GetStringList()->Count > 0) {
+				this->layer_list[0]->GetPictureBox()->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::LayerWitnText_Paint_1);
+				this->layer_list[0]->GetPictureBox()->Invalidate();
+			}
+
 		}
 
 
@@ -249,6 +254,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 		}
 	}
 }
+/*
 System::Void Курс::MainForm::pictureBox1_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	Graphics^ g = pictureBox1->CreateGraphics();
@@ -264,6 +270,7 @@ System::Void Курс::MainForm::pictureBox1_Click(System::Object^ sender, System::E
 	g->DrawString("afafawfawfawfaffafaf", fn, drawBrush, a, % sf);
 	this->pictureBox1->Cursor->Clip = Rectangle(this->pictureBox1->PointToScreen(Point(100, 100)), System::Drawing::Size(1, 1)); 
 }
+*/
 System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image_with_text = 1;
@@ -317,12 +324,11 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 		if (layer_list[i]->HaveText()) {
 			if (max_str == 0)
 				max_str = layer_list[i]->GetStringList()->Count;
-			if (layer_list[i]->GetStringList()->Count < max_str)
+			if (layer_list[i]->GetStringList()->Count < max_str && layer_list[i]->GetStringList()->Count!=0)
 				max_str = layer_list[i]->GetStringList()->Count;
 
 		}
 	}
-	if (max_str != 0) {
 		for (size_t i = 0; i < max_str; i++)
 		{
 			maket_clone->Image = pictureBox_main_object->Image;
@@ -334,22 +340,29 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 			Graphics^ g = pb->CreateGraphics();
 			pb->Size = maket_clone->Size;
 			for (size_t j = 0; j < layer_list->Count; j++) {
-				if(layer_list[layer_list->Count - j - 1]->HaveText())
-					// Рисование текста с фоном
-					if (*(layer_list[layer_list->Count - j - 1]->GetTextHaveBackground())) {
-						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count-j-1]->GetPictureBox());
-						// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
-						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))),layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
-						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
-					}
+				if (layer_list[layer_list->Count - j - 1]->HaveText())
+					if (layer_list[layer_list->Count - j - 1]->GetStringList()->Count != 0)
+						// Рисование текста с фоном
+						if (*(layer_list[layer_list->Count - j - 1]->GetTextHaveBackground())) {
+							DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
+							// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
+							Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+							DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
+						}
+						else
+							// Рисование текста без фона
+						{
+							Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+							DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
+						}
 					else
-						// Рисование текста без фона
+					// Рисование фона (предполагается, что, если пользователь не назначил текст, то элемент становиться обычным фоном)
 					{
-						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
-						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
+						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
 					}
+
 				else
-					// Рисование фона
+				// Рисование фона
 				{
 					DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
 				}
@@ -360,24 +373,36 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 		Finish^ f = gcnew Finish();
 		f->image_list = image_list;
 		f->ShowDialog();
-	}
-}
-System::Void Курс::MainForm::button1_Click_1(System::Object^ sender, System::EventArgs^ e)
-{
-	Drawing::Font^ f = gcnew Drawing::Font("Arial", 16);
-	DrawTextOnTheMiddleOfRectangleInPictureBox(pictureBox2, Rectangle((Point(0, 0)), pictureBox2->Size), f, "afafafawfafafwafaf");
 }
 
-System::Void Курс::MainForm::pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+System::Void Курс::MainForm::MainForm_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
-	/*
-	if (f == 1) {
-		Drawing::Font^ f = gcnew Drawing::Font("Arial", 16);
-		DrawTextOnTheMiddleOfRectangleInPictureBox(pictureBox2, Rectangle((Point(0, 0)), pictureBox2->Size), f, "afafafawfafafwafaf", e->Graphics);
-		this->f = 0;
-		b = gcnew Bitmap(((Bitmap^)pictureBox2->Image), pictureBox2->Width, pictureBox2->Height);
-	}
-	*/
+
+	pictureBox_main_object->Left = (ClientSize.Width - main_table->Width) / 2 - pictureBox_main_object->Width / 2;
+	pictureBox_main_object->Top = ClientSize.Height / 2 - pictureBox_main_object->Height / 2;
+	this->MinimumSize = System::Drawing::Size(200 + pictureBox_main_object->Width + main_table->Width, 200 + pictureBox_main_object->Height);
+	int min_width;
+	int min_height;
+	if (200 + pictureBox_main_object->Width + main_table->Width < 1450)
+		min_width = 1450;
+	else
+		min_width = 200 + pictureBox_main_object->Width + main_table->Width;
+	if (200 + pictureBox_main_object->Height < 700)
+		min_height = 700;
+	else
+		min_height = 200 + pictureBox_main_object->Height;
+	this->MinimumSize = System::Drawing::Size(min_width, min_height);
+}
+System::Void Курс::MainForm::LayerWitnText_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+
+	PictureBox^ pb = (PictureBox^)sender;
+	Graphics^ g = e->Graphics;
+	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
+	StringFormat^ sf = gcnew StringFormat();
+	System::Drawing::Font^ fn = gcnew System::Drawing::Font(FontFamily::GenericSansSerif, 12.0F, FontStyle::Bold);
+	sf->LineAlignment = StringAlignment::Center;
+	sf->Alignment = StringAlignment::Center;
+	g->DrawString("Sample Text", fn, drawBrush, Rectangle(Point(0,0), pb->Size), sf);
 }
 
 void OpenSettingsForm(int mod ,Layer^ layer) {

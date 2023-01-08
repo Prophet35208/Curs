@@ -138,6 +138,7 @@ namespace Курс {
 			this->Controls->Add(this->label_width);
 			this->Controls->Add(this->label_up);
 			this->Name = L"SetMaket";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Установите размеры";
 			this->ResumeLayout(false);
 			this->PerformLayout();
