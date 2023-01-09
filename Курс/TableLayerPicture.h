@@ -14,6 +14,7 @@ protected:
 public:
     void Delete() override;
     int GetNumInTable() override;
+    virtual void SetNumberInTable(int num) override;
     void GetUp() override;
     void GetDown() override;
     int HaveText() override;

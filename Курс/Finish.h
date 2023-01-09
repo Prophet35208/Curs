@@ -15,9 +15,13 @@ namespace Курс {
 	/// </summary>
 	public ref class Finish : public System::Windows::Forms::Form
 	{
+	// Совокупность конечных изображений
 	public: List<Image^>^ image_list;
+	// Сохранение изображений в папку
 	private: System::Windows::Forms::Button^ button_save;
+	// Окно сохранения
 	private: System::Windows::Forms::SaveFileDialog^ saveFileDialog;
+	// Вспомогательная переменная для определения текущей позиции предпросмотра
 	private: int count = 1;
 	public: 
 		Finish(void)
@@ -147,11 +151,13 @@ namespace Курс {
 
 		}
 #pragma endregion
-	private: System::Void Finish_Resize(System::Object^ sender, System::EventArgs^ e) {
+// Контроль за размером окна предпросмотра
+private: System::Void Finish_Resize(System::Object^ sender, System::EventArgs^ e) {
 		pictureBox_finish->Left = ClientSize.Width / 2 - pictureBox_finish->Width / 2;
 		pictureBox_finish->Top = ClientSize.Height / 2 - pictureBox_finish->Height / 2;
 	}
-	private: System::Void Finish_Load(System::Object^ sender, System::EventArgs^ e) {
+// Контроль за минимальным размером окна в зависимости от размеров макета (размер макета знаем из размеров изображений)
+private: System::Void Finish_Load(System::Object^ sender, System::EventArgs^ e) {
 		pictureBox_finish->Size = image_list[0]->Size;
 		pictureBox_finish->Image = image_list[0];
 		if (image_list->Count == 1) {
@@ -173,7 +179,8 @@ namespace Курс {
 			min_height = 200 + pictureBox_finish->Height;
 		this->MinimumSize = System::Drawing::Size(min_width, min_height);
 	}
-	private: System::Void button_left_Click(System::Object^ sender, System::EventArgs^ e) {
+// Перйти к предыдущей картинке
+private: System::Void button_left_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (count >1) {
 			pictureBox_finish->Image = image_list[count-2];
 			count--;
@@ -184,6 +191,7 @@ namespace Курс {
 			button_right->Enabled = 1;
 		this->pictureBox_finish->Image = image_list[count - 1];
 	}
+// Перейти к следующей картинке
 private: System::Void button_right_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (count < image_list->Count) {
 		pictureBox_finish->Image = image_list[count];
@@ -196,6 +204,7 @@ private: System::Void button_right_Click(System::Object^ sender, System::EventAr
 	}
 	this->pictureBox_finish->Image = image_list[count - 1];
 }
+// Сохранение изображений в выбранной директории. Все изображения получают числовой порядковый постфикс
 private: System::Void button_save_Click(System::Object^ sender, System::EventArgs^ e) {
 	System::Drawing::Imaging::ImageFormat^ format = System::Drawing::Imaging::ImageFormat::Png;
 	if (saveFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {

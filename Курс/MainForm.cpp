@@ -15,18 +15,12 @@ int main(cli::array<String^>^ arg) {
 	Application::Run(% form);
 }
 void OpenSettingsForm(int mod, Layer^ layer);
-void MakePbTransparent(PictureBox^ down_pb, PictureBox^ upper_pb);
 void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb);
 void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
 	create_image_with_text = 0;
-}
-System::Void Курс::MainForm::удалитьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	delete contextMenuStrip_delete_main_element->SourceControl;
-
 }
 System::Void Курс::MainForm::pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
@@ -139,7 +133,6 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 		pb->Image = image;
 		pb->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		Controls->Add(pb);
-		pb->ContextMenuStrip = this->contextMenuStrip_delete_main_element;
 		pb->BringToFront();
 
 
@@ -313,22 +306,24 @@ System::Void Курс::MainForm::MainForm_Paint(System::Object^ sender, System::Wind
 	this->MinimumSize = System::Drawing::Size(200 + pictureBox_main_object->Width + main_table->Width, 200 + pictureBox_main_object->Height);
 }
 System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System::EventArgs^ e)
-{ // Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
-	List<Image^>^ image_list = gcnew List<Image^>();
-	int max_str = 0;
-	// Копия макета
-	PictureBox^ maket_clone = gcnew PictureBox();
-	Controls->Add(maket_clone);
-	for (size_t i = 0; i < layer_list->Count; i++)
-	{
-		if (layer_list[i]->HaveText()) {
-			if (max_str == 0)
-				max_str = layer_list[i]->GetStringList()->Count;
-			if (layer_list[i]->GetStringList()->Count < max_str && layer_list[i]->GetStringList()->Count!=0)
-				max_str = layer_list[i]->GetStringList()->Count;
+{
+	if (layer_list->Count != 0) {
+		// Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
+		List<Image^>^ image_list = gcnew List<Image^>();
+		int max_str = 0;
+		// Копия макета
+		PictureBox^ maket_clone = gcnew PictureBox();
+		Controls->Add(maket_clone);
+		for (size_t i = 0; i < layer_list->Count; i++)
+		{
+			if (layer_list[i]->HaveText()) {
+				if (max_str == 0)
+					max_str = layer_list[i]->GetStringList()->Count;
+				if (layer_list[i]->GetStringList()->Count < max_str && layer_list[i]->GetStringList()->Count != 0)
+					max_str = layer_list[i]->GetStringList()->Count;
 
+			}
 		}
-	}
 		for (size_t i = 0; i < max_str; i++)
 		{
 			maket_clone->Image = pictureBox_main_object->Image;
@@ -356,13 +351,13 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 							DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
 						}
 					else
-					// Рисование фона (предполагается, что, если пользователь не назначил текст, то элемент становиться обычным фоном)
+						// Рисование фона (предполагается, что, если пользователь не назначил текст, то элемент становиться обычным фоном)
 					{
 						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
 					}
 
 				else
-				// Рисование фона
+					// Рисование фона
 				{
 					DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
 				}
@@ -373,8 +368,10 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 		Finish^ f = gcnew Finish();
 		f->image_list = image_list;
 		f->ShowDialog();
+	}
+	else
+		MessageBox::Show("В макете нет ни одного слоя");
 }
-
 System::Void Курс::MainForm::MainForm_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
 
@@ -404,7 +401,6 @@ System::Void Курс::MainForm::LayerWitnText_Paint_1(System::Object^ sender, Syste
 	sf->Alignment = StringAlignment::Center;
 	g->DrawString("Sample Text", fn, drawBrush, Rectangle(Point(0,0), pb->Size), sf);
 }
-
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	int num_str=0;
 	SettingsForm^ sf = gcnew SettingsForm();

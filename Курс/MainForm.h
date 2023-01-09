@@ -2,13 +2,6 @@
 #include <math.h>
 #include "Layer.h"
 #include "SetMaket.h"
-/*
-c_str - ïåğåâîä string â const char
-	string a("fafa");
-	String^ st = gcnew String(a.c_str());
-
-	ToCharArray - ïåğåâîä îò String^ ê string (÷åğåç char*)
-*/
 namespace Êóğñ {
 
 	using namespace System::Collections::Generic;
@@ -68,8 +61,8 @@ namespace Êóğñ {
 	private: System::Windows::Forms::Button^ button_recreate_main;
 	private: System::Windows::Forms::PictureBox^ main_element;
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
-	private: System::Windows::Forms::ContextMenuStrip^ contextMenuStrip_delete_main_element;
-	private: System::Windows::Forms::ToolStripMenuItem^ óäàëèòüToolStripMenuItem;
+
+
 
 
 
@@ -150,7 +143,6 @@ namespace Êóğñ {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->button_create_picture = (gcnew System::Windows::Forms::Button());
 			this->button_set_image_to_object = (gcnew System::Windows::Forms::Button());
@@ -160,13 +152,10 @@ namespace Êóğñ {
 			this->up = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			this->down = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			this->delete_line = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->contextMenuStrip_delete_main_element = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-			this->óäàëèòüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->pictureBox_main_object = (gcnew System::Windows::Forms::PictureBox());
 			this->button_recreate_main = (gcnew System::Windows::Forms::Button());
 			this->button_finish = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->BeginInit();
-			this->contextMenuStrip_delete_main_element->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -242,19 +231,6 @@ namespace Êóğñ {
 			this->delete_line->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->delete_line->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
 			// 
-			// contextMenuStrip_delete_main_element
-			// 
-			this->contextMenuStrip_delete_main_element->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->óäàëèòüToolStripMenuItem });
-			this->contextMenuStrip_delete_main_element->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_delete_main_element->Size = System::Drawing::Size(119, 26);
-			// 
-			// óäàëèòüToolStripMenuItem
-			// 
-			this->óäàëèòüToolStripMenuItem->Name = L"óäàëèòüToolStripMenuItem";
-			this->óäàëèòüToolStripMenuItem->Size = System::Drawing::Size(118, 22);
-			this->óäàëèòüToolStripMenuItem->Text = L"Óäàëèòü";
-			this->óäàëèòüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::óäàëèòüToolStripMenuItem_Click);
-			// 
 			// pictureBox_main_object
 			// 
 			this->pictureBox_main_object->BackColor = System::Drawing::SystemColors::HighlightText;
@@ -307,15 +283,12 @@ namespace Êóğñ {
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::MainForm_Paint_1);
 			this->Resize += gcnew System::EventHandler(this, &MainForm::MainForm_Resize);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->main_table))->EndInit();
-			this->contextMenuStrip_delete_main_element->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main_object))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 	private: System::Void button_create_picture_Click(System::Object^ sender, System::EventArgs^ e);
-// Óäàëåíèå ìàêåòà
-private: System::Void óäàëèòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 private: System::Void pictureBox_main_object_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);

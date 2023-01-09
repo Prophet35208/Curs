@@ -207,6 +207,7 @@ namespace Курс {
 
 		if (mod == 1) {
 			button_attach_text->Visible = 0;
+			checkBox_background->Visible = 0;
 		}
 	}
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {

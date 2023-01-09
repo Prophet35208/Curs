@@ -16,6 +16,11 @@ int TableLayerPicture::GetNumInTable()
     return number_in_table;
 }
 
+void TableLayerPicture::SetNumberInTable(int num)
+{
+    this->number_in_table = num;
+}
+
 void TableLayerPicture::GetUp()
 {
     this->number_in_table++;

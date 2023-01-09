@@ -15,9 +15,12 @@ namespace Курс {
 	/// </summary>
 	public ref class CreateStringList : public System::Windows::Forms::Form
 	{
+	// Текущий номер строк. Указатель используется чтобы передавать данные между дочерними формами
 	public: int* num_str;
+	// Текущий (реальный для текущего слоя) и локальный список строк. Локальный переписывается в текущий только при применении настроек
 	public: List<String^>^ str_list_current;
 	public: List<String^>^ str_list_local = gcnew List<String^>();
+	// Текущий шрифт. Необходимости в локальном нет
 	public: System::Drawing::Font^ font_current;
 	public:
 		CreateStringList(void)
@@ -203,6 +206,7 @@ namespace Курс {
 
 		}
 #pragma endregion
+// Установка шрифта из формы диалога
 private: System::Void button_set_font_Click(System::Object^ sender, System::EventArgs^ e) {
 	fontDialog->Font = richTextBox_all_strings->Font;
 	if (System::Windows::Forms::DialogResult::OK == fontDialog->ShowDialog())
@@ -210,9 +214,11 @@ private: System::Void button_set_font_Click(System::Object^ sender, System::Even
 		richTextBox_all_strings->Font = fontDialog->Font;
 	}
 }
+// Применить шрифт
 private: System::Void fontDialog_Apply(System::Object^ sender, System::EventArgs^ e) {
 	richTextBox_all_strings->Font = fontDialog->Font;
 }
+// Проверка количества строк и обновление label-счётчика
 private: System::Void button_check_Click(System::Object^ sender, System::EventArgs^ e) {
 	str_list_local->Clear();
 	String^ str = gcnew String("");
@@ -241,9 +247,11 @@ private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender
 		richTextBox_all_strings->Font = font;
 	}
 }*/
+// Очистка поля ввода
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	richTextBox_all_strings->Clear();
 }
+// Примимение шрифта первого встречного символа, который позволяет определить шрифт. Используется для наглядности, т.к. программа пока что не поддерживает наличие нескольких шрифтов в одной строке
 private: System::Void button_change_font_off_all_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (richTextBox_all_strings->Text->Length != 0) {
 		System::Drawing::Font^ font;
@@ -258,9 +266,11 @@ private: System::Void button_change_font_off_all_Click(System::Object^ sender, S
 		richTextBox_all_strings->SelectionFont = font;
 	}
 }
+// Очистка label-счётчика при написании 
 private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	label_num_strings->Text = "Количество строк: ";
 }
+// Кнопка подтверждения. Определяется количетсво строк и они записываются в текущий набор строк. Первая часть кода практически идентична button_check_Click
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	str_list_local->Clear();
 	String^ str = gcnew String("");
@@ -274,6 +284,8 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 	Int64 a;
 	a = str_list_local->Count;
 	label_num_strings->Text = "Количество строк: " + a.ToString();
+
+
 
 	if (richTextBox_all_strings->Font != nullptr && str_list_local->Count > 0) {
 		str_list_current->Clear();

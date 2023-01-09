@@ -9,6 +9,11 @@ int TableLayerPictureWithText::GetNumInTable()
 	return number_in_table;
 }
 
+void TableLayerPictureWithText::SetNumberInTable(int num)
+{
+	this->number_in_table = num;
+}
+
 
 void TableLayerPictureWithText::GetUp()
 {

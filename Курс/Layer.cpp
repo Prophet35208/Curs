@@ -12,6 +12,25 @@ Layer::Layer(PictureBox^ pb, int num_in_table,int num_strings) :PictureBoxInstan
 
 }
 
+Layer::Layer(const Layer% obj) :PictureBoxInstanceWithText(obj.pb)
+{
+	this->font = (Font^)obj.font->Clone();
+	if(obj.ILayer->HaveText())
+		this->ILayer = ITableLayer::CreatePictureWithText(obj.ILayer->GetNumInTable());
+	else
+		this->ILayer = ITableLayer::CreatePicture(obj.ILayer->GetNumInTable());
+	// pb необходимо создать и привязать после копирования
+	this->pb = nullptr;
+	this->str_list = gcnew List<String^>(obj.str_list);
+	*this->text_have_background = *obj.text_have_background;
+}
+
+Layer Layer::operator=(Layer mc)
+{
+ Layer l(mc);
+ return l;
+}
+
 int Layer::HaveText()
 {
 	return ILayer->HaveText();
