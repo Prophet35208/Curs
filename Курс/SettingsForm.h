@@ -237,9 +237,6 @@ private: System::Void button_attach_text_Click(System::Object^ sender, System::E
 	csl->num_str = num_str;
 	csl->ShowDialog();
 	cur_font = csl->font_current;
-	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-	//	int a;
-	// }
 }
 // Залить слой некоторым цветом
 private: System::Void button_change_color_Click(System::Object^ sender, System::EventArgs^ e) {

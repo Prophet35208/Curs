@@ -371,7 +371,6 @@ System::Void Курс::MainForm::MainForm_Paint_1(System::Object^ sender, System::Wi
 	this->MinimumSize = System::Drawing::Size(min_width, min_height);
 }
 System::Void Курс::MainForm::LayerWitnText_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-
 	PictureBox^ pb = (PictureBox^)sender;
 	Graphics^ g = e->Graphics;
 	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);

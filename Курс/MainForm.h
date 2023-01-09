@@ -238,7 +238,7 @@ namespace Курс {
 			this->Controls->Add(this->button_set_image_to_object);
 			this->Controls->Add(this->button_create_picture);
 			this->Name = L"MainForm";
-			this->Text = L"MainForm";
+			this->Text = L"Главное меню";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::MainForm_Paint_1);
 			this->Resize += gcnew System::EventHandler(this, &MainForm::MainForm_Resize);
