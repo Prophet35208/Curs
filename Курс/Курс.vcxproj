@@ -131,7 +131,6 @@
     <ClCompile Include="SettingsForm.cpp" />
     <ClCompile Include="SomeFunctions.cpp" />
     <ClCompile Include="TableLayerPictureWithText.cpp" />
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateStringList.h">

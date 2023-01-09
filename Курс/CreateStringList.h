@@ -272,6 +272,19 @@ private: System::Void richTextBox_all_strings_TextChanged(System::Object^ sender
 }
 // Кнопка подтверждения. Определяется количетсво строк и они записываются в текущий набор строк. Первая часть кода практически идентична button_check_Click
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (richTextBox_all_strings->Text->Length != 0) {
+		System::Drawing::Font^ font;
+		int i = 0;
+		while (font == nullptr) {
+			richTextBox_all_strings->Select(i, 0);
+			font = richTextBox_all_strings->SelectionFont;
+			i++;
+		}
+		richTextBox_all_strings->Font = font;
+		richTextBox_all_strings->SelectAll();
+		richTextBox_all_strings->SelectionFont = font;
+	}
+
 	str_list_local->Clear();
 	String^ str = gcnew String("");
 	str = richTextBox_all_strings->Text;

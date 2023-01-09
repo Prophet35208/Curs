@@ -41,7 +41,6 @@ namespace Курс {
 	private: System::Windows::Forms::Button^ button_change_color;
 	private: System::Windows::Forms::CheckBox^ checkBox_background;
 	private: System::Windows::Forms::ColorDialog^ colorDialog;
-
 	private: System::Windows::Forms::Button^ button_attach_text;
 	public:
 		SettingsForm(void)
@@ -107,7 +106,7 @@ namespace Курс {
 			// openFileDialogImage
 			// 
 			this->openFileDialogImage->FileName = L"Выбрать изображение";
-			this->openFileDialogImage->Filter = L"JPG | *.jpg";
+			this->openFileDialogImage->Filter = L"Images|*.png;*.bmp;*.jpg";
 			// 
 			// pictureBox_main
 			// 
@@ -237,6 +236,7 @@ private: System::Void button_attach_text_Click(System::Object^ sender, System::E
 	csl->font_current = cur_font;
 	csl->num_str = num_str;
 	csl->ShowDialog();
+	cur_font = csl->font_current;
 	// if (openFileDialogText->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 	//	int a;
 	// }

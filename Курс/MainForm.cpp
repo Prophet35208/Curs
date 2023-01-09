@@ -395,6 +395,7 @@ void OpenSettingsForm(int mod ,Layer^ layer) {
 	sf->num_str = &num_str;
 	sf->ShowDialog();
 	layer->SetNumStr(num_str);
+	layer->SetFont(sf->cur_font);
 }
 // Позволяет сделать изображения верхнего Pb таким, чтобы он сливался с нижним Pb (Нужно переопределить, если буду пользоваться. Пока что это эксперементальная функция)
 void DrawOnePbFropDownAnother(PictureBox^ down_pb, PictureBox^ upper_pb) {
