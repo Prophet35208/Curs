@@ -3,6 +3,7 @@
 #include "ITableLayer.h"
 using namespace std;
 using namespace System;
+// Представление изображения без текста в форме строки таблицы. Функции описаны в интерфейсе
 class TableLayerPicture :  public ITableLayer
 {
 protected:

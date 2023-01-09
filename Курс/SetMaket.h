@@ -14,11 +14,11 @@ namespace Курс {
 	/// </summary>
 	public ref class SetMaket : public System::Windows::Forms::Form
 	{
-	public: Int64^ width;
 	private: System::Windows::Forms::TextBox^ textBox_width;
 	public:
 	private: System::Windows::Forms::TextBox^ textBox_height;
 	private: System::Windows::Forms::Button^ button_confirm;
+	public: Int64^ width;
 	public: Int64^ height;
 	public:
 		SetMaket(void)
@@ -145,11 +145,13 @@ namespace Курс {
 
 		}
 #pragma endregion
-	private: System::Void textBox_width_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+// Ограничение на ввод символов
+private: System::Void textBox_width_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
 		if (e->KeyChar.IsDigit(e->KeyChar)|| e->KeyChar==8);
 		else
 			e->Handled = 1;
 	}
+// Подтвержение с обработкой исключительных случаев
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	try{
 	int width= Convert::ToInt64(textBox_width->Text);

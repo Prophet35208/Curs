@@ -16,13 +16,22 @@ namespace Курс {
 	/// </summary>
 	public ref class SettingsForm : public System::Windows::Forms::Form
 	{
+	// "Текущий" обозначает, что данный указатель ссылается непосредственно на экземпляр члена слоя (класса layer)
+	// Текущий номер строк
 	public: int* num_str;
+	// Текущий PictureBox
 	public: PictureBox^ current_picture_box;
+	 // Текущая совокупность строк
 	public: List<String^>^ current_str_list;
+	// Локальная совокупность строк
 	public: List<String^>^ locale_str_list = gcnew List<String^>();
+	// Режим обработки (1-картинка без текста, 2-картинка с текстом)
 	public: int mod;
+	// Текущий шрифт
 	public: System::Drawing::Font^ cur_font;
+	// Локальынй фонт
 	public: System::Drawing::Font^ locale_font;
+	// Текущей указатель на член layer (поазывает, нужно ли в изображении с текстом применять фон в конечной компиляции)
 	public: bool* background_check;
 
 	public: System::Windows::Forms::PictureBox^ pictureBox_main;
@@ -171,7 +180,6 @@ namespace Курс {
 			this->Name = L"SettingsForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Настройки";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &SettingsForm::SettingsForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Load);
 			this->Resize += gcnew System::EventHandler(this, &SettingsForm::SettingsForm_Resize);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox_main))->EndInit();
@@ -180,16 +188,19 @@ namespace Курс {
 
 		}
 #pragma endregion
-	private: System::Void button_change_picture_Click(System::Object^ sender, System::EventArgs^ e) {
+// Смена изображения слоя с помощью openFileDialog
+private: System::Void button_change_picture_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (openFileDialogImage->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 			pictureBox_main->Image = Image::FromFile(openFileDialogImage->FileName);
 		}
 	}
-	private: System::Void SettingsForm_Resize(System::Object^ sender, System::EventArgs^ e) {
+// Корректное отображение слоя на экране с учётом его размеров при изменении размеров окна
+private: System::Void SettingsForm_Resize(System::Object^ sender, System::EventArgs^ e) {
 		pictureBox_main->Left = ClientSize.Width / 2 - pictureBox_main->Width / 2;
 		pictureBox_main->Top = ClientSize.Height / 2 - pictureBox_main->Height / 2;
 	}
-	private: System::Void SettingsForm_Load(System::Object^ sender, System::EventArgs^ e) {
+// Корректное отображение слоя на экране с учётом его размеров после загрузки
+private: System::Void SettingsForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		pictureBox_main->Left = ClientSize.Width / 2 - pictureBox_main->Width / 2;
 		pictureBox_main->Top = ClientSize.Height / 2 - pictureBox_main->Height / 2;
 		this->MinimumSize=System::Drawing::Size(200 + pictureBox_main->Width, 200 + pictureBox_main->Height);
@@ -210,6 +221,7 @@ namespace Курс {
 			checkBox_background->Visible = 0;
 		}
 	}
+// Подтверерждение и применение всех настроек 
 private: System::Void button_confirm_Click(System::Object^ sender, System::EventArgs^ e) {
 	current_picture_box->Image = pictureBox_main->Image;
 	current_str_list->Clear();
@@ -218,6 +230,7 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 		*background_check = 0;
 	this->Close();
 }
+// Прикрепить текст к слою
 private: System::Void button_attach_text_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreateStringList^ csl = gcnew CreateStringList();
 	csl->str_list_current = locale_str_list;
@@ -228,6 +241,7 @@ private: System::Void button_attach_text_Click(System::Object^ sender, System::E
 	//	int a;
 	// }
 }
+// Залить слой некоторым цветом
 private: System::Void button_change_color_Click(System::Object^ sender, System::EventArgs^ e) {
 	colorDialog->Color = Color::White;
 	colorDialog->ShowDialog();
@@ -237,8 +251,6 @@ private: System::Void button_change_color_Click(System::Object^ sender, System::
 			image->SetPixel(i, j, colorDialog->Color);
 	pictureBox_main->Image = image;
 }
-private: System::Void SettingsForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-
-}
+// 
 };
 }

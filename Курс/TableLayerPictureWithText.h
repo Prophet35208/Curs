@@ -1,5 +1,6 @@
 #pragma once   
 #include "TableLayerPicture.h"
+// Представление изображения с текстом в форме строки таблицы. Функции описаны в интерфейсе
 class TableLayerPictureWithText : public TableLayerPicture
 {
 private:

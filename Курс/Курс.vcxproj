@@ -155,7 +155,6 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="TableLayerPictureWithText.h" />
-    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateStringList.resx">

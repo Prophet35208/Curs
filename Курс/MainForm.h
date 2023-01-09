@@ -17,19 +17,8 @@ namespace Курс {
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
-	public:
-		int f = 0;
-	public: Bitmap^ b;
 	private: System::Windows::Forms::Button^ button_finish;
-
-
-
-
-
-
-	public:
-	public:
-		PictureBox^ settings_form_picture_box;
+	public:	PictureBox^ settings_form_picture_box;
 	private:
 		// Функция обновления порядка слоёв по индексу
 		void RefreshTable() {
@@ -38,62 +27,34 @@ namespace Курс {
 				layer_list[i]->GetPictureBox()->BringToFront();
 			}
 		}
+	// Ширина и высота, которые передаются в форму SetMaket для обновления размеров макета в пискелях 
 	private: Int64^ width=gcnew Int64(0);
 	private: Int64^ height= gcnew Int64(0);
-		// Необходимые переменные для корректного редкатирования размеров изображений (перетягиванием границ)
 		// Радиус прилипания к краю макета
 		int sticking_rad = 5;
 		// Индикатор прилипания
 		bool f_stick = false;
-
+		// Текущий обрабатываемый picture box. Под обработкой понимать добавление элемента на макет и последующее создание слоя
 		private: PictureBox^ current_picture_box;
-		   //
-		System::Windows::Forms::Button^ button_121414;
+		// Флаги для распознования вида создаваемого элемента
 		int create_image = 0;
 		int create_image_with_text = 0;
 		int mouse_down = 0;
+		// Прямоугольник, в котором сохраняется и после используется размер слоя
 		Rectangle rectProposedSize = Rectangle::Empty;
-		// Коллекция изображений без текста 
-		// List<System::Windows::Forms::PictureBox^>^ picture_list = gcnew List<System::Windows::Forms::PictureBox^>();
 		// Коллекция слоёв
 		List<Layer^>^ layer_list = gcnew List<Layer^>();
 
 	private: System::Windows::Forms::Button^ button_recreate_main;
 	private: System::Windows::Forms::PictureBox^ main_element;
 	private: System::Windows::Forms::Button^ button_set_image_to_object;
-
-
-
-
-
 	private: System::Windows::Forms::PictureBox^ pictureBox_main_object;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column_name;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ button_settings;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ up;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ down;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ delete_line;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::DataGridView^ main_table;
-		   //
 
 	public:
 		MainForm(void)
@@ -115,7 +76,6 @@ namespace Курс {
 			
 
 		}
-
 	protected:
 		/// <summary>
 		/// Освободить все используемые ресурсы.
@@ -288,25 +248,31 @@ namespace Курс {
 
 		}
 #pragma endregion
-	private: System::Void button_create_picture_Click(System::Object^ sender, System::EventArgs^ e);
+// Устанвока флагов для последующего создания слоя
+private: System::Void button_create_picture_Click(System::Object^ sender, System::EventArgs^ e);
+// Проверка состояния флагов и начало создания слоя. Обеспечено прилипание к границам макета при рисовании прямоугольника. В зависимости от наличия прилипания сазадётся начальная точка прямоугольника
 private: System::Void pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+// Рисвования пунктирного треугольника при движении зажатой мыши
 private: System::Void pictureBox_main_object_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+// Заврешение обработки элемента макета
 private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e);
+// Обработка нажатий по таблице. Таблица поддерживает настройку слоёв, смену их чередования и удаление
 private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	  
-	   // Font: 
-	   // Height - междустрочный интервал
-	   // Italic - курсив
-	   // Underline - подчёркивание
-
+// Создания слоя с текстом
 private: System::Void button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e);
+// Корректная обработка размера макета при изменение размера окна
 private: System::Void MainForm_Resize(System::Object^ sender, System::EventArgs^ e);
+// Корректная обработка размера окна в соответствии с размером макета
 private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
+// Пересоздание макета с целью изменения его размеров
 private: System::Void button_recreate_main_Click(System::Object^ sender, System::EventArgs^ e);
+// Корректная обработка размера макета при необходимости
 private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
+// Вызов формы для конечной обработки и сохранения
 private: System::Void button_finish_Click(System::Object^ sender, System::EventArgs^ e);
+// Корректная обработка размера макета при необходимости
 private: System::Void MainForm_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
+// Рисование экземпляра текста в слое с текстом. Текст статичен
 private: System::Void LayerWitnText_Paint_1(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 };
 }

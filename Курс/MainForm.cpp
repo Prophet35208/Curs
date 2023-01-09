@@ -24,6 +24,7 @@ System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender,
 }
 System::Void Курс::MainForm::pictureBox_main_object_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
+	// Небольшие справочные данные по работе методов координат
 	// Point a, b, c,d;
 	// a = (e->Location); // Точка ставится от начала экрана (правый верхний угол)
 	// b = this->PointToScreen(e->Location); // Точка ставится на экране как если бы отсчёт координат был от главной формы
@@ -31,8 +32,8 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseDown(System::Object^ se
 	// d = this->PointToClient(e->Location); // Предположительно принимает абсолютные экранные координаты и преобразует в координаты члена, который этот метод вызвал
 	// this->Cursor->Clip = Rectangle(d, System::Drawing::Size(1, 1));
 	// System::Threading::Thread::Sleep(10000);
-	current_picture_box = (PictureBox^)sender;
 
+	current_picture_box = (PictureBox^)sender;
 
 	f_stick = false;
 	Point place_to_stick_pb_coorinates;
@@ -191,10 +192,6 @@ System::Void Курс::MainForm::pictureBox_main_object_MouseUp(System::Object^ send
 	}
 	current_picture_box = nullptr;
 }
-System::Void Курс::MainForm::button1_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	delete pictureBox_main_object;
-}
 System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
 {
 	if (e->RowIndex != 0) {
@@ -247,23 +244,6 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 		}
 	}
 }
-/*
-System::Void Курс::MainForm::pictureBox1_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	Graphics^ g = pictureBox1->CreateGraphics();
-	StringFormat sf;
-	sf.LineAlignment = StringAlignment::Center;
-	sf.Alignment = StringAlignment::Center;
-	Pen^ bluePen = gcnew Pen(Color::Blue, 1.0f);
-	System::Drawing::Font^ fn = gcnew System::Drawing::Font(FontFamily::GenericSansSerif, 12.0F, FontStyle::Bold);
-
-	SolidBrush^ drawBrush = gcnew SolidBrush(Color::Black);
-	Point a(100, 100);
-	Rectangle^ rec = gcnew Rectangle();
-	g->DrawString("afafawfawfawfaffafaf", fn, drawBrush, a, % sf);
-	this->pictureBox1->Cursor->Clip = Rectangle(this->pictureBox1->PointToScreen(Point(100, 100)), System::Drawing::Size(1, 1)); 
-}
-*/
 System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image_with_text = 1;
@@ -401,6 +381,7 @@ System::Void Курс::MainForm::LayerWitnText_Paint_1(System::Object^ sender, Syste
 	sf->Alignment = StringAlignment::Center;
 	g->DrawString("Sample Text", fn, drawBrush, Rectangle(Point(0,0), pb->Size), sf);
 }
+// Открытие окна настроек и передача всех необходимых элементов
 void OpenSettingsForm(int mod ,Layer^ layer) {
 	int num_str=0;
 	SettingsForm^ sf = gcnew SettingsForm();
@@ -457,6 +438,7 @@ void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Fo
 	g->DrawString(text, font, drawBrush, rect, sf);
 	pb->Image = b;
 }
+// Наработки для следующих версий (для текущей версии пришлось временно откзааться от возможности растягивания макета и перетягивания элементов)
 /* Переменные для ратягивания
 		int first_top;
 		int first_left;
