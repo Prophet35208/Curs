@@ -196,7 +196,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 {
 	if (e->RowIndex != 0) {
 		if (e->ColumnIndex == 1) {
-			if(layer_list[e->RowIndex - 1]->HaveText())
+			if(layer_list[e->RowIndex - 1]->HaveText()==0)
 				OpenSettingsForm(1,layer_list[e->RowIndex - 1]);
 			else
 				OpenSettingsForm(2,layer_list[e->RowIndex - 1]);
@@ -278,12 +278,6 @@ System::Void Курс::MainForm::button_recreate_main_Click(System::Object^ sender, 
 	}
 	this->Validate();
 
-}
-System::Void Курс::MainForm::MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
-{
-	pictureBox_main_object->Left = (ClientSize.Width - main_table->Width) / 2 - pictureBox_main_object->Width / 2;
-	pictureBox_main_object->Top = ClientSize.Height / 2 - pictureBox_main_object->Height / 2;
-	this->MinimumSize = System::Drawing::Size(200 + pictureBox_main_object->Width + main_table->Width, 200 + pictureBox_main_object->Height);
 }
 System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System::EventArgs^ e)
 {

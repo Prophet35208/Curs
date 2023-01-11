@@ -212,11 +212,15 @@ private: System::Void button_set_font_Click(System::Object^ sender, System::Even
 	if (System::Windows::Forms::DialogResult::OK == fontDialog->ShowDialog())
 	{
 		richTextBox_all_strings->Font = fontDialog->Font;
+		richTextBox_all_strings->SelectAll();
+		richTextBox_all_strings->SelectionFont = fontDialog->Font;
 	}
 }
 // Применить шрифт
 private: System::Void fontDialog_Apply(System::Object^ sender, System::EventArgs^ e) {
 	richTextBox_all_strings->Font = fontDialog->Font;
+	richTextBox_all_strings->SelectAll();
+	richTextBox_all_strings->SelectionFont = fontDialog->Font;
 }
 // Проверка количества строк и обновление label-счётчика
 private: System::Void button_check_Click(System::Object^ sender, System::EventArgs^ e) {

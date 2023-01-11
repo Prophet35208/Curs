@@ -266,8 +266,6 @@ private: System::Void MainForm_Resize(System::Object^ sender, System::EventArgs^
 private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
 // Пересоздание макета с целью изменения его размеров
 private: System::Void button_recreate_main_Click(System::Object^ sender, System::EventArgs^ e);
-// Корректная обработка размера макета при необходимости
-private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 // Вызов формы для конечной обработки и сохранения
 private: System::Void button_finish_Click(System::Object^ sender, System::EventArgs^ e);
 // Корректная обработка размера макета при необходимости

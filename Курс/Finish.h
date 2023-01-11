@@ -77,7 +77,7 @@ namespace Курс {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(220, 9);
+			this->label1->Location = System::Drawing::Point(244, 9);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(145, 24);
 			this->label1->TabIndex = 0;
@@ -96,7 +96,7 @@ namespace Курс {
 			// 
 			this->button_left->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button_left->Location = System::Drawing::Point(165, 9);
+			this->button_left->Location = System::Drawing::Point(189, 9);
 			this->button_left->Name = L"button_left";
 			this->button_left->Size = System::Drawing::Size(49, 36);
 			this->button_left->TabIndex = 2;
@@ -108,7 +108,7 @@ namespace Курс {
 			// 
 			this->button_right->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button_right->Location = System::Drawing::Point(371, 9);
+			this->button_right->Location = System::Drawing::Point(395, 9);
 			this->button_right->Name = L"button_right";
 			this->button_right->Size = System::Drawing::Size(49, 36);
 			this->button_right->TabIndex = 3;
