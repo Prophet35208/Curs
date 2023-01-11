@@ -14,6 +14,7 @@ namespace Курс {
 	/// </summary>
 	public ref class SetMaket : public System::Windows::Forms::Form
 	{
+	public: bool successful = 0;
 	private: System::Windows::Forms::TextBox^ textBox_width;
 	public:
 	private: System::Windows::Forms::TextBox^ textBox_height;
@@ -160,6 +161,7 @@ private: System::Void button_confirm_Click(System::Object^ sender, System::Event
 			if (height > 0 && height <= 800) {
 				*this->width = width;
 				*this->height = height;
+				successful = 1;
 				this->Close();
 			}
 			else {

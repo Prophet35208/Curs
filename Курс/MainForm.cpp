@@ -17,6 +17,7 @@ int main(cli::array<String^>^ arg) {
 void OpenSettingsForm(int mod, Layer^ layer);
 void DrawOnePbOnTopOfAnother(PictureBox^ down_pb, PictureBox^ upper_pb);
 void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb, Rectangle rect, Font^ font, String^ text);
+List<Image^>^ FinishCompile(Form^ ground_form, List<Layer^>^ layer_list, PictureBox^ maket);
 System::Void Курс::MainForm::button_create_picture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image = 1;
@@ -265,16 +266,22 @@ System::Void Курс::MainForm::MainForm_Load(System::Object^ sender, System::Event
 }
 System::Void Курс::MainForm::button_recreate_main_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	layer_list->Clear();
-	main_table->Rows->Clear();
-	main_table->Rows->Add("Макет");
 	SetMaket^ sm = gcnew SetMaket();
 	sm->height = height;
 	sm->width = width;
 	sm->ShowDialog();
 	if (*height != 0 && *width != 0) {
-		pictureBox_main_object->Height = *height;
-		pictureBox_main_object->Width = *width;
+		if (sm->successful) {
+			pictureBox_main_object->Height = *height;
+			pictureBox_main_object->Width = *width;
+			for (size_t i = 0; i < layer_list->Count; i++)
+			{
+				delete layer_list[i]->GetPictureBox();
+			}
+			layer_list->Clear();
+			main_table->Rows->Clear();
+			main_table->Rows->Add("Макет");
+		}
 	}
 	this->Validate();
 
@@ -282,63 +289,7 @@ System::Void Курс::MainForm::button_recreate_main_Click(System::Object^ sender, 
 System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if (layer_list->Count != 0) {
-		// Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
-		List<Image^>^ image_list = gcnew List<Image^>();
-		int max_str = 0;
-		// Копия макета
-		PictureBox^ maket_clone = gcnew PictureBox();
-		Controls->Add(maket_clone);
-		for (size_t i = 0; i < layer_list->Count; i++)
-		{
-			if (layer_list[i]->HaveText()) {
-				if (max_str == 0)
-					max_str = layer_list[i]->GetStringList()->Count;
-				if (layer_list[i]->GetStringList()->Count < max_str && layer_list[i]->GetStringList()->Count != 0)
-					max_str = layer_list[i]->GetStringList()->Count;
-
-			}
-		}
-		for (size_t i = 0; i < max_str; i++)
-		{
-			maket_clone->Image = pictureBox_main_object->Image;
-			maket_clone->Location = pictureBox_main_object->Location;
-			maket_clone->Size = pictureBox_main_object->Size;
-			maket_clone->Visible = 0;
-
-			PictureBox^ pb = gcnew PictureBox();
-			Graphics^ g = pb->CreateGraphics();
-			pb->Size = maket_clone->Size;
-			for (size_t j = 0; j < layer_list->Count; j++) {
-				if (layer_list[layer_list->Count - j - 1]->HaveText())
-					if (layer_list[layer_list->Count - j - 1]->GetStringList()->Count != 0)
-						// Рисование текста с фоном
-						if (*(layer_list[layer_list->Count - j - 1]->GetTextHaveBackground())) {
-							DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
-							// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
-							Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
-							DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
-						}
-						else
-							// Рисование текста без фона
-						{
-							Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
-							DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
-						}
-					else
-						// Рисование фона (предполагается, что, если пользователь не назначил текст, то элемент становиться обычным фоном)
-					{
-						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
-					}
-
-				else
-					// Рисование фона
-				{
-					DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
-				}
-			}
-			// Теперь добавление одного из готовых конечных изображений в конечный массив
-			image_list->Add(maket_clone->Image);
-		}
+		List<Image^>^ image_list = FinishCompile(this, layer_list, pictureBox_main_object);
 		Finish^ f = gcnew Finish();
 		f->image_list = image_list;
 		f->ShowDialog();
@@ -431,6 +382,67 @@ void DrawTextOnTheMiddleOfRectangleInPictureBox(PictureBox^ pb,Rectangle rect,Fo
 	sf->Alignment = StringAlignment::Center;
 	g->DrawString(text, font, drawBrush, rect, sf);
 	pb->Image = b;
+}
+// Фукнция конечной компиляции. Использует ground_form для получения информации о расположении слоёв относительно друг друга.  
+List<Image^>^ FinishCompile(Form^ ground_form, List<Layer^>^ layer_list, PictureBox^ maket) {
+	// Определение минимального кол-ва строк среди всех слоёв со строками. Жто число определяет ко-во финальных копий
+	List<Image^>^ image_list = gcnew List<Image^>();
+	int max_str = 0;
+	// Копия макета
+	PictureBox^ maket_clone = gcnew PictureBox();
+	ground_form->Controls->Add(maket_clone);
+	for (size_t i = 0; i < layer_list->Count; i++)
+	{
+		if (layer_list[i]->HaveText()) {
+			if (max_str == 0)
+				max_str = layer_list[i]->GetStringList()->Count;
+			if (layer_list[i]->GetStringList()->Count < max_str && layer_list[i]->GetStringList()->Count != 0)
+				max_str = layer_list[i]->GetStringList()->Count;
+
+		}
+	}
+	for (size_t i = 0; i < max_str; i++)
+	{
+		maket_clone->Image = maket->Image;
+		maket_clone->Location = maket->Location;
+		maket_clone->Size = maket->Size;
+		maket_clone->Visible = 0;
+
+		PictureBox^ pb = gcnew PictureBox();
+		Graphics^ g = pb->CreateGraphics();
+		pb->Size = maket_clone->Size;
+		for (size_t j = 0; j < layer_list->Count; j++) {
+			if (layer_list[layer_list->Count - j - 1]->HaveText())
+				if (layer_list[layer_list->Count - j - 1]->GetStringList()->Count != 0)
+					// Рисование текста с фоном
+					if (*(layer_list[layer_list->Count - j - 1]->GetTextHaveBackground())) {
+						DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
+						// Прямоугольник, в котором нарисовать текст. Определяется относительно макета (pictureBOx_main_object)
+						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
+					}
+					else
+						// Рисование текста без фона
+					{
+						Rectangle^ rect = gcnew Rectangle(maket_clone->PointToClient(layer_list[layer_list->Count - j - 1]->GetPictureBox()->PointToScreen(Point(0, 0))), layer_list[layer_list->Count - j - 1]->GetPictureBox()->Size);
+						DrawTextOnTheMiddleOfRectangleInPictureBox(maket_clone, *rect, layer_list[layer_list->Count - j - 1]->GetFont(), layer_list[layer_list->Count - j - 1]->GetStringList()[i]);
+					}
+				else
+					// Рисование фона (предполагается, что, если пользователь не назначил текст, то элемент становиться обычным фоном)
+				{
+					DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
+				}
+
+			else
+				// Рисование фона
+			{
+				DrawOnePbOnTopOfAnother(maket_clone, layer_list[layer_list->Count - j - 1]->GetPictureBox());
+			}
+		}
+		// Теперь добавление одного из готовых конечных изображений в конечный массив
+		image_list->Add(maket_clone->Image);
+	}
+	return image_list;
 }
 // Наработки для следующих версий (для текущей версии пришлось временно откзааться от возможности растягивания макета и перетягивания элементов)
 /* Переменные для ратягивания
