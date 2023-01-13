@@ -121,17 +121,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Finish.cpp" />
+    <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="PictureBoxInstance.cpp" />
+    <ClCompile Include="PictureBoxInstanceWithText.cpp" />
+    <ClCompile Include="SetMaket.cpp" />
+    <ClCompile Include="TableLayerPicture.cpp" />
     <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="SettingsForm.cpp" />
     <ClCompile Include="SomeFunctions.cpp" />
+    <ClCompile Include="TableLayerPictureWithText.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CreateStringList.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Finish.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="ITableLayer.h" />
+    <ClInclude Include="Layer.h" />
+    <ClInclude Include="PictureBoxInstance.h" />
+    <ClInclude Include="PictureBoxInstanceWithText.h" />
+    <ClInclude Include="SetMaket.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="TableLayerPicture.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="SettingsForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="TableLayerPictureWithText.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateStringList.resx">
+      <DependentUpon>CreateStringList.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Finish.resx">
+      <DependentUpon>Finish.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetMaket.resx">
+      <DependentUpon>SetMaket.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
