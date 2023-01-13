@@ -14,6 +14,7 @@ namespace Курс {
 	/// </summary>
 	public ref class SetMaket : public System::Windows::Forms::Form
 	{
+	// Удачность операции
 	public: bool successful = 0;
 	private: System::Windows::Forms::TextBox^ textBox_width;
 	public:

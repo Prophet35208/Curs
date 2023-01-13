@@ -245,7 +245,7 @@ System::Void Курс::MainForm::main_table_CellContentClick(System::Object^ sender,
 		}
 	}
 }
-System::Void Курс::MainForm::button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void Курс::MainForm::button_set_image_with_text_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	create_image_with_text = 1;
 	create_image = 0;
@@ -290,9 +290,13 @@ System::Void Курс::MainForm::button_finish_Click(System::Object^ sender, System:
 {
 	if (layer_list->Count != 0) {
 		List<Image^>^ image_list = FinishCompile(this, layer_list, pictureBox_main_object);
-		Finish^ f = gcnew Finish();
-		f->image_list = image_list;
-		f->ShowDialog();
+		if (image_list != nullptr) {
+			Finish^ f = gcnew Finish();
+			f->image_list = image_list;
+			f->ShowDialog();
+		}
+		else
+			MessageBox::Show("Один из слоёв с текстом не имеет прикреплённого текста");
 	}
 	else
 		MessageBox::Show("В макете нет ни одного слоя");
@@ -401,6 +405,8 @@ List<Image^>^ FinishCompile(Form^ ground_form, List<Layer^>^ layer_list, Picture
 
 		}
 	}
+	if (max_str == 0)
+		return nullptr;
 	for (size_t i = 0; i < max_str; i++)
 	{
 		maket_clone->Image = maket->Image;

@@ -137,7 +137,7 @@ namespace Курс {
 			this->button_set_image_to_object->TabIndex = 3;
 			this->button_set_image_to_object->Text = L"Создать изображение \r\nс текстом";
 			this->button_set_image_to_object->UseVisualStyleBackColor = true;
-			this->button_set_image_to_object->Click += gcnew System::EventHandler(this, &MainForm::button_set_image_to_object_Click);
+			this->button_set_image_to_object->Click += gcnew System::EventHandler(this, &MainForm::button_set_image_with_text_Click);
 			// 
 			// main_table
 			// 
@@ -222,7 +222,7 @@ namespace Курс {
 			this->button_finish->Name = L"button_finish";
 			this->button_finish->Size = System::Drawing::Size(116, 52);
 			this->button_finish->TabIndex = 8;
-			this->button_finish->Text = L"Перейти к сборке";
+			this->button_finish->Text = L"Перейти к фнальной сборке";
 			this->button_finish->UseVisualStyleBackColor = true;
 			this->button_finish->Click += gcnew System::EventHandler(this, &MainForm::button_finish_Click);
 			// 
@@ -238,7 +238,7 @@ namespace Курс {
 			this->Controls->Add(this->button_set_image_to_object);
 			this->Controls->Add(this->button_create_picture);
 			this->Name = L"MainForm";
-			this->Text = L"Главное меню";
+			this->Text = L"Сборка";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::MainForm_Paint_1);
 			this->Resize += gcnew System::EventHandler(this, &MainForm::MainForm_Resize);
@@ -259,7 +259,7 @@ private: System::Void pictureBox_main_object_MouseUp(System::Object^ sender, Sys
 // Обработка нажатий по таблице. Таблица поддерживает настройку слоёв, смену их чередования и удаление
 private: System::Void main_table_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
 // Создания слоя с текстом
-private: System::Void button_set_image_to_object_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void button_set_image_with_text_Click(System::Object^ sender, System::EventArgs^ e);
 // Корректная обработка размера макета при изменение размера окна
 private: System::Void MainForm_Resize(System::Object^ sender, System::EventArgs^ e);
 // Корректная обработка размера окна в соответствии с размером макета
